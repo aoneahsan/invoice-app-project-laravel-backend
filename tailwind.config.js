@@ -7,7 +7,7 @@ module.exports = {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.vue',
     ],
-
+    important: true,
     theme: {
         extend: {
             fontFamily: {

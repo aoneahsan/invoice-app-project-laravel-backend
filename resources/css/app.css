@@ -1,3 +1,26 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+.vue-notification-wrapper {
+    padding: 10px !important;
+    margin: 0 5px 5px !important;
+    font-size: 14px;
+    color: #ffffff;
+    background: #44a4fc;
+    border-left: 5px solid #187fe7;
+}
+.vue-notification-wrapper.warn {
+    background: #ffb648;
+    border-left-color: #f48a06;
+}
+
+.vue-notification-wrapper.error {
+    background: #e54d42;
+    border-left-color: #b82e24;
+}
+
+.vue-notification-wrapper.success {
+    background: #68cd86;
+    border-left-color: #42a85f;
+}
