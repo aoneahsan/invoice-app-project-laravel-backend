@@ -28,6 +28,7 @@
     },
     "dependencies": {
         "@inertiajs/progress": "^0.2.4",
+        "laravel-vue-datatable": "^0.6.0",
         "v-clipboard": "^2.2.3",
         "vform": "^1.0.1",
         "vue-awesome": "^4.1.0",
@@ -41,9 +42,7 @@
         "vue-property-decorator": "^8.5.1",
         "vue-sticky-directive": "0.0.10",
         "vue-svg-transition": "^0.2.1",
-        "vue-toasted": "^1.1.28",
         "vue-youtube": "^1.4.0",
-        "vue2-editor": "^2.10.2",
-        "vuetable-2": "^2.0.0-beta.4"
+        "vue2-editor": "^2.10.2"
     }
 }

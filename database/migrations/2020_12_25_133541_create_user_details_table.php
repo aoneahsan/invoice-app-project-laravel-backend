@@ -34,7 +34,6 @@ class CreateUserDetailsTable extends Migration
             $table->string('github_link')->nullable();
             $table->longText('extra_attributes')->nullable();
 
-
             $table->softDeletes();
             $table->timestamps();
         });

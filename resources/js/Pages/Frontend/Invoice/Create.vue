@@ -28,12 +28,12 @@
                     class="mt-2 mb-4 overlay profile-pic"
                     style="line-height: 25px"
                   >
-                    {{ auth_user_data.name }}<br />
-                    {{ auth_user_data.address }} <br />
-                    {{ auth_user_data.state }}, {{ auth_user_data.country
+                    {{ $page.user.name }}<br />
+                    {{ $page.user.address }} <br />
+                    {{ $page.user.state }}, {{ $page.user.country
                     }}<br />
-                    {{ auth_user_data.email }} <br />
-                    {{ auth_user_data.phone }}<br />
+                    {{ $page.user.email }} <br />
+                    {{ $page.user.phone }}<br />
                     <div
                       class="edit mt-3"
                       data-toggle="modal"
@@ -140,8 +140,8 @@
                       data-toggle="modal"
                       data-target="#exampleModal"
                     >
-                      <a v-if="selected_client.id" class="nav-link active">
-                        {{ selected_client.full_name }}
+                      <a v-if="selected_client" class="nav-link active">
+                        {{ selected_client.name }}
                         <br />
                         {{ selected_client.email }} <br />
                         {{ selected_client.address }} <br />
@@ -150,7 +150,7 @@
 
                       <a
                         class="nav-link active"
-                        v-if="selected_client.id == null"
+                        v-if="!selected_client"
                         @click="openClientListModal"
                       >
                         <i class="fe fe-user ml-2"> </i>
@@ -165,7 +165,7 @@
                     <label for="upload-photo">
                       <img
                         class="image rounded-circle ml-8"
-                        v-bind:src="auth_user_data.logo"
+                        v-bind:src="$page.user.logo"
                         alt=""
                         width="200px"
                       />
@@ -415,11 +415,7 @@
 <script>
 import { Form } from "vform";
 
-import AddClientModal from "./../Modals/AddClientModal";
-import ClientListModal from "./../Modals/ClientListModal";
-
 export default {
-  props: ["client_data", "auth_user"],
   data() {
     return {
       Itemform: new Form({
@@ -440,7 +436,6 @@ export default {
         total: "",
       }),
       subtotal: 0,
-      clients: [],
       editUserForm: new Form({
         name: "",
         email: "",
@@ -452,8 +447,7 @@ export default {
       profilePic: new Form({
         pic: null,
       }),
-      auth_user_data: "",
-      selected_client: "",
+      selected_client: null,
       currency: [{ name: "USD" }, { name: "EUR" }, { name: "ALL" }],
 
       errors: [],
@@ -462,21 +456,7 @@ export default {
   mounted() {},
   methods: {
     openClientListModal() {
-      this.$modal.show(
-        ClientListModal,
-        {
-          clients: [],
-        },
-        {
-          height: "auto",
-          // adaptive: true,
-          scrollable: true,
-          focusTrap: true,
-          reset: true,
-          classes: "",
-        },
-        {}
-      );
+      this.$modal.show("ClientsListModal");
     },
     // below methods are from amir code (rewrite or delete these methods)
     addCurrency: function (index) {
@@ -490,32 +470,16 @@ export default {
       console.log(this.selected_client);
       this.Itemform.client_id = this.selected_client.id;
     },
-
-    createClient() {
-      // Submit the client form via a POST request
-      this.clientform.post("/create-client").then(({ data }) => {
-        console.log(data), (this.selected_client = data);
-      });
-    },
     createInvoice() {
       if (this.Itemform.items.length) {
         if (this.Itemform.client_id) {
           this.Itemform.post("/create-invoice").then(({ data }) => {
             console.log(data);
           });
-
-          // Swal.fire({
-          // position: 'top-center',
-          // icon: 'success',
-          // title: 'Invoice Created successfully',
-          // showConfirmButton: false,
-          // timer: 1500
-          // })
         } else {
           !this.errors.push("Please Select a Client.");
         }
       } else {
-        //    Swal.fire('Please Add Some Item')
       }
     },
     addRow: function () {
@@ -553,22 +517,20 @@ export default {
       console.log(config);
       const data = new FormData();
       data.append("logo", this.pic);
-      data.append("name", this.auth_user_data.name);
-      data.append("email", this.auth_user_data.email);
-      data.append("address", this.auth_user_data.address);
-      data.append("state", this.auth_user_data.state);
-      data.append("country", this.auth_user_data.country);
-      data.append("phone", this.auth_user_data.phone);
+      data.append("name", this.$page.user.name);
+      data.append("email", this.$page.user.email);
+      data.append("address", this.$page.user.address);
+      data.append("state", this.$page.user.state);
+      data.append("country", this.$page.user.country);
+      data.append("phone", this.$page.user.phone);
       const t = this;
       axios.post("/update-user", data, config).then(function (response) {
-        t.auth_user_data = response.data;
+        t.$page.user = response.data;
       });
-
-      //  console.log( response.data);
     },
     editUser: function () {
       this.editUserForm.post("/update-user").then(({ data }) => {
-        console.log(data), (this.auth_user_data = data);
+        console.log(data), (this.$page.user = data);
       });
     },
   },

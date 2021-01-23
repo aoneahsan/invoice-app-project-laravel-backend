@@ -64,7 +64,9 @@
                     </div>
 
                     <jet-dropdown-link href="/sign-in">Login</jet-dropdown-link>
-                    <jet-dropdown-link href="/sign-up">Register</jet-dropdown-link>
+                    <jet-dropdown-link href="/sign-up"
+                      >Register</jet-dropdown-link
+                    >
                   </template>
                   <template v-if="$page.user">
                     <div class="block px-4 py-2 text-xs text-gray-400">
@@ -200,6 +202,167 @@
         </div>
       </template>
     </notifications>
+
+    <!-- Modals -->
+    <!-- Add Client Modal -->
+    <modal
+      name="addClientModal"
+      :scrollable="true"
+      height="auto"
+      :focusTrap="true"
+      :reset="true"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Client</h5>
+        </div>
+        <div class="modal-body">
+          <form @submit.prevent="addClient">
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label text-muted"
+                >Full Name (required)</label
+              >
+              <input
+                type="text"
+                v-model="addClientform.name"
+                class="form-control"
+                :class="{ 'is-invalid': addClientform.errors.has('name') }"
+                id="recipient-name"
+                required
+              />
+              <has-error :form="addClientform" field="name"></has-error>
+            </div>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label text-muted"
+                >E-mail address (required)</label
+              >
+              <input
+                type="email"
+                v-model="addClientform.email"
+                class="form-control"
+                :class="{ 'is-invalid': addClientform.errors.has('email') }"
+                id="recipient-name"
+                required
+              />
+              <has-error :form="addClientform" field="email"></has-error>
+            </div>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label text-muted"
+                >Client's Address (required)</label
+              >
+              <input
+                type="text"
+                v-model="addClientform.address"
+                class="form-control"
+                :class="{ 'is-invalid': addClientform.errors.has('address') }"
+                id="recipient-name"
+                required
+              />
+              <has-error :form="addClientform" field="address"></has-error>
+            </div>
+
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label text-muted"
+                >Client's Company</label
+              >
+              <input
+                type="text"
+                v-model="addClientform.company"
+                class="form-control"
+                :class="{ 'is-invalid': addClientform.errors.has('company') }"
+                id="recipient-name"
+                required
+              />
+              <has-error :form="addClientform" field="company"></has-error>
+            </div>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label text-muted"
+                >Country</label
+              >
+              <input
+                type="text"
+                v-model="addClientform.country"
+                class="form-control"
+                :class="{ 'is-invalid': addClientform.errors.has('country') }"
+                id="recipient-name"
+                required
+              />
+              <has-error :form="addClientform" field="country"></has-error>
+            </div>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label text-muted"
+                >Phone:</label
+              >
+              <input
+                type="number"
+                v-model="addClientform.phone_number"
+                class="form-control"
+                id="recipient-name"
+                :class="{
+                  'is-invalid': addClientform.errors.has('phone_number'),
+                }"
+                required
+              />
+              <has-error :form="addClientform" field="phone_number"></has-error>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="submit"
+                :disabled="addClientform.busy"
+                class="btn btn-primary w-100"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </modal>
+    <modal
+      name="ClientsListModal"
+      :scrollable="true"
+      height="auto"
+      :focusTrap="true"
+      :reset="true"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            Set the client for this invoice
+          </h5>
+        </div>
+        <div
+          class="modal-body d-flex"
+          v-for="(client, index) in $page.clients"
+          :key="index"
+        >
+          <div class="btn-rounded-circle badge-primary">
+            <div class="ml-3 mt-2">
+              {{ client.name.substring(0, 2) }}
+            </div>
+          </div>
+          <div
+            class="font-weight-bold ml-4 select-client"
+            data-dismiss="modal"
+            @click="addClient(index)"
+          >
+            {{ client.name }}
+            <div>
+              {{ client.email }}
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            @click="openAddClientModal"
+            class="btn btn-primary w-100"
+          >
+            Create New Client
+          </button>
+        </div>
+      </div>
+    </modal>
   </div>
 </template>
 
@@ -209,6 +372,9 @@ import JetDropdown from "@/Jetstream/Dropdown";
 import JetDropdownLink from "@/Jetstream/DropdownLink";
 import JetNavLink from "@/Jetstream/NavLink";
 import JetResponsiveNavLink from "@/Jetstream/ResponsiveNavLink";
+
+// Modals Imports
+import { Form } from "vform";
 
 export default {
   components: {
@@ -222,6 +388,15 @@ export default {
   data() {
     return {
       showingNavigationDropdown: false,
+      // Modals Data
+      addClientform: new Form({
+        name: "as",
+        email: "as@as.as",
+        address: "as",
+        company: "as",
+        country: "as",
+        phone_number: "12",
+      }),
     };
   },
 
@@ -230,6 +405,41 @@ export default {
       axios.post(route("logout").url()).then((response) => {
         window.location = "/";
       });
+    },
+
+    // Modals Methods
+    addClient() {
+      this.addClientform
+        .post("/user/clients")
+        .then((res) => {
+          if (res) {
+            // this.$notify({
+            //   group: "app",
+            //   type: "success",
+            //   title: "Request Successfull",
+            //   text: "Client Added Successfully.",
+            //   duration: 70000,
+            //   speed: 1000,
+            // });
+            this.$modal.hide("addClientModal");
+            EventBus.$emit("event_clientAdded");
+          }
+        })
+        .catch((err) => {
+          if (err) {
+            // this.$notify({
+            //   group: "app",
+            //   type: "error",
+            //   title: "Request Faild",
+            //   text: err.message,
+            //   duration: 70000,
+            //   speed: 1000,
+            // });
+          }
+        });
+    },
+    openAddClientModal() {
+      this.$modal.show("addClientModal");
     },
   },
 };

@@ -11,6 +11,8 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Events\User\UserCreatedEvent;
+use App\Models\User\Client;
+use App\Models\User\UserDetails;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -35,6 +37,15 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        "username",
+        "phone_number",
+        "country_code",
+        "country_code_text",
+        "location",
+        "role",
+        "profile_publicly_visible",
+        "is_active",
+        "extra_attributes"
     ];
 
     /**
@@ -66,4 +77,15 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    // Relations
+    public function user_details()
+    {
+        return $this->hasOne(UserDetails::class);
+    }
+
+    public function clients()
+    {
+        return $this->hasMany(Client::class);
+    }
 }

@@ -69,13 +69,16 @@ Route::group([
     // ###################     VERIFIED ROUTES     #####################
     // #################################################################
     Route::group([
-        "middleware" => ['auth', "verified"]
+        // "middleware" => ['auth', "verified"]
+        "middleware" => ['auth']
     ], function () {
         Route::get('/dashboard')->uses("PagesController@Dashboard")->name('dashboard');
         Route::get('/user/profile')->uses("PagesController@UserProfile")->name('user.profile');
 
         Route::get("/clients")->uses("PagesController@Clients")->name("clients");
-        Route::get("/user/clients")->uses("User\UserClientController@getClients")->name("user.clients");
+        Route::get("/user/clients")->uses("User\UserClientController@getClients")->name("user.clients.get");
+        Route::post("/user/clients")->uses("User\UserClientController@store")->name("user.clients.post");
+        Route::delete("/user/clients/{id}")->uses("User\UserClientController@destroy")->name("user.clients.delete");
     });
 
     // #################################################################
