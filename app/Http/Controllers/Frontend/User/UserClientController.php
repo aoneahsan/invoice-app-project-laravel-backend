@@ -10,12 +10,6 @@ use JamesDordoy\LaravelVueDatatable\Http\Resources\DataTableCollectionResource;
 
 class UserClientController extends Controller
 {
-    // public function getClients(Request $request)
-    // {
-    //     $items = Client::where("user_id", $request->user()->id)->paginate(10);
-    //     // $items = Client::where("user_id", $request->user()->id)->simplePaginate(10);
-    //     return response()->json(['data' => ClientResource::collection($items)], 200);
-    // }
     public function getClients(Request $request)
     {
         $length = $request->input('length');

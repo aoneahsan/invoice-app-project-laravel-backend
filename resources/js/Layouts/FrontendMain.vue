@@ -21,8 +21,14 @@
                 Create Invoice
               </jet-nav-link>
               <jet-nav-link
-                :href="route('clients')"
-                :active="route().current('clients')"
+                :href="route('invoices.view')"
+                :active="route().current('invoices.view')"
+              >
+                Invoices
+              </jet-nav-link>
+              <jet-nav-link
+                :href="route('clients.view')"
+                :active="route().current('clients.view')"
               >
                 Clients
               </jet-nav-link>
@@ -73,7 +79,7 @@
                       Manage Account
                     </div>
 
-                    <jet-dropdown-link href="/"> Profile </jet-dropdown-link>
+                    <jet-dropdown-link :href="route('user.profile')"> Profile </jet-dropdown-link>
 
                     <div class="border-t border-gray-100"></div>
 
@@ -204,6 +210,50 @@
     </notifications>
 
     <!-- Modals -->
+    <!-- Clients List Modal -->
+    <modal
+      name="ClientsListModal"
+      :scrollable="true"
+      height="auto"
+      :focusTrap="true"
+      :reset="true"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Set the client for this invoice</h5>
+        </div>
+        <div
+          class="modal-body d-flex"
+          v-for="(client, index) in $page.clients"
+          :key="index"
+        >
+          <div class="btn-rounded-circle badge-primary">
+            <div class="ml-3 mt-2">
+              {{ client.name.substring(0, 2) }}
+            </div>
+          </div>
+          <div
+            class="font-weight-bold ml-4 select-client"
+            data-dismiss="modal"
+            @click="addClient(index)"
+          >
+            {{ client.name }}
+            <div>
+              {{ client.email }}
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            @click="openAddClientModal"
+            class="btn btn-primary w-100"
+          >
+            Create New Client
+          </button>
+        </div>
+      </div>
+    </modal>
     <!-- Add Client Modal -->
     <modal
       name="addClientModal"
@@ -318,8 +368,9 @@
         </div>
       </div>
     </modal>
+    <!-- Edit User Info Modal -->
     <modal
-      name="ClientsListModal"
+      name="editUserModal"
       :scrollable="true"
       height="auto"
       :focusTrap="true"
@@ -327,40 +378,99 @@
     >
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">
-            Set the client for this invoice
-          </h5>
+          <h5 class="modal-title">Edit User</h5>
+        </div>
+        <div class="modal-body">
+          <form @submit.prevent="updateUserInfo">
+            <div class="form-group">
+              <label class="col-form-label">Name:</label>
+              <input
+                type="text"
+                v-model="editUserForm.name"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">Address:</label>
+              <input
+                type="text"
+                v-model="editUserForm.address"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">State:</label>
+              <input
+                type="text"
+                v-model="editUserForm.state"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">Country:</label>
+              <input
+                type="text"
+                v-model="editUserForm.country"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">Email:</label>
+              <input
+                type="text"
+                v-model="editUserForm.email"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">Phone:</label>
+              <input
+                type="text"
+                v-model="editUserForm.phone"
+                class="form-control"
+              />
+            </div>
+
+            <div class="modal-footer">
+              <button
+                :disabled="editUserForm.busy"
+                data-dismiss="modal"
+                class="btn btn-primary w-100"
+              >
+                Edit User
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </modal>
+    <!-- Select Currency Modal -->
+    <modal
+      name="selectCurrencyModal"
+      :scrollable="true"
+      height="auto"
+      :focusTrap="true"
+      :reset="true"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Select Currency</h5>
         </div>
         <div
           class="modal-body d-flex"
-          v-for="(client, index) in $page.clients"
+          style="padding: 6px"
+          v-for="(cur, index) in $page.currencies"
           :key="index"
         >
-          <div class="btn-rounded-circle badge-primary">
-            <div class="ml-3 mt-2">
-              {{ client.name.substring(0, 2) }}
-            </div>
-          </div>
           <div
             class="font-weight-bold ml-4 select-client"
             data-dismiss="modal"
-            @click="addClient(index)"
+            @click="addCurrency(index)"
           >
-            {{ client.name }}
-            <div>
-              {{ client.email }}
-            </div>
+            {{ cur.name }}
           </div>
         </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            @click="openAddClientModal"
-            class="btn btn-primary w-100"
-          >
-            Create New Client
-          </button>
-        </div>
+        <div class="modal-footer"></div>
       </div>
     </modal>
   </div>
@@ -396,6 +506,14 @@ export default {
         company: "as",
         country: "as",
         phone_number: "12",
+      }),
+      editUserForm: new Form({
+        name: "",
+        email: "",
+        address: "",
+        state: "",
+        country: "",
+        phone: "",
       }),
     };
   },
@@ -440,6 +558,26 @@ export default {
     },
     openAddClientModal() {
       this.$modal.show("addClientModal");
+    },
+    updateUserInfo() {
+      this.editUserForm
+        .put("/user")
+        .then(({ res }) => {
+          console.log(res), (this.$page.user = res);
+        })
+        .catch((err) => {
+          if (err) {
+            this.$notify({
+              group: "app",
+              type: "error",
+              title: "Request Faild",
+              text: err.message,
+              duration: 5000,
+              speed: 1000,
+              closeOnClick: true,
+            });
+          }
+        });
     },
   },
 };

@@ -32,3 +32,34 @@
 10. User should be able to edit the notes for each invoice, but in the back-end, there should be a way to set the default content for the notes.
 
 11. available currencies € (EUR), $ (USD), £ (GBP), ¥ (YEN), ₹ (INR), Rp (IDR) - dropdown to change currency
+
+
+################################################################################################
+###############################        FEEDBACK POINTS        ##################################
+################################################################################################
+Invoice app feedback
+
+-> Sign up should include city, zip code, company name, VAT number (optional), company registration number (optional)
+
+-> On sign up the phone number and state should be optional, and the countries list should be a dropdown
+
+-> When an invoice is created the invoice name (top left and invoice number (right in screenshot) don’t match. In red circles on screenshot. If possible, it would be great to make hide the series number on the invoice page and show the invoice number at the top.
+
+-> Are invoice numbers created automatically, as asked in the brief (consisting of always starting with ‘INV’, followed by 3 letter abbreviation of the client (entered upon creating client entry), the number of invoice addressed to that client (e.g. ’03’) and the year it is invoice (e.g. ‘2021)? The invoice no: field should be filled out automatically, but still editable for users.
+
+-> On invoice I cannot change the date or due date (green circle)
+
+-> On invoice I cannot change or remove the logo (orange circle)
+
+-> On invoice the buttons should ‘Save’ invoice (to the invoice list if user has an account and through cookies a single invoice when no account is created) and the other button (the blue one) should say download invoice. Blue circle in screenshot.
+
+-> On invoice I cannot change the currency or the VAT
+
+-> On invoice the user should be able to select notes they have saved before (these notes should be connected with a client entry). So when creating a client entry there should be 2 additional fields (both text fields); 1 - Bank details 2 - Payment conditions  Both these should allow for basic text markup (bold, italic, text link and underlined). 
+
+-> I’m not sure if this is a feature already available, but for now I would NOT want a user to be able to send an invoice directly through our app to their clients. Simply because it could make us accountable for errors on late payments, and I want to avoid that (at least for now).
+
+-> When creating a client entry we are missing the company registration number (optional), VAT number (optional), attention field (optional), city, zip code, and client three letter abbreviation field.
+
+-> On the invoice list page can we replace the ‘actions’ column with sum (which shows a total of the invoice), and hide the SR NQ (series number I assume?) please?
+

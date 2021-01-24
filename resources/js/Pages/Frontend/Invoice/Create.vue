@@ -4,20 +4,27 @@
       <div class="row align-items-center">
         <div class="col">
           <!-- Pretitle -->
-          <h6 class="header-pretitle">Payments</h6>
+          <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-1">
+            Payments
+          </h2>
           <!-- Title -->
           <h1 class="header-title">Invoice #SDF9823KD</h1>
         </div>
         <div class="col-auto">
           <!-- Buttons -->
           <a href="#!" class="btn btn-white lift"> Download </a>
-          <a href="#!" class="btn btn-primary ml-2 lift"> Pay </a>
+          <a href="#!" class="btn btn-primary ml-2 lift"> Save </a>
         </div>
       </div>
     </template>
     <div class="col-12 pt-12">
       <div class="container">
         <div class="row">
+          <div class="col-12" v-if="!$page.user">
+            <div class="alert alert-primary" role="alert">
+              <strong>Kindly Login first before continue.</strong>
+            </div>
+          </div>
           <div class="col-11 col-lg-10 col-xl-10 mx-auto">
             <!-- Header -->
             <!-- Content -->
@@ -28,12 +35,32 @@
                     class="mt-2 mb-4 overlay profile-pic"
                     style="line-height: 25px"
                   >
-                    {{ $page.user.name }}<br />
-                    {{ $page.user.address }} <br />
-                    {{ $page.user.state }}, {{ $page.user.country
-                    }}<br />
-                    {{ $page.user.email }} <br />
-                    {{ $page.user.phone }}<br />
+                    <input
+                      v-model="invoiceForm.user.name"
+                      name="invoice_user_name"
+                    /><br />
+                    <input
+                      v-model="invoiceForm.user.address"
+                      name="invoice_user_address"
+                    />
+                    <br />
+                    <input
+                      v-model="invoiceForm.user.state"
+                      name="invoice_user_state"
+                    />,
+                    <input
+                      v-model="invoiceForm.user.country"
+                      name="invoice_user_country"
+                    /><br />
+                    <input
+                      v-model="invoiceForm.user.email"
+                      name="invoice_user_email"
+                    />
+                    <br />
+                    <input
+                      v-model="invoiceForm.user.phone_number"
+                      name="invoice_user_phone_number"
+                    /><br />
                     <div
                       class="edit mt-3"
                       data-toggle="modal"
@@ -42,95 +69,7 @@
                       data-placement="bottom"
                       title="Edit This"
                     >
-                      <i class="pencil"></i>
-                    </div>
-                  </div>
-                  <div
-                    class="modal fade"
-                    id="useredit"
-                    tabindex="-1"
-                    role="dialog"
-                    aria-labelledby="exampleModalLabel"
-                    aria-hidden="true"
-                  >
-                    <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">
-                            Edit User
-                          </h5>
-                          <button
-                            type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                          >
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          <form>
-                            <div class="form-group">
-                              <label class="col-form-label">Name:</label>
-                              <input
-                                type="text"
-                                v-model="editUserForm.name"
-                                class="form-control"
-                              />
-                            </div>
-                            <div class="form-group">
-                              <label class="col-form-label">Address:</label>
-                              <input
-                                type="text"
-                                v-model="editUserForm.address"
-                                class="form-control"
-                              />
-                            </div>
-                            <div class="form-group">
-                              <label class="col-form-label">State:</label>
-                              <input
-                                type="text"
-                                v-model="editUserForm.state"
-                                class="form-control"
-                              />
-                            </div>
-                            <div class="form-group">
-                              <label class="col-form-label">Country:</label>
-                              <input
-                                type="text"
-                                v-model="editUserForm.country"
-                                class="form-control"
-                              />
-                            </div>
-                            <div class="form-group">
-                              <label class="col-form-label">Email:</label>
-                              <input
-                                type="text"
-                                v-model="editUserForm.email"
-                                class="form-control"
-                              />
-                            </div>
-                            <div class="form-group">
-                              <label class="col-form-label">Phone:</label>
-                              <input
-                                type="text"
-                                v-model="editUserForm.phone"
-                                class="form-control"
-                              />
-                            </div>
-
-                            <div class="modal-footer">
-                              <button
-                                @click="editUser()"
-                                data-dismiss="modal"
-                                class="btn btn-primary w-100"
-                              >
-                                Edit User
-                              </button>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
+                      <v-icon name="edit"></v-icon>
                     </div>
                   </div>
                   <p class="text-muted mt-5">Bill To:</p>
@@ -140,17 +79,17 @@
                       data-toggle="modal"
                       data-target="#exampleModal"
                     >
-                      <a v-if="selected_client" class="nav-link active">
-                        {{ selected_client.name }}
+                      <a v-if="invoiceForm.client.id" class="nav-link active">
+                        {{ invoiceForm.client.id.name }}
                         <br />
-                        {{ selected_client.email }} <br />
-                        {{ selected_client.address }} <br />
-                        {{ selected_client.country }}
+                        {{ invoiceForm.client.id.email }} <br />
+                        {{ invoiceForm.client.id.address }} <br />
+                        {{ invoiceForm.client.id.country }}
                       </a>
 
                       <a
                         class="nav-link active"
-                        v-if="!selected_client"
+                        v-if="!invoiceForm.client.id"
                         @click="openClientListModal"
                       >
                         <i class="fe fe-user ml-2"> </i>
@@ -165,7 +104,7 @@
                     <label for="upload-photo">
                       <img
                         class="image rounded-circle ml-8"
-                        v-bind:src="$page.user.logo"
+                        v-bind:src="invoiceForm.user.logo"
                         alt=""
                         width="200px"
                       />
@@ -183,30 +122,29 @@
 
                   <div class="mr-4">
                     <h1 class="invoice">Invoice</h1>
-                    <span class="text-muted">Invoice no:</span>
-                    <div class="d-flex justify-content-end">
+                    <div class="d-flex mb-3 justify-content-end">
+                      <span class="text-muted mr-2">Invoice no:</span>
                       <input
                         type="text"
                         class="form-control form-control-sm w-auto"
-                        v-model="Itemform.invoice_no"
+                        v-model="invoiceForm.invoice_no"
                         readonly
                       />
                     </div>
-                    <span class="text-muted">Date:</span>
-                    <div class="d-flex justify-content-end">
+                    <div class="d-flex mb-3 justify-content-end">
+                      <span class="text-muted mr-2">Date:</span>
                       <input
                         type="date"
                         class="form-control form-control-sm w-auto"
-                        v-model="Itemform.date"
+                        v-model="invoiceForm.date"
                       />
                     </div>
-                    <br />
-                    <span class="text-muted">Due Date:</span>
-                    <div class="d-flex justify-content-end">
+                    <div class="d-flex mb-3 justify-content-end">
+                      <span class="text-muted mr-2">Due Date:</span>
                       <input
                         type="date"
                         class="form-control form-control-sm w-auto"
-                        v-model="Itemform.due_date"
+                        v-model="invoiceForm.due_date"
                       />
                     </div>
                     <br />
@@ -239,14 +177,14 @@
                       </thead>
                       <tbody>
                         <tr
-                          v-for="(item, index) in Itemform.items"
+                          v-for="(item, index) in invoiceForm.items"
                           :key="index"
                         >
                           <td class="td w-50">
                             <input
                               class="form-control form-control-sm"
                               type="text"
-                              v-model="item.name"
+                              v-model="item.item_detail"
                             />
                           </td>
                           <td class="td">
@@ -271,7 +209,7 @@
                               @click="deleteRow(index)"
                               class="btn-rounded-circle badge-danger"
                             >
-                              <i class="fe fe-delete"></i>
+                              <v-icon name="times"></v-icon>
                             </button>
                           </td>
                         </tr>
@@ -281,7 +219,7 @@
                               @click="addRow()"
                               class="btn-rounded-circle badge-primary"
                             >
-                              <i class="fe fe-plus"></i>
+                              <v-icon name="plus"></v-icon>
                             </button>
                             <span @click="addRow()" class="text-primary ml-2">
                               <a href="javascript:void(0)">
@@ -312,7 +250,7 @@
                               <input
                                 type="number"
                                 class="form-control form-control-sm"
-                                v-model.number="Itemform.discount"
+                                v-model.number="invoiceForm.discount"
                               />
                             </span>
                           </td>
@@ -324,7 +262,9 @@
                               data-toggle="modal"
                               data-target="#exampleModalCurrency"
                               style="cursor: pointer"
-                              >TOTAL ({{ Itemform.selected_currency }})</strong
+                              >TOTAL ({{
+                                invoiceForm.selected_currency
+                              }})</strong
                             >
                           </td>
                           <td colspan="3" class="text-right border-bottom">
@@ -336,64 +276,9 @@
                       </tbody>
                     </table>
                   </div>
-                  <div
-                    class="modal fade bd-example-modal-sm"
-                    id="exampleModalCurrency"
-                    tabindex=""
-                    role="dialog"
-                    aria-labelledby="exampleModalLabel"
-                    aria-hidden="true"
-                  >
-                    <div class="modal-dialog modal-sm" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">
-                            Select Currency
-                          </h5>
-                          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button> -->
-                        </div>
-                        <div
-                          class="modal-body d-flex"
-                          style="padding: 6px"
-                          v-for="(cur, index) in currency"
-                          :key="index"
-                        >
-                          <div
-                            class="font-weight-bold ml-4 select-client"
-                            data-dismiss="modal"
-                            @click="addCurrency(index)"
-                          >
-                            {{ cur.name }}
-                          </div>
-                        </div>
-                        <div class="modal-footer"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div v-if="errors.length">
-                    <b>Please correct the following error:</b>
-                    <ul>
-                      <li v-for="(error, index) in errors" :key="index">
-                        {{ error }}
-                      </li>
-                    </ul>
-                  </div>
-
                   <hr class="my-5" />
-
                   <!-- Title -->
-                  <h6 class="text-uppercase">
-                    Notes
-                    <button
-                      type="button"
-                      @click="createInvoice()"
-                      class="btn btn-primary btn-sm ml-4"
-                    >
-                      Create Invoice
-                    </button>
-                  </h6>
+                  <h6 class="text-uppercase">Notes</h6>
 
                   <!-- Text -->
                   <p class="text-muted mb-0">
@@ -418,95 +303,112 @@ import { Form } from "vform";
 export default {
   data() {
     return {
-      Itemform: new Form({
+      invoiceForm: new Form({
+        user: {
+          id: "USER_ID",
+          name: "USER_NAME",
+          email: "USER_EMAIL",
+          phone_number: "USER_NUMBER",
+          state: "USER_STATE",
+          company: "USER_COMPANY",
+          country: "USER_COUNTRY",
+          address: "USER_ADDRESS",
+          logo: "/images/sitelogo.jpeg",
+        },
+        client: {
+          id: null,
+          name: "",
+          email: "",
+          phone_number: "",
+          address: "",
+          logo: "",
+        },
         items: [
           {
-            name: "",
+            item_detail: "",
             qty: 1,
             rate: 0,
           },
         ],
-        discount: 0,
-        date: "",
-        due_date: "",
-        invoice_no: "INVABC012020",
+        date: new Date(),
+        due_date: new Date(),
+        invoice_no: "############",
         selected_currency: "USD",
-        client_id: "",
+        discount: 0,
         sub_total: "",
         total: "",
       }),
-      subtotal: 0,
-      editUserForm: new Form({
-        name: "",
-        email: "",
-        address: "",
-        state: "",
-        country: "",
-        phone: "",
-      }),
-      profilePic: new Form({
-        pic: null,
-      }),
-      selected_client: null,
       currency: [{ name: "USD" }, { name: "EUR" }, { name: "ALL" }],
-
-      errors: [],
     };
   },
-  mounted() {},
+  beforeMount() {
+    if (this.$page.user) {
+      this.invoiceForm.user.id = this.$page.user.id;
+      this.invoiceForm.user.name = this.$page.user.name;
+      this.invoiceForm.user.email = this.$page.user.email;
+      this.invoiceForm.user.address = this.$page.user.address;
+      this.invoiceForm.user.state = this.$page.user.state;
+      this.invoiceForm.user.country = this.$page.user.country;
+      this.invoiceForm.user.company = this.$page.user.company;
+      this.invoiceForm.user.state = this.$page.user.state;
+    }
+  },
   methods: {
     openClientListModal() {
-      this.$modal.show("ClientsListModal");
-    },
-    // below methods are from amir code (rewrite or delete these methods)
-    addCurrency: function (index) {
-      console.log(index);
-      this.Itemform.selected_currency = this.currency[index].name;
-    },
-
-    addClient: function (index) {
-      console.log(index);
-      this.selected_client = this.clients[index];
-      console.log(this.selected_client);
-      this.Itemform.client_id = this.selected_client.id;
-    },
-    createInvoice() {
-      if (this.Itemform.items.length) {
-        if (this.Itemform.client_id) {
-          this.Itemform.post("/create-invoice").then(({ data }) => {
-            console.log(data);
-          });
-        } else {
-          !this.errors.push("Please Select a Client.");
-        }
+      if (this.$page.user) {
+        this.$modal.show("ClientsListModal");
       } else {
+        this.$inertia.visit("/sign-in");
       }
     },
     addRow: function () {
-      this.Itemform.items.push({
-        name: "",
+      this.invoiceForm.items.push({
+        item_detail: "",
         qty: 1,
         rate: 0,
       });
     },
     deleteRow(index) {
       console.log(index);
-      this.$delete(this.Itemform.items, index);
+      this.$delete(this.invoiceForm.items, index);
     },
     calculateSubtotal: function () {
       let subtotal = 0;
-      this.Itemform.items.forEach((val) => {
+      this.invoiceForm.items.forEach((val) => {
         subtotal += val.qty * val.rate;
       });
       this.subtotal = subtotal;
-      this.Itemform.sub_total = subtotal;
+      this.invoiceForm.sub_total = subtotal;
       return subtotal;
     },
     calculateTotal: function () {
       let total = 0;
-      total = this.subtotal - this.subtotal * (this.Itemform.discount / 100);
-      this.Itemform.total = total;
+      total = this.subtotal - this.subtotal * (this.invoiceForm.discount / 100);
+      this.invoiceForm.total = total;
       return total;
+    },
+
+    // below methods are from amir code (rewrite or delete these methods)
+    addCurrency: function (index) {
+      console.log(index);
+      this.invoiceForm.selected_currency = this.currency[index].name;
+    },
+    addClient: function (index) {
+      console.log(index);
+      this.invoiceForm.client.id = this.clients[index];
+      console.log(this.invoiceForm.client.id);
+      this.invoiceForm.client_id = this.invoiceForm.client.id.id;
+    },
+    createInvoice() {
+      if (this.invoiceForm.items.length) {
+        if (this.invoiceForm.client_id) {
+          this.invoiceForm.post("/create-invoice").then(({ data }) => {
+            console.log(data);
+          });
+        } else {
+        }
+      } else {
+      }
     },
     updateAvatar: function (e) {
       const file = e.target.files[0];
@@ -517,20 +419,15 @@ export default {
       console.log(config);
       const data = new FormData();
       data.append("logo", this.pic);
-      data.append("name", this.$page.user.name);
-      data.append("email", this.$page.user.email);
-      data.append("address", this.$page.user.address);
-      data.append("state", this.$page.user.state);
-      data.append("country", this.$page.user.country);
-      data.append("phone", this.$page.user.phone);
+      data.append("name", this.invoiceForm.user.name);
+      data.append("email", this.invoiceForm.user.email);
+      data.append("address", this.invoiceForm.user.address);
+      data.append("state", this.invoiceForm.user.state);
+      data.append("country", this.invoiceForm.user.country);
+      data.append("phone", this.invoiceForm.user.phone);
       const t = this;
       axios.post("/update-user", data, config).then(function (response) {
-        t.$page.user = response.data;
-      });
-    },
-    editUser: function () {
-      this.editUserForm.post("/update-user").then(({ data }) => {
-        console.log(data), (this.$page.user = data);
+        t.invoiceForm.user = response.data;
       });
     },
   },
@@ -547,7 +444,9 @@ export default {
   text-align: right;
   color: #3c445f;
 }
-
+.form-control-sm {
+  border-style: dashed !important;
+}
 .clickable {
   background: #ffffff;
   border: 1px dashed #a4a8b7;
@@ -561,8 +460,6 @@ export default {
 }
 
 .tablehead {
-  /* Rectangle 7 */
-
   background: #f4f4f4;
 }
 
@@ -581,6 +478,9 @@ export default {
   width: 39px;
   height: 39px;
   border: 1px;
+}
+input {
+  width: max-content;
 }
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -614,31 +514,6 @@ input[type="number"] {
 
 .edit a {
   color: #000;
-}
-.pencil {
-  width: 10px;
-  height: 50px;
-  background: dimgray;
-  position: relative;
-  transform: rotate(30deg);
-}
-.pencil::before {
-  content: "";
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  background: dimgray;
-  top: -13px;
-}
-.pencil::after {
-  content: "";
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: dimgray;
-  left: 1px;
-  bottom: -4px;
-  transform: rotate(45deg);
 }
 .select-client {
   cursor: pointer;

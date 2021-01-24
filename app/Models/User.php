@@ -33,20 +33,21 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        "username",
-        "phone_number",
-        "country_code",
-        "country_code_text",
-        "location",
-        "role",
-        "profile_publicly_visible",
-        "is_active",
-        "extra_attributes"
-    ];
+    // protected $fillable = [
+    //     'name',
+    //     'email',
+    //     'password',
+    //     "username",
+    //     "phone_number",
+    //     "country_code",
+    //     "country_code_text",
+    //     "location",
+    //     "role",
+    //     "profile_publicly_visible",
+    //     "is_active",
+    //     "extra_attributes"
+    // ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -87,5 +88,10 @@ class User extends Authenticatable
     public function clients()
     {
         return $this->hasMany(Client::class);
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
     }
 }

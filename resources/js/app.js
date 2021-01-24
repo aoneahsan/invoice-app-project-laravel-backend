@@ -23,7 +23,9 @@ import SvgTransition from "vue-svg-transition"; //https://github.com/kai-oswald/
 // import { AgGridVue } from "ag-grid-vue"; //https://www.ag-grid.com/documentation/vue/getting-started/
 // import Vuesax from "vuesax"; // https://github.com/lusaxweb/vuesax
 // import vSelect from "vue-select"; //https://vue-select.org/guide/install.html#yarn-npm
-import DataTable from 'laravel-vue-datatable';
+import DataTable from "laravel-vue-datatable"; //https://jamesdordoy.github.io/laravel-vue-datatable/
+import VueHtml2pdf from "vue-html2pdf"; //https://www.npmjs.com/package/vue-html2pdf
+import vueCountryRegionSelect from "vue-country-region-select"; //https://www.npmjs.com/package/vue-country-region-select
 
 // CSS / STYLES IMPORTS
 import "vue-awesome/icons"; // https://github.com/Justineo/vue-awesome
@@ -52,12 +54,14 @@ Vue.use(Clipboard);
 Vue.use(Notifications);
 Vue.use(VModal);
 Vue.use(ToggleButton);
-Vue.component("v-icon", Icon);
-Vue.use(SvgTransition);
+Vue.component("v-icon", Icon); //https://github.com/Justineo/vue-awesome
+Vue.use(SvgTransition); //https://github.com/kai-oswald/vue-svg-transition
 // Vue.component("AgGridVue", AgGridVue);
 // Vue.use(Vuesax);
 // Vue.component("v-select", vSelect); //https://vue-select.org/guide/install.html#yarn-npm
-Vue.use(DataTable);
+Vue.use(DataTable); //https://jamesdordoy.github.io/laravel-vue-datatable/
+Vue.use(VueHtml2pdf); //https://www.npmjs.com/package/vue-html2pdf
+Vue.use(vueCountryRegionSelect); //https://www.npmjs.com/package/vue-country-region-select
 
 // Custom Defined Components
 Vue.component("FrontendMain", FrontendMain);

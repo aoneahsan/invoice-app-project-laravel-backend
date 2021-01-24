@@ -72,13 +72,24 @@ Route::group([
         // "middleware" => ['auth', "verified"]
         "middleware" => ['auth']
     ], function () {
+        // Dashboard route
         Route::get('/dashboard')->uses("PagesController@Dashboard")->name('dashboard');
-        Route::get('/user/profile')->uses("PagesController@UserProfile")->name('user.profile');
 
-        Route::get("/clients")->uses("PagesController@Clients")->name("clients");
+        // User profile routes
+        Route::get('/user/profile')->uses("User\UserController@show")->name('user.profile');
+        Route::put('/user')->uses("User\UserController@update")->name('user.profile.put');
+
+        // clients routes
+        Route::get("/clients")->uses("PagesController@Clients")->name("clients.view");
         Route::get("/user/clients")->uses("User\UserClientController@getClients")->name("user.clients.get");
         Route::post("/user/clients")->uses("User\UserClientController@store")->name("user.clients.post");
         Route::delete("/user/clients/{id}")->uses("User\UserClientController@destroy")->name("user.clients.delete");
+
+        // user invoice routes
+        Route::get("/invoices")->uses("PagesController@invoices")->name("invoices.view");
+        Route::get("/user/invoices")->uses("User\UserClientController@getinvoices")->name("user.invoices.get");
+        Route::post("/user/invoices")->uses("User\UserClientController@store")->name("user.invoices.post");
+        Route::delete("/user/invoices/{id}")->uses("User\UserClientController@destroy")->name("user.invoices.delete");
     });
 
     // #################################################################

@@ -29,6 +29,14 @@ class CreateUsersTable extends Migration
             $table->string('profile_publicly_visible')->default('visible')->nullable();
             $table->boolean('is_active')->default(true)->nullable();
             $table->text('profile_photo_path')->nullable();
+
+            $table->string('address')->nullable();
+            $table->longText('country')->nullable();
+            $table->string('state')->nullable();
+            $table->string('company')->nullable();
+            $table->string('logo')->nullable();
+            $table->longText('notes')->nullable();
+
             $table->longText('extra_attributes')->nullable();
 
             $table->foreignId('current_team_id')->nullable();

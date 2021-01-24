@@ -33,6 +33,7 @@
         "vform": "^1.0.1",
         "vue-awesome": "^4.1.0",
         "vue-country-code": "^1.1.1",
+        "vue-country-region-select": "^2.0.14",
         "vue-element-loading": "^1.1.6",
         "vue-html2pdf": "^1.8.0",
         "vue-js-modal": "^2.0.0-rc.6",
@@ -42,6 +43,7 @@
         "vue-property-decorator": "^8.5.1",
         "vue-sticky-directive": "0.0.10",
         "vue-svg-transition": "^0.2.1",
+        "vue-upload-component": "^2.8.22",
         "vue-youtube": "^1.4.0",
         "vue2-editor": "^2.10.2"
     }

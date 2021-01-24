@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import Axios from "axios";
 import cellDeleteClient from "./cellDeleteClient";
 export default {
   data() {

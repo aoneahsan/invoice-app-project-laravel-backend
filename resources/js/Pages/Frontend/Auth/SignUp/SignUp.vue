@@ -20,7 +20,7 @@
                       <label
                         for="name"
                         class="col-md-4 col-form-label text-md-right"
-                        >Name</label
+                        >Name*</label
                       >
 
                       <div class="col-md-6">
@@ -44,7 +44,7 @@
                       <label
                         for="email"
                         class="col-md-4 col-form-label text-md-right"
-                        >E-Mail Address</label
+                        >E-Mail Address*</label
                       >
 
                       <div class="col-md-6">
@@ -67,7 +67,7 @@
                       <label
                         for="address"
                         class="col-md-4 col-form-label text-md-right"
-                        >Address</label
+                        >Address*</label
                       >
 
                       <div class="col-md-6">
@@ -101,7 +101,6 @@
                           :class="{ 'is-invalid': form.errors.has('state') }"
                           name="state"
                           v-model="form.state"
-                          required
                           autocomplete="state"
                         />
 
@@ -113,11 +112,11 @@
                       <label
                         for="country"
                         class="col-md-4 col-form-label text-md-right"
-                        >Country</label
+                        >Country*</label
                       >
 
                       <div class="col-md-6">
-                        <input
+                        <!-- <input
                           id="country"
                           type="text"
                           class="form-control"
@@ -126,6 +125,19 @@
                           v-model="form.country"
                           required
                           autocomplete="country"
+                        /> -->
+                        <country-select
+                          class="form-control"
+                          :class="{
+                            'is-invalid': updateUserform.errors.has('country'),
+                          }"
+                          id="country"
+                          name="country"
+                          required
+                          v-model="updateUserform.country"
+                          :country="updateUserform.country"
+                          :countryName="true"
+                          topCountry="Pakistan"
                         />
 
                         <has-error :form="form" field="country"></has-error>
@@ -134,24 +146,28 @@
 
                     <div class="form-group row">
                       <label
-                        for="phone"
+                        for="phone_number"
                         class="col-md-4 col-form-label text-md-right"
                         >Phone</label
                       >
 
                       <div class="col-md-6">
                         <input
-                          id="phone"
+                          id="phone_number"
                           type="text"
                           class="form-control"
-                          :class="{ 'is-invalid': form.errors.has('phone') }"
-                          name="phone"
-                          v-model="form.phone"
-                          required
-                          autocomplete="phone"
+                          :class="{
+                            'is-invalid': form.errors.has('phone_number'),
+                          }"
+                          name="phone_number"
+                          v-model="form.phone_number"
+                          autocomplete="phone_number"
                         />
 
-                        <has-error :form="form" field="phone"></has-error>
+                        <has-error
+                          :form="form"
+                          field="phone_number"
+                        ></has-error>
                       </div>
                     </div>
 
@@ -180,7 +196,7 @@
                       <label
                         for="password"
                         class="col-md-4 col-form-label text-md-right"
-                        >Password</label
+                        >Password*</label
                       >
 
                       <div class="col-md-6">
@@ -203,7 +219,7 @@
                       <label
                         for="password-confirm"
                         class="col-md-4 col-form-label text-md-right"
-                        >Confirm Password</label
+                        >Confirm Password*</label
                       >
 
                       <div class="col-md-6">
@@ -272,7 +288,7 @@ export default {
         address: "",
         state: "",
         country: "",
-        phone: "",
+        phone_number: "",
         logo: "",
         password: "",
         password_confirmation: "",

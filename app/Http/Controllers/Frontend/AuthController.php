@@ -71,13 +71,28 @@ class AuthController extends AuthenticatedSessionController
         $request->validate([
             // 'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ["required", "string", "min:6"]
+            'password' => ["required", "string", "min:6"],
+            // "phone_number" => ["string"],
+            "address" => ["required", "string"],
+            // "state" => ["string"],
+            "country" => ["required", "string"],
+            // "logo" => ["file"]
         ]);
+
+        $filePath = null;
+        if ($request->hasFile("logo")) {
+            $filePath = $request->file("logo")->store("userdata");
+        }
 
         $user = User::create([
             'name' => $request->has('name') ? $request->name : null,
             'email' => $request->email,
             'password' => Hash::make($request['password']),
+            "phone_number" => $request->phone_number,
+            "address" => $request->address,
+            "state" => $request->state,
+            "country" => $request->country,
+            "logo" => $filePath
         ]);
 
         event(new Registered($user));
@@ -96,24 +111,28 @@ class AuthController extends AuthenticatedSessionController
         return Inertia::render("Frontend/Auth/CompleteSignUp/CompleteSignUp");
     }
 
-    public function updateUserDetails(Request $request)
+    public function updateUserDetails(Request $request, $id)
     {
         $request->validate([
             "email" => ["required", "max:255", "email", "string"]
         ]);
 
-        $user = User::where("email", $request->email)->first();
-        $result = User::where("email", $request->email)->update([
-            "phone_number" => $request->phone_number,
-            "mobile_number" => $request->mobile_number,
-            "phone_number_alert" => $request->has('phone_number') && $request->phone_number_alert,
-            "mobile_number_alert" => $request->has('mobile_number') && $request->mobile_number_alert,
-            "address" => $request->address,
-            "dvc_policy_accepted" => $request->has('dvc_policy_accepted') ? $request->dvc_policy_accepted : $user->dvc_policy_accepted,
-            "role" => $request->has('role') ? $request->role : $user->role
+        $filePath = null;
+        if ($request->hasFile("logo")) {
+            $filePath = $request->file("logo")->store("userdata");
+        }
+
+        $user = User::where("id", $id)->first();
+        $result = User::where("id", $id)->update([
+            'name' => $request->has('name') ? $request->name : $user->name,
+            "phone_number" => $request->has("phone_number") ? $request->phone_number : $user->phone_number,
+            "address" => $request->has("address") ? $request->address : $user->address,
+            "state" => $request->has("state") ? $request->state : $user->state,
+            "country" => $request->has("country") ? $request->country : $user->country,
+            "logo" => $filePath ? $filePath : $user->logo
         ]);
 
-        $updatedUser = User::where("email", $request->email)->with('user_details')->first();
+        $updatedUser = User::where("email", $id)->first();
 
         return response()->json(['data' => new UserProfileResource($updatedUser)], 200);
     }
