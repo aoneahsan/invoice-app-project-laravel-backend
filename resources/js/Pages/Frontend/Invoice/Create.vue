@@ -21,7 +21,7 @@
       <div class="container">
         <div class="row">
           <div class="col-12" v-if="!$page.user">
-            <div class="alert alert-primary" role="alert">
+            <div class="alert alert-primary text-center" role="alert">
               <strong>Kindly Login first before continue.</strong>
             </div>
           </div>
@@ -79,12 +79,17 @@
                       data-toggle="modal"
                       data-target="#exampleModal"
                     >
-                      <a v-if="invoiceForm.client.id" class="nav-link active">
-                        {{ invoiceForm.client.id.name }}
+                      <a
+                        v-if="invoiceForm.client.id"
+                        @click="openClientListModal"
+                        class="nav-link active"
+                      >
+                        {{ invoiceForm.client.name }}
                         <br />
-                        {{ invoiceForm.client.id.email }} <br />
-                        {{ invoiceForm.client.id.address }} <br />
-                        {{ invoiceForm.client.id.country }}
+                        {{ invoiceForm.client.email }} <br />
+                        {{ invoiceForm.client.address }} <br />
+                        {{ invoiceForm.client.country }} <br />
+                        {{ invoiceForm.client.phone_number }}
                       </a>
 
                       <a
@@ -102,21 +107,28 @@
                 <div class="col-12 col-md-6 text-md-right">
                   <div>
                     <label for="upload-photo">
-                      <img
-                        class="image rounded-circle ml-8"
-                        v-bind:src="invoiceForm.user.logo"
-                        alt=""
-                        width="200px"
-                      />
-                      <form enctype="multipart/form-data">
-                        <input
-                          type="file"
-                          id="upload-photo"
-                          name="pic"
-                          class="hidden"
-                          @change="updateAvatar"
+                      <file-upload
+                        input-id="invoiceUserLogo"
+                        input-name="invoiceUserLogo"
+                        ref="upload"
+                        accept="image/*"
+                        extensions="jpg,gif,png,webp"
+                        :value="invoiceLogo"
+                        @input="updatetInvoiceLogo"
+                        :size="1024 * 1024"
+                        :drop="true"
+                        :multiple="false"
+                        :directory="false"
+                        :drop-directory="false"
+                        v-show="true"
+                        @input-filter="invoiceLogoFilter"
+                      >
+                        <img
+                          class="image rounded-circle ml-8"
+                          v-bind:src="invoiceForm.user.logo"
+                          style="object-fit: cover; width: 200px; height: 200px"
                         />
-                      </form>
+                      </file-upload>
                     </label>
                   </div>
 
@@ -338,8 +350,13 @@ export default {
         sub_total: "",
         total: "",
       }),
+      invoiceLogo: [],
       currency: [{ name: "USD" }, { name: "EUR" }, { name: "ALL" }],
     };
+  },
+  mounted() {
+    EventBus.$on("event_clientAdded", this.onClientAdded);
+    EventBus.$on("event_clientSelected", this.onClientSelected);
   },
   beforeMount() {
     if (this.$page.user) {
@@ -356,11 +373,69 @@ export default {
   methods: {
     openClientListModal() {
       if (this.$page.user) {
+        this.$inertia.reload({ only: ["clients"] });
         this.$modal.show("ClientsListModal");
       } else {
         this.$inertia.visit("/sign-in");
       }
     },
+    updatetInvoiceLogo(value) {
+      this.invoiceLogo = value;
+      if (this.invoiceLogo[0]) {
+        this.invoiceForm.user.logo = this.invoiceLogo[0].blob;
+      }
+    },
+    invoiceLogoFilter(newFile, oldFile, prevent) {
+      if (newFile && !oldFile) {
+        // Add file
+
+        // Filter non-image file
+        // Will not be added to files
+        if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newFile.name)) {
+          return prevent();
+        }
+
+        // Create the 'blob' field for thumbnail preview
+        newFile.blob = "";
+        let URL = window.URL || window.webkitURL;
+        if (URL && URL.createObjectURL) {
+          newFile.blob = URL.createObjectURL(newFile.file);
+        }
+      }
+
+      if (newFile && oldFile) {
+        // Update file
+
+        // Increase the version number
+        if (!newFile.version) {
+          newFile.version = 0;
+        }
+        newFile.version++;
+      }
+
+      if (!newFile && oldFile) {
+        // Remove file
+        // Refused to remove the file
+        // return prevent()
+      }
+    },
+    onClientAdded(data) {
+      this.invoiceForm.client.id = data.id;
+      this.invoiceForm.client.name = data.name;
+      this.invoiceForm.client.email = data.email;
+      this.invoiceForm.client.phone_number = data.phone_number;
+      this.invoiceForm.client.address = data.address;
+      this.invoiceForm.client.country = data.country;
+    },
+    onClientSelected(client) {
+      this.invoiceForm.client.id = client.id;
+      this.invoiceForm.client.name = client.name;
+      this.invoiceForm.client.email = client.email;
+      this.invoiceForm.client.phone_number = client.phone_number;
+      this.invoiceForm.client.address = client.address;
+      this.invoiceForm.client.country = client.country;
+    },
+    // below amir functions but can be reuse (read and verify)
     addRow: function () {
       this.invoiceForm.items.push({
         item_detail: "",

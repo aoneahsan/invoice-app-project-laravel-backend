@@ -129,13 +129,13 @@
                         <country-select
                           class="form-control"
                           :class="{
-                            'is-invalid': updateUserform.errors.has('country'),
+                            'is-invalid': form.errors.has('country'),
                           }"
                           id="country"
                           name="country"
                           required
-                          v-model="updateUserform.country"
-                          :country="updateUserform.country"
+                          v-model="form.country"
+                          :country="form.country"
                           :countryName="true"
                           topCountry="Pakistan"
                         />
@@ -304,15 +304,16 @@ export default {
           this.$inertia.visit("/createinvoice");
         })
         .catch((err) => {
+          console.log("err = ", err);
           if (err) {
-            this.$notify({
-              group: "app",
-              type: "error",
-              title: "Request Faild",
-              text: err.message,
-              duration: 10000,
-              speed: 1000,
-            });
+            // this.$notify({
+            //   group: "app",
+            //   type: "error",
+            //   title: "Request Faild",
+            //   text: err.message,
+            //   duration: 10000,
+            //   speed: 1000,
+            // });
           }
         });
     },

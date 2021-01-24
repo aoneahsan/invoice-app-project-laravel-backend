@@ -86,10 +86,10 @@ Route::group([
         Route::delete("/user/clients/{id}")->uses("User\UserClientController@destroy")->name("user.clients.delete");
 
         // user invoice routes
-        Route::get("/invoices")->uses("PagesController@invoices")->name("invoices.view");
-        Route::get("/user/invoices")->uses("User\UserClientController@getinvoices")->name("user.invoices.get");
-        Route::post("/user/invoices")->uses("User\UserClientController@store")->name("user.invoices.post");
-        Route::delete("/user/invoices/{id}")->uses("User\UserClientController@destroy")->name("user.invoices.delete");
+        Route::get("/invoices")->uses("PagesController@Invoices")->name("invoices.view");
+        Route::get("/user/invoices")->uses("InvoiceController@getinvoices")->name("user.invoices.get");
+        Route::post("/user/invoices")->uses("InvoiceController@store")->name("user.invoices.post");
+        Route::delete("/user/invoices/{id}")->uses("InvoiceController@destroy")->name("user.invoices.delete");
     });
 
     // #################################################################

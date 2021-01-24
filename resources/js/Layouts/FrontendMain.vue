@@ -79,7 +79,9 @@
                       Manage Account
                     </div>
 
-                    <jet-dropdown-link :href="route('user.profile')"> Profile </jet-dropdown-link>
+                    <jet-dropdown-link :href="route('user.profile')">
+                      Profile
+                    </jet-dropdown-link>
 
                     <div class="border-t border-gray-100"></div>
 
@@ -235,7 +237,7 @@
           <div
             class="font-weight-bold ml-4 select-client"
             data-dismiss="modal"
-            @click="addClient(index)"
+            @click="selectClient(index)"
           >
             {{ client.name }}
             <div>
@@ -526,6 +528,15 @@ export default {
     },
 
     // Modals Methods
+    selectClient(index) {
+      if (this.$page.clients[index]) {
+        EventBus.$emit("event_clientSelected", this.$page.clients[index]);
+        this.$modal.hide("ClientsListModal");
+      }
+      else {
+        alert("Invalid Client Selected.");
+      }
+    },
     addClient() {
       this.addClientform
         .post("/user/clients")
@@ -540,7 +551,7 @@ export default {
             //   speed: 1000,
             // });
             this.$modal.hide("addClientModal");
-            EventBus.$emit("event_clientAdded");
+            EventBus.$emit("event_clientAdded", res.data.data);
           }
         })
         .catch((err) => {
@@ -557,6 +568,7 @@ export default {
         });
     },
     openAddClientModal() {
+      this.$modal.hide("ClientsListModal");
       this.$modal.show("addClientModal");
     },
     updateUserInfo() {

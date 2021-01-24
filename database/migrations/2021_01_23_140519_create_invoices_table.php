@@ -27,6 +27,8 @@ class CreateInvoicesTable extends Migration
             $table->longText('invoice_items')->nullable();
             $table->longText('invoice_notes')->nullable();
             $table->longText('invoice_terms')->nullable();
+            $table->bigInteger('subtotal')->nullable();
+            $table->bigInteger('total')->nullable();
 
             $table->softDeletes();
             $table->timestamps();

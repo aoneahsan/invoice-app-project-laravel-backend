@@ -45,7 +45,7 @@ class UserClientController extends Controller
             'country' => $request->country
         ]);
         if ($item) {
-            return response()->json(['data' => "Client Added"], 200);
+            return response()->json(['data' => $item], 200);
         } else {
             return response()->json(['message' => "Error occured while adding client."], 500);
         }

@@ -18,19 +18,19 @@ class Invoice extends Model
         'invoice_no' => [
             'searchable' => true,
         ],
-        'user' => [
+        'invoice_user' => [
             'searchable' => false,
         ],
-        'client' => [
+        'invoice_client' => [
             'searchable' => false,
         ],
         'invoice_date' => [
             'searchable' => true,
         ],
-        'due_date' => [
+        'invoice_due_date' => [
             'searchable' => true,
         ],
-        'notes' => [
+        'invoice_notes' => [
             'searchable' => true,
         ],
         'subtotal' => [

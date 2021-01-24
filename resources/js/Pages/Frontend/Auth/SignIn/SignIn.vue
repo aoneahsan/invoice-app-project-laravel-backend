@@ -108,14 +108,14 @@ export default {
         })
         .catch((err) => {
           if (err) {
-            this.$notify({
-              group: "app",
-              type: "error",
-              title: "Request Faild",
-              text: err.message,
-              duration: 10000,
-              speed: 1000,
-            });
+            // this.$notify({
+            //   group: "app",
+            //   type: "error",
+            //   title: "Request Faild",
+            //   text: err.message,
+            //   duration: 10000,
+            //   speed: 1000,
+            // });
           }
         });
     },

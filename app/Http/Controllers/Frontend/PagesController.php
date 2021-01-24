@@ -24,4 +24,10 @@ class PagesController extends Controller
         Inertia::setRootView("layouts.frontend.index");
         return Inertia::render("Frontend/Clients/Index");
     }
+
+    public function Invoices(Request $request)
+    {
+        Inertia::setRootView("layouts.frontend.index");
+        return Inertia::render("Frontend/Invoice/List");
+    }
 }
