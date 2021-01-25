@@ -8,12 +8,14 @@
             Payments
           </h2>
           <!-- Title -->
-          <h1 class="header-title">Invoice #SDF9823KD</h1>
+          <h1 class="header-title">Invoice ############</h1>
         </div>
         <div class="col-auto">
           <!-- Buttons -->
-          <a href="#!" class="btn btn-white lift"> Download </a>
-          <a href="#!" class="btn btn-primary ml-2 lift"> Save </a>
+          <a @click="generateReport()" class="btn btn-white lift"> Download </a>
+          <a @click="generateReport()" class="btn btn-primary ml-2 lift">
+            Save
+          </a>
         </div>
       </div>
     </template>
@@ -294,10 +296,7 @@
 
                   <!-- Text -->
                   <p class="text-muted mb-0">
-                    We really appreciate your business and if there’s anything
-                    else we can do, please let us know! Also, should you need us
-                    to add VAT or anything else to this order, it’s super easy
-                    since this is a template, so just ask!
+                    <textarea v-model="invoiceForm.invoice_notes" style="width:100%; height: auto;" />
                   </p>
                 </div>
               </div>
@@ -346,6 +345,7 @@ export default {
         due_date: new Date(),
         invoice_no: "############",
         selected_currency: "USD",
+        invoice_notes: `We really appreciate your business and if there’s anything else we can do, please let us know! Also, should you need us to add VAT or anything else to this order, it’s super easy since this is a template, so just ask!`,
         discount: 0,
         sub_total: "",
         total: "",
@@ -371,6 +371,41 @@ export default {
     }
   },
   methods: {
+    // methods for pdf plugin
+    onProgress(event) {
+      console.log("onProgress === event = ", event);
+    },
+    hasStartedGeneration() {
+      console.log("hasStartedGeneration");
+    },
+    hasGenerated(event) {
+      console.log("hasGenerated === event = ", event);
+    },
+    generateReport() {
+      this.$refs.html2Pdf.generatePdf();
+    },
+    async beforeDownload({ html2pdf, options, pdfContent }) {
+      await html2pdf()
+        .set(options)
+        .from(pdfContent)
+        .toPdf()
+        .get("pdf")
+        .then((pdf) => {
+          const totalPages = pdf.internal.getNumberOfPages();
+          for (let i = 1; i <= totalPages; i++) {
+            pdf.setPage(i);
+            pdf.setFontSize(10);
+            pdf.setTextColor(150);
+            pdf.text(
+              "Page " + i + " of " + totalPages,
+              pdf.internal.pageSize.getWidth() * 1,
+              pdf.internal.pageSize.getHeight() - 0
+            );
+          }
+        })
+        .save();
+    },
+    // custom methods
     openClientListModal() {
       if (this.$page.user) {
         this.$inertia.reload({ only: ["clients"] });

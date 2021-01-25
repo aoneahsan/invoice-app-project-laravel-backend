@@ -7,7 +7,7 @@
           <div class="flex">
             <!-- Logo -->
             <div class="flex-shrink-0 flex items-center">
-              <inertia-link href="route('createinvoice')">
+              <inertia-link :href="route('createinvoice')">
                 <jet-application-mark class="block h-9 w-auto" />
               </inertia-link>
             </div>
@@ -145,7 +145,7 @@
       >
         <div class="pt-2 pb-3 space-y-1">
           <jet-responsive-nav-link
-            href="route('createinvoice')"
+            :href="route('createinvoice')"
             active="route().current('createinvoice')"
           >
             createinvoice
@@ -164,8 +164,8 @@
 
           <div class="mt-3 space-y-1">
             <jet-responsive-nav-link
-              href="route('profile')"
-              active="route().current('profile')"
+              :href="route('user.profile')"
+              :active="route().current('user.profile')"
             >
               Profile
             </jet-responsive-nav-link>

@@ -304,6 +304,7 @@ export default {
           this.$inertia.visit("/createinvoice");
         })
         .catch((err) => {
+          window.scrollTo(0,0);
           console.log("err = ", err);
           if (err) {
             // this.$notify({
