@@ -15,7 +15,9 @@
                   <form
                     @submit.prevent="register"
                     @keydown="form.onKeydown($event)"
+                    enctype="multipart/form-data"
                   >
+                    <!-- name -->
                     <div class="form-group row">
                       <label
                         for="name"
@@ -39,7 +41,7 @@
                         <has-error :form="form" field="name"></has-error>
                       </div>
                     </div>
-
+                    <!-- email -->
                     <div class="form-group row">
                       <label
                         for="email"
@@ -62,7 +64,7 @@
                         <has-error :form="form" field="email"></has-error>
                       </div>
                     </div>
-
+                    <!-- address -->
                     <div class="form-group row">
                       <label
                         for="address"
@@ -85,7 +87,7 @@
                         <has-error :form="form" field="address"></has-error>
                       </div>
                     </div>
-
+                    <!-- state -->
                     <div class="form-group row">
                       <label
                         for="state"
@@ -107,7 +109,7 @@
                         <has-error :form="form" field="state"></has-error>
                       </div>
                     </div>
-
+                    <!-- country -->
                     <div class="form-group row">
                       <label
                         for="country"
@@ -143,7 +145,7 @@
                         <has-error :form="form" field="country"></has-error>
                       </div>
                     </div>
-
+                    <!-- phone -->
                     <div class="form-group row">
                       <label
                         for="phone_number"
@@ -170,7 +172,7 @@
                         ></has-error>
                       </div>
                     </div>
-
+                    <!-- logo -->
                     <div class="form-group row">
                       <label
                         for="logo"
@@ -179,19 +181,24 @@
                       >
 
                       <div class="col-md-6">
-                        <input
-                          id="logo"
-                          type="file"
-                          class="form-control"
-                          :class="{ 'is-invalid': form.errors.has('logo') }"
-                          name="logo"
-                          autocomplete="logo"
-                        />
-
-                        <has-error :form="form" field="logo"></has-error>
+                        <file-upload
+                          input-id="invoiceUserLogo"
+                          input-name="invoiceUserLogo"
+                          ref="upload"
+                          post-action="/upload-files"
+                          accept="image/*"
+                          extensions="jpg,gif,png,webp"
+                          @input-file="inputFile"
+                          :drop="true"
+                          v-model="logoImage"
+                          :multiple="false"
+                          ><button type="button" class="btn btn-primary lift">
+                            Upload Company Logo
+                          </button>
+                        </file-upload>
                       </div>
                     </div>
-
+                    <!-- password -->
                     <div class="form-group row">
                       <label
                         for="password"
@@ -214,7 +221,7 @@
                         <has-error :form="form" field="password"></has-error>
                       </div>
                     </div>
-
+                    <!-- confirm password -->
                     <div class="form-group row">
                       <label
                         for="password-confirm"
@@ -243,7 +250,7 @@
                         ></has-error>
                       </div>
                     </div>
-
+                    <!-- submit button -->
                     <div class="form-group row mb-0">
                       <div class="col-md-6 offset-md-4">
                         <button
@@ -293,18 +300,51 @@ export default {
         password: "",
         password_confirmation: "",
       }),
+      logoImage: [],
     };
   },
   methods: {
+    // upload file
+    inputFile: function (newFile, oldFile) {
+      if (newFile && oldFile && !newFile.active && oldFile.active) {
+        // Get response data
+        console.log("response = ", newFile.response);
+        if (newFile.xhr) {
+          console.log("newFile.xhr.status = ", newFile.xhr.status);
+          //  Get the response status code
+          if (newFile.xhr.status == 200) {
+            if (newFile.response.data) {
+              this.form.logo = newFile.response.data;
+              this.completeRegistration(); // here this will continue after file upload
+            }
+          }
+        }
+      }
+    },
+    uploadLogo(data) {
+      console.log("data = ", data);
+      console.log("this.logoImage = ", this.logoImage);
+      console.log("this.$refs.upload = ", this.$refs.upload);
+      this.$refs.upload.upload();
+    },
+    // register user
     register() {
       // Submit the form via a POST request
+      // this.completeRegistration();
+      if (this.logoImage.length > 0) {
+        this.$refs.upload.active = true; // this will trigger file upload and then will continue registration process
+      } else {
+        this.completeRegistration();
+      }
+    },
+    completeRegistration() {
       this.form
         .post("/sign-up")
         .then(({ data }) => {
           this.$inertia.visit("/createinvoice");
         })
         .catch((err) => {
-          window.scrollTo(0,0);
+          window.scrollTo(0, 0);
           console.log("err = ", err);
           if (err) {
             // this.$notify({

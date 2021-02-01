@@ -70,7 +70,6 @@ Vue.use(DataTable); //https://jamesdordoy.github.io/laravel-vue-datatable/
 Vue.use(VueHtml2pdf); //https://www.npmjs.com/package/vue-html2pdf
 Vue.use(vueCountryRegionSelect); //https://www.npmjs.com/package/vue-country-region-select
 Vue.component("file-upload", VueUploadComponent); //https://lian-yue.github.io/vue-upload-component/#/en/documents
-Vue.use(Vuex); //https://vuex.vuejs.org/installation.html#yarn
 
 // Custom Defined Components
 Vue.component("FrontendMain", FrontendMain);

@@ -36,8 +36,15 @@ Route::group([
     // #################################################################
     // ####################      GENERIC ROUTES      ###################
     // #################################################################
+    // invoice related
     Route::get("/createinvoice")->uses("PagesController@CreateInvoice")->name("createinvoice");
+
+    // check if email is not used yet
     Route::post("/check-email-exists")->uses("AuthController@checkEmailExists")->name("check-email-exists");
+
+    // upload files
+    Route::post("/upload-files", "FrontendController@uploadFile")->name("upload-files");
+
     // #################################################################
     // ####################      GUEST ROUTES      #####################
     // #################################################################

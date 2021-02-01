@@ -16,19 +16,21 @@ class CreateInvoicesTable extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->string('invoice_no');
-            $table->longText('invoice_user')->nullable();
-            $table->longText('invoice_client')->nullable();
+            $table->unsignedBigInteger('client_id')->nullable();
+            $table->string('invoice_no')->nullable();
+            $table->longText('user')->nullable();
+            $table->longText('client')->nullable();
             $table->string('invoice_logo')->nullable();
-            $table->string('invoice_date')->nullable();
-            $table->string('invoice_due_date')->nullable();
-            $table->string('invoice_vat_value')->nullable();
+            $table->string('date')->nullable();
+            $table->string('due_date')->nullable();
+            $table->string('vat_value')->nullable();
             $table->boolean('is_invoice_vat_applied')->nullable();
-            $table->longText('invoice_items')->nullable();
+            $table->longText('items')->nullable();
             $table->longText('invoice_notes')->nullable();
             $table->longText('invoice_terms')->nullable();
-            $table->bigInteger('subtotal')->nullable();
-            $table->bigInteger('total')->nullable();
+            $table->string('selected_currency')->nullable();
+            $table->string('sub_total')->nullable();
+            $table->string('total')->nullable();
 
             $table->softDeletes();
             $table->timestamps();

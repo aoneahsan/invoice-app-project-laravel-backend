@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Events\User\UserCreatedEvent;
 use App\Models\User\Client;
 use App\Models\User\UserDetails;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -77,6 +78,7 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+        'logo_url'
     ];
 
     // Relations
@@ -93,5 +95,14 @@ class User extends Authenticatable
     public function invoices()
     {
         return $this->hasMany(Invoice::class);
+    }
+
+    public function getLogoUrlAttribute()
+    {
+        if ($this->logo) {
+            return Storage::url($this->logo);
+        } else {
+            return null;
+        }
     }
 }

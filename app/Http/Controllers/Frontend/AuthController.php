@@ -79,11 +79,6 @@ class AuthController extends AuthenticatedSessionController
             // "logo" => ["file"]
         ]);
 
-        $filePath = null;
-        if ($request->hasFile("logo")) {
-            $filePath = $request->file("logo")->store("userdata");
-        }
-
         $user = User::create([
             'name' => $request->has('name') ? $request->name : null,
             'email' => $request->email,
@@ -92,7 +87,7 @@ class AuthController extends AuthenticatedSessionController
             "address" => $request->address,
             "state" => $request->state,
             "country" => $request->country,
-            "logo" => $filePath
+            "logo" => $request->logo
         ]);
 
         event(new Registered($user));

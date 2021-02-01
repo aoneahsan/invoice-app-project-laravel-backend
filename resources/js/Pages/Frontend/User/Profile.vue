@@ -150,16 +150,20 @@
             >
 
             <div class="col-md-6">
-              <input
-                id="logo"
-                type="file"
-                class="form-control"
-                :class="{ 'is-invalid': updateUserform.errors.has('logo') }"
-                name="logo"
-                autocomplete="logo"
-              />
-
-              <has-error :form="updateUserform" field="logo"></has-error>
+              <div class="w-75">
+                <input
+                  id="logo"
+                  type="file"
+                  class="form-control"
+                  :class="{ 'is-invalid': updateUserform.errors.has('logo') }"
+                  name="logo"
+                  autocomplete="logo"
+                />
+                <has-error :form="updateUserform" field="logo"></has-error>
+              </div>
+              <div class="w-25">
+                <img class="h-100" :src="updateUserform.logo" />
+              </div>
             </div>
           </div>
 
@@ -194,6 +198,7 @@ export default {
         country: "",
         phone_number: "",
         logo: "",
+        notes: "",
       }),
       country: "",
     };

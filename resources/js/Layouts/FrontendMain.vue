@@ -225,8 +225,9 @@
           <h5 class="modal-title">Set the client for this invoice</h5>
         </div>
         <div
-          class="modal-body d-flex"
+          class="modal-body d-flex user_selectable"
           v-for="(client, index) in $page.clients"
+          @click="selectClient(index)"
           :key="index"
         >
           <div class="btn-rounded-circle badge-primary">
@@ -594,3 +595,9 @@ export default {
   },
 };
 </script>
+
+<style>
+  .user_selectable {
+    cursor: pointer;
+  }
+</style>
