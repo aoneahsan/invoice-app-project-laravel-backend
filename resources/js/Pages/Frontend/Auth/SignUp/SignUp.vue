@@ -321,12 +321,6 @@ export default {
         }
       }
     },
-    uploadLogo(data) {
-      console.log("data = ", data);
-      console.log("this.logoImage = ", this.logoImage);
-      console.log("this.$refs.upload = ", this.$refs.upload);
-      this.$refs.upload.upload();
-    },
     // register user
     register() {
       // Submit the form via a POST request

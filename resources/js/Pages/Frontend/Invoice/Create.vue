@@ -170,7 +170,6 @@
                         :value="invoiceLogo"
                         @input="updatetInvoiceLogo"
                         @input-file="inputFile"
-                        :size="1024 * 1024"
                         :drop="true"
                         :multiple="false"
                         :directory="false"
@@ -436,10 +435,14 @@ export default {
       this.invoiceForm.user.state = this.$page.user.state;
       this.invoiceForm.user.country = this.$page.user.country;
       this.invoiceForm.user.company = this.$page.user.company;
+      this.invoiceForm.user.phone_number = this.$page.user.phone_number;
       this.invoiceForm.user.state = this.$page.user.state;
       if (this.$page.user.logo_url) {
         this.invoiceForm.user.logo = this.$page.user.logo_url;
         this.invoiceForm.invoice_logo = this.$page.user.logo_url;
+      }
+      if (this.$page.user.notes) {
+        this.invoiceForm.invoice_notes = this.$page.user.notes;
       }
     }
     // setting date and due date
@@ -570,40 +573,7 @@ export default {
         this.invoiceForm.client.company = event.target.innerText;
       }
     },
-    // methods for pdf plugin
-    onProgress(event) {
-      console.log("onProgress === event = ", event);
-    },
-    hasStartedGeneration() {
-      console.log("hasStartedGeneration");
-    },
-    hasGenerated(event) {
-      console.log("hasGenerated === event = ", event);
-    },
-    generateReport() {
-      this.$refs.html2Pdf.generatePdf();
-    },
-    async beforeDownload({ html2pdf, options, pdfContent }) {
-      await html2pdf()
-        .set(options)
-        .from(pdfContent)
-        .toPdf()
-        .get("pdf")
-        .then((pdf) => {
-          const totalPages = pdf.internal.getNumberOfPages();
-          for (let i = 1; i <= totalPages; i++) {
-            pdf.setPage(i);
-            pdf.setFontSize(10);
-            pdf.setTextColor(150);
-            pdf.text(
-              "Page " + i + " of " + totalPages,
-              pdf.internal.pageSize.getWidth() * 1,
-              pdf.internal.pageSize.getHeight() - 0
-            );
-          }
-        })
-        .save();
-    },
+
     // custom methods
     openClientListModal() {
       if (this.$page.user) {
@@ -616,63 +586,20 @@ export default {
     updatetInvoiceLogo(value) {
       this.invoiceLogo = value;
       if (this.invoiceLogo[0]) {
-        this.invoiceForm.user.logo = this.invoiceLogo[0].blob;
         this.invoiceForm.invoice_logo = this.invoiceLogo[0].blob;
       }
     },
-    // upload file component methods
-    inputFile: function (newFile, oldFile) {
-      if (newFile && oldFile && !newFile.active && oldFile.active) {
-        // Get response data
-        console.log("response = ", newFile.response);
-        if (newFile.xhr) {
-          console.log("newFile.xhr.status = ", newFile.xhr.status);
-          //  Get the response status code
-          if (newFile.xhr.status == 200) {
-            if (newFile.response.data) {
-              this.form.logo = newFile.response.data;
-              this.completeRegistration(); // here this will continue after file upload
-            }
-          }
-        }
-      }
+    downloadInvoice() {
+      console.log("this.invoiceLogo = ", this.invoiceLogo);
     },
-    invoiceLogoFilter(newFile, oldFile, prevent) {
-      if (newFile && !oldFile) {
-        // Add file
-
-        // Filter non-image file
-        // Will not be added to files
-        if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newFile.name)) {
-          return prevent();
-        }
-
-        // Create the 'blob' field for thumbnail preview
-        newFile.blob = "";
-        let URL = window.URL || window.webkitURL;
-        if (URL && URL.createObjectURL) {
-          newFile.blob = URL.createObjectURL(newFile.file);
-        }
-      }
-
-      if (newFile && oldFile) {
-        // Update file
-
-        // Increase the version number
-        if (!newFile.version) {
-          newFile.version = 0;
-        }
-        newFile.version++;
-      }
-
-      if (!newFile && oldFile) {
-        // Remove file
-        // Refused to remove the file
-        // return prevent()
-      }
-    },
-    downloadInvoice() {},
     saveInvoice() {
+      if (this.invoiceLogo.length > 0) {
+        this.$refs.upload.active = true;
+      } else {
+        this.finishSavingInvoice();
+      }
+    },
+    finishSavingInvoice() {
       this.invoiceForm
         .post("/user/invoices")
         .then((res) => {
@@ -750,28 +677,6 @@ export default {
       }
     },
 
-    // event handlers
-    onClientAdded(client) {
-      this.invoiceForm.client_id = client.id;
-      this.invoiceForm.client.id = client.id;
-      this.invoiceForm.client.name = client.name;
-      this.invoiceForm.client.email = client.email;
-      this.invoiceForm.client.phone_number = client.phone_number;
-      this.invoiceForm.client.address = client.address;
-      this.invoiceForm.client.country = client.country;
-      this.updateInvoiceNumber(client.id, client.name);
-    },
-    onClientSelected(client) {
-      this.invoiceForm.client_id = client.id;
-      this.invoiceForm.client.id = client.id;
-      this.invoiceForm.client.name = client.name;
-      this.invoiceForm.client.email = client.email;
-      this.invoiceForm.client.phone_number = client.phone_number;
-      this.invoiceForm.client.address = client.address;
-      this.invoiceForm.client.country = client.country;
-      this.updateInvoiceNumber(client.id, client.name);
-    },
-
     // below amir functions but can be reuse (read and verify)
     addRow: function () {
       this.invoiceForm.items.push({
@@ -795,52 +700,111 @@ export default {
     },
     calculateTotal: function () {
       let total = 0;
-      total = this.subtotal - this.subtotal * (this.invoiceForm.discount / 100);
+      if (this.invoiceForm.is_invoice_vat_applied) {
+        total =
+          this.subtotal - this.subtotal * (this.invoiceForm.vat_value / 100);
+      } else {
+        total = this.subtotal;
+      }
       this.invoiceForm.total = total;
       return total;
     },
 
-    // below methods are from amir code (rewrite or delete these methods)
-    addCurrency: function (index) {
-      console.log(index);
-      this.invoiceForm.selected_currency = this.currency[index].name;
-    },
-    addClient: function (index) {
-      console.log(index);
-      this.invoiceForm.client.id = this.clients[index];
-      console.log(this.invoiceForm.client.id);
-      this.invoiceForm.client_id = this.invoiceForm.client.id.id;
-    },
-    createInvoice() {
-      if (this.invoiceForm.items.length) {
-        if (this.invoiceForm.client_id) {
-          this.invoiceForm.post("/create-invoice").then(({ data }) => {
-            console.log(data);
-          });
-        } else {
+    // upload file component methods
+    inputFile: function (newFile, oldFile) {
+      if (newFile && oldFile && !newFile.active && oldFile.active) {
+        // Get response data
+        console.log("response = ", newFile.response);
+        if (newFile.xhr) {
+          console.log("newFile.xhr.status = ", newFile.xhr.status);
+          //  Get the response status code
+          if (newFile.xhr.status == 200) {
+            if (newFile.response.data) {
+              this.invoiceForm.invoice_logo = newFile.response.data;
+              this.finishSavingInvoice(); // here this will continue after file upload
+            }
+          }
         }
-      } else {
       }
     },
-    updateAvatar: function (e) {
-      const file = e.target.files[0];
-      this.pic = file;
-      const config = {
-        headers: { "content-type": "multipart/form-data" },
-      };
-      console.log(config);
-      const data = new FormData();
-      data.append("logo", this.pic);
-      data.append("name", this.invoiceForm.user.name);
-      data.append("email", this.invoiceForm.user.email);
-      data.append("address", this.invoiceForm.user.address);
-      data.append("state", this.invoiceForm.user.state);
-      data.append("country", this.invoiceForm.user.country);
-      data.append("phone", this.invoiceForm.user.phone);
-      const t = this;
-      axios.post("/update-user", data, config).then(function (response) {
-        t.invoiceForm.user = response.data;
-      });
+    invoiceLogoFilter(newFile, oldFile, prevent) {
+      if (newFile && !oldFile) {
+        if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newFile.name)) {
+          return prevent();
+        }
+        newFile.blob = "";
+        let URL = window.URL || window.webkitURL;
+        if (URL && URL.createObjectURL) {
+          newFile.blob = URL.createObjectURL(newFile.file);
+        }
+      }
+
+      if (newFile && oldFile) {
+        if (!newFile.version) {
+          newFile.version = 0;
+        }
+        newFile.version++;
+      }
+
+      if (!newFile && oldFile) {
+      }
+    },
+
+    // event handlers
+    onClientAdded(client) {
+      this.invoiceForm.client_id = client.id;
+      this.invoiceForm.client.id = client.id;
+      this.invoiceForm.client.name = client.name;
+      this.invoiceForm.client.email = client.email;
+      this.invoiceForm.client.phone_number = client.phone_number;
+      this.invoiceForm.client.address = client.address;
+      this.invoiceForm.client.country = client.country;
+      this.updateInvoiceNumber(client.id, client.name);
+    },
+    onClientSelected(client) {
+      this.invoiceForm.client_id = client.id;
+      this.invoiceForm.client.id = client.id;
+      this.invoiceForm.client.name = client.name;
+      this.invoiceForm.client.email = client.email;
+      this.invoiceForm.client.phone_number = client.phone_number;
+      this.invoiceForm.client.address = client.address;
+      this.invoiceForm.client.country = client.country;
+      this.updateInvoiceNumber(client.id, client.name);
+    },
+
+    // methods for pdf plugin
+    onProgress(event) {
+      console.log("onProgress === event = ", event);
+    },
+    hasStartedGeneration() {
+      console.log("hasStartedGeneration");
+    },
+    hasGenerated(event) {
+      console.log("hasGenerated === event = ", event);
+    },
+    generateReport() {
+      this.$refs.html2Pdf.generatePdf();
+    },
+    async beforeDownload({ html2pdf, options, pdfContent }) {
+      await html2pdf()
+        .set(options)
+        .from(pdfContent)
+        .toPdf()
+        .get("pdf")
+        .then((pdf) => {
+          const totalPages = pdf.internal.getNumberOfPages();
+          for (let i = 1; i <= totalPages; i++) {
+            pdf.setPage(i);
+            pdf.setFontSize(10);
+            pdf.setTextColor(150);
+            pdf.text(
+              "Page " + i + " of " + totalPages,
+              pdf.internal.pageSize.getWidth() * 1,
+              pdf.internal.pageSize.getHeight() - 0
+            );
+          }
+        })
+        .save();
     },
   },
 };

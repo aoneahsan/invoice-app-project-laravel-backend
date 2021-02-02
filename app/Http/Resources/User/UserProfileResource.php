@@ -3,6 +3,7 @@
 namespace App\Http\Resources\User;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class UserProfileResource extends JsonResource
 {
@@ -23,6 +24,9 @@ class UserProfileResource extends JsonResource
             "address" => $this->address,
             "state" => $this->state,
             "country" => $this->country,
+            "logo" => $this->logo,
+            "notes" => $this->notes,
+            "logo_url" => $this->logo ? Storage::url($this->logo) : null,
             "company" => $this->company,
             "created_at" => $this->created_at
         ];

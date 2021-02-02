@@ -22,11 +22,6 @@ class UserController extends Controller
             "email" => ["required", "max:255", "email", "string"]
         ]);
 
-        $filePath = null;
-        if ($request->hasFile("logo")) {
-            $filePath = $request->file("logo")->store("userdata");
-        }
-
         $user = User::where("id", $request->user()->id)->first();
         $result = User::where("id", $request->user()->id)->update([
             'name' => $request->has('name') ? $request->name : $user->name,
@@ -34,7 +29,8 @@ class UserController extends Controller
             "address" => $request->has("address") ? $request->address : $user->address,
             "state" => $request->has("state") ? $request->state : $user->state,
             "country" => $request->has("country") ? $request->country : $user->country,
-            "logo" => $filePath ? $filePath : $user->logo
+            "logo" => $request->has("logo") ? $request->logo : $user->logo,
+            "notes" => $request->has("notes") ? $request->notes : $user->notes
         ]);
 
         $updatedUser = User::where("id", $request->user()->id)->first();
