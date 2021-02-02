@@ -19,7 +19,7 @@
             Invoice no will generate once you select a client
           </h1>
         </div>
-        <div class="col-auto">
+        <div class="col-auto" v-if="$page.user">
           <!-- Buttons -->
           <template v-if="invoiceForm.invoice_no">
             <button
@@ -161,15 +161,16 @@
                         name="plus"
                         @click="hideInvoiceLogo = false"
                       ></v-icon>
+                      <!-- input-id="invoiceUserLogo"
+                        input-name="invoiceUserLogo" -->
                       <file-upload
-                        input-id="invoiceUserLogo"
-                        input-name="invoiceUserLogo"
                         ref="upload"
                         accept="image/*"
                         extensions="jpg,gif,png,webp"
-                        :value="invoiceLogo"
-                        @input="updatetInvoiceLogo"
+                        v-model="invoiceLogo"
+                        post-action="/upload-files"
                         @input-file="inputFile"
+                        @input="updatetInvoiceLogo"
                         :drop="true"
                         :multiple="false"
                         :directory="false"
@@ -179,7 +180,7 @@
                       >
                         <img
                           class="image rounded-circle ml-8"
-                          v-bind:src="invoiceForm.invoice_logo"
+                          v-bind:src="invoice_logo_url"
                           v-show="!hideInvoiceLogo"
                           alt="User Company Logo"
                           style="object-fit: cover; width: 200px; height: 200px"
@@ -399,7 +400,7 @@ export default {
           company: "",
           logo: "",
         },
-        invoice_logo: "/images/sitelogo.jpeg", // for now this and user.logo are same but can change
+        invoice_logo: null, // for now this and user.logo are same but can change
         date: null,
         due_date: null,
         vat_value: 0,
@@ -419,10 +420,12 @@ export default {
         sub_total: "",
         total: "",
       }),
+      invoice_logo_url: "/images/sitelogo.jpeg",
       invoiceLogo: [],
       currency: [{ name: "USD" }, { name: "EUR" }, { name: "ALL" }],
       invoice_due_date_add_days: 15,
       hideInvoiceLogo: false,
+      changes_not_saved: true,
     };
   },
   beforeMount() {
@@ -438,8 +441,9 @@ export default {
       this.invoiceForm.user.phone_number = this.$page.user.phone_number;
       this.invoiceForm.user.state = this.$page.user.state;
       if (this.$page.user.logo_url) {
+        this.invoiceForm.invoice_logo = this.$page.user.logo;
         this.invoiceForm.user.logo = this.$page.user.logo_url;
-        this.invoiceForm.invoice_logo = this.$page.user.logo_url;
+        this.invoice_logo_url = this.$page.user.logo_url;
       }
       if (this.$page.user.notes) {
         this.invoiceForm.invoice_notes = this.$page.user.notes;
@@ -529,7 +533,6 @@ export default {
       console.log(this.invoiceForm.user.name);
     },
     changeValue(event, fieldName) {
-      console.log(event.target.innerText.length);
       if (fieldName == "user_name") {
         this.invoiceForm.user.name = event.target.innerText;
       }
@@ -583,12 +586,6 @@ export default {
         this.$inertia.visit("/sign-in");
       }
     },
-    updatetInvoiceLogo(value) {
-      this.invoiceLogo = value;
-      if (this.invoiceLogo[0]) {
-        this.invoiceForm.invoice_logo = this.invoiceLogo[0].blob;
-      }
-    },
     downloadInvoice() {
       console.log("this.invoiceLogo = ", this.invoiceLogo);
     },
@@ -604,6 +601,15 @@ export default {
         .post("/user/invoices")
         .then((res) => {
           console.log("saveInvoice == res = ", res);
+          this.$notify({
+            group: "app",
+            type: "success",
+            title: "Request Successfull",
+            text: "Changes saved Successfully!",
+            duration: 5000,
+            speed: 1000,
+            closeOnClick: true,
+          });
         })
         .catch((err) => {
           this.$notify({
@@ -749,6 +755,12 @@ export default {
       if (!newFile && oldFile) {
       }
     },
+    updatetInvoiceLogo(value) {
+      this.invoiceLogo = value;
+      if (this.invoiceLogo[0]) {
+        this.invoice_logo_url = this.invoiceLogo[0].blob;
+      }
+    },
 
     // event handlers
     onClientAdded(client) {
@@ -806,6 +818,17 @@ export default {
         })
         .save();
     },
+  },
+  beforeDestroy() {
+    if (this.changes_not_saved) {
+      if (confirm("Changes Not saved, save now before leaving?")) {
+        if (this.invoiceLogo.length > 0) {
+          this.$refs.upload.active = true;
+        } else {
+          this.finishSavingInvoice();
+        }
+      }
+    }
   },
 };
 </script>
