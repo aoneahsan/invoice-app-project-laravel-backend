@@ -45,6 +45,9 @@ Route::group([
     // upload files
     Route::post("/upload-files", "FrontendController@uploadFile")->name("upload-files");
 
+    // check client invoices
+    Route::get("/check-client-invoices/{client_id}", "FrontendController@checkClientInvoices")->name("check-client-invoices");
+
     // #################################################################
     // ####################      GUEST ROUTES      #####################
     // #################################################################

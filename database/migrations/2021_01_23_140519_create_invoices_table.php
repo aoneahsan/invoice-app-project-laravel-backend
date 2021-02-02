@@ -29,6 +29,7 @@ class CreateInvoicesTable extends Migration
             $table->longText('invoice_notes')->nullable();
             $table->longText('invoice_terms')->nullable();
             $table->string('selected_currency')->nullable();
+            $table->string('invoice_type')->nullable();
             $table->string('sub_total')->nullable();
             $table->string('total')->nullable();
 

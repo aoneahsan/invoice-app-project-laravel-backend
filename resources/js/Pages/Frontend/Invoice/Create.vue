@@ -8,24 +8,54 @@
             Payments
           </h2>
           <!-- Title -->
-          <h1 class="header-title">Invoice ############</h1>
+          <h1 class="header-title" v-if="invoiceForm.invoice_no">
+            Invoice#{{ invoiceForm.invoice_no }}
+          </h1>
+          <h1
+            class="header-title"
+            style="color: #bdbdbd"
+            v-if="!invoiceForm.invoice_no"
+          >
+            Invoice no will generate once you select a client
+          </h1>
         </div>
         <div class="col-auto">
           <!-- Buttons -->
-          <button @click="textResult()" class="btn btn-white lift">test</button>
-          <button @click="generateReport()" class="btn btn-white lift">
-            Generate Report
+          <template v-if="invoiceForm.invoice_no">
+            <button
+              @click="toggleInvoiceToExpense('invoice')"
+              v-if="invoiceForm.invoice_type == 'expense'"
+              class="btn btn-success ml-2 lift"
+            >
+              Switch To Invoice
+            </button>
+            <button
+              @click="toggleInvoiceToExpense('expense')"
+              v-if="invoiceForm.invoice_type == 'invoice'"
+              class="btn btn-danger ml-2 lift"
+            >
+              Switch To Expense
+            </button>
+          </template>
+          <!-- <button @click="textResult()" class="btn btn-white ml-2 lift">
+            test
           </button>
-          <button @click="downloadInvoice()" class="btn btn-white lift">
+          <button @click="generateReport()" class="btn btn-white ml-2 lift">
+            Generate Report
+          </button> -->
+          <button @click="downloadInvoice()" class="btn btn-white ml-2 lift">
             Download
           </button>
-          <button @click="saveInvoice()" class="btn btn-primary ml-2 lift">Save</button>
+          <button @click="saveInvoice()" class="btn btn-primary ml-2 lift">
+            Save
+          </button>
         </div>
       </div>
     </template>
     <div class="col-12 pt-12">
       <div class="container">
         <div class="row">
+          <!-- Alert for Login -->
           <div class="col-12" v-if="!$page.user">
             <div class="alert alert-primary text-center" role="alert">
               <strong
@@ -34,6 +64,8 @@
               >
             </div>
           </div>
+          <!-- Invoice Setting -->
+
           <div class="col-11 col-lg-10 col-xl-10 mx-auto">
             <!-- Header -->
             <!-- Content -->
@@ -122,6 +154,7 @@
                         v-if="!hideInvoiceLogo"
                         name="trash"
                         @click="hideInvoiceLogo = true"
+                        style="position: absolute; right: 0"
                       ></v-icon>
                       <v-icon
                         v-if="hideInvoiceLogo"
@@ -136,6 +169,7 @@
                         extensions="jpg,gif,png,webp"
                         :value="invoiceLogo"
                         @input="updatetInvoiceLogo"
+                        @input-file="inputFile"
                         :size="1024 * 1024"
                         :drop="true"
                         :multiple="false"
@@ -148,6 +182,7 @@
                           class="image rounded-circle ml-8"
                           v-bind:src="invoiceForm.invoice_logo"
                           v-show="!hideInvoiceLogo"
+                          alt="User Company Logo"
                           style="object-fit: cover; width: 200px; height: 200px"
                         />
                       </file-upload>
@@ -155,15 +190,20 @@
                   </div>
 
                   <div class="mr-4">
-                    <h1 class="invoice">Invoice</h1>
-                    <div class="d-flex mb-3 justify-content-end">
+                    <h3 class="invoice mb-3">Invoice</h3>
+                    <div
+                      class="d-flex mb-3 justify-content-end"
+                      v-if="invoiceForm.invoice_no"
+                    >
                       <span class="text-muted mr-2">Invoice no:</span>
-                      <input
-                        type="text"
-                        class="form-control form-control-sm w-auto"
-                        v-model="invoiceForm.invoice_no"
-                        readonly
-                      />
+                      <span>{{ invoiceForm.invoice_no }}</span>
+                    </div>
+                    <div
+                      class="d-flex mb-3 justify-content-end"
+                      v-if="!invoiceForm.invoice_no"
+                    >
+                      <span class="text-muted mr-2">Invoice no:</span>
+                      <span>############</span>
                     </div>
                     <div class="d-flex mb-3 justify-content-end">
                       <span class="text-muted mr-2">Date:</span>
@@ -374,8 +414,9 @@ export default {
         ],
         invoice_notes: `We really appreciate your business and if there’s anything else we can do, please let us know! Also, should you need us to add VAT or anything else to this order, it’s super easy since this is a template, so just ask!`,
         invoice_terms: null,
-        invoice_no: "############",
+        invoice_no: null,
         selected_currency: "USD",
+        invoice_type: "invoice", // "invoice" | "expense"
         sub_total: "",
         total: "",
       }),
@@ -396,8 +437,10 @@ export default {
       this.invoiceForm.user.country = this.$page.user.country;
       this.invoiceForm.user.company = this.$page.user.company;
       this.invoiceForm.user.state = this.$page.user.state;
-      this.invoiceForm.user.logo = this.$page.user.logo_url;
-      this.invoiceForm.invoice_logo = this.$page.user.logo_url;
+      if (this.$page.user.logo_url) {
+        this.invoiceForm.user.logo = this.$page.user.logo_url;
+        this.invoiceForm.invoice_logo = this.$page.user.logo_url;
+      }
     }
     // setting date and due date
     const monthsObj = {
@@ -438,17 +481,21 @@ export default {
       "-" +
       currentMonth +
       "-" +
-      currentDate.toString();
-
+      currentDate.toLocaleString("en-US", {
+        minimumIntegerDigits: 2,
+        useGrouping: false,
+      });
     const estimateInvoiceDueDate = currentDate + this.invoice_due_date_add_days;
     if (estimateInvoiceDueDate < monthsDaysLimit[currentMonthNumber]) {
-      console.log(estimateInvoiceDueDate < monthsDaysLimit[currentMonthNumber]);
       this.invoiceForm.due_date =
         currentYear.toString() +
         "-" +
         currentMonth +
         "-" +
-        estimateInvoiceDueDate.toString();
+        estimateInvoiceDueDate.toLocaleString("en-US", {
+          minimumIntegerDigits: 2,
+          useGrouping: false,
+        });
     } else {
       const remainingDaysOfMonth =
         monthsDaysLimit[currentMonthNumber] - currentDate;
@@ -460,12 +507,19 @@ export default {
         "-" +
         nextMonth +
         "-" +
-        remainingDaysTemp.toString();
+        remainingDaysTemp.toLocaleString("en-US", {
+          minimumIntegerDigits: 2,
+          useGrouping: false,
+        });
     }
   },
   mounted() {
+    // listening for events
     EventBus.$on("event_clientAdded", this.onClientAdded);
     EventBus.$on("event_clientSelected", this.onClientSelected);
+
+    // setting upload component to active
+    this.$refs.upload.active = true;
   },
   methods: {
     textResult() {
@@ -566,6 +620,23 @@ export default {
         this.invoiceForm.invoice_logo = this.invoiceLogo[0].blob;
       }
     },
+    // upload file component methods
+    inputFile: function (newFile, oldFile) {
+      if (newFile && oldFile && !newFile.active && oldFile.active) {
+        // Get response data
+        console.log("response = ", newFile.response);
+        if (newFile.xhr) {
+          console.log("newFile.xhr.status = ", newFile.xhr.status);
+          //  Get the response status code
+          if (newFile.xhr.status == 200) {
+            if (newFile.response.data) {
+              this.form.logo = newFile.response.data;
+              this.completeRegistration(); // here this will continue after file upload
+            }
+          }
+        }
+      }
+    },
     invoiceLogoFilter(newFile, oldFile, prevent) {
       if (newFile && !oldFile) {
         // Add file
@@ -619,15 +690,76 @@ export default {
           });
         });
     },
+    updateInvoiceNumber(clientID, clientName) {
+      axios
+        .get("/check-client-invoices/" + clientID)
+        .then((res) => {
+          // 1
+          let invoiceNameLetters =
+            this.invoiceForm.invoice_type == "invoice" ? "INV" : "EXP";
+          // 2
+          let clientNameLetters = null;
+          if (clientName.length > 3) {
+            clientNameLetters = clientName.substring(0, 3).toUpperCase();
+          }
+          if (clientName.length <= 3) {
+            clientNameLetters = clientName.toUpperCase();
+          }
+          // 3
+          let invoicesSendToClientAlready = res.data.data;
+          let thisInvoiceNumber = invoicesSendToClientAlready + 1;
+          let clientInvoiceNumber = thisInvoiceNumber.toLocaleString("en-US", {
+            minimumIntegerDigits: 2,
+            useGrouping: false,
+          });
+          // 4
+          let currentYear = new Date().getFullYear().toString();
+
+          this.invoiceForm.invoice_no =
+            invoiceNameLetters +
+            clientNameLetters +
+            clientInvoiceNumber +
+            currentYear;
+        })
+        .catch((err) => {
+          this.$notify({
+            group: "app",
+            type: "error",
+            title: "Request Faild",
+            text: err.message,
+            duration: 5000,
+            speed: 1000,
+            closeOnClick: true,
+          });
+        });
+    },
+    toggleInvoiceToExpense(type) {
+      // invoice | expense
+      if (this.invoiceForm.invoice_no) {
+        let oldInvoiceNumber = this.invoiceForm.invoice_no;
+        let temp = oldInvoiceNumber.substring(3);
+        let newInvoiceNumber = oldInvoiceNumber;
+        if (type == "invoice") {
+          newInvoiceNumber = "INV" + temp;
+        }
+        if (type == "expense") {
+          newInvoiceNumber = "EXP" + temp;
+        }
+        this.invoiceForm.invoice_no = newInvoiceNumber;
+        this.invoiceForm.invoice_type = type;
+      }
+    },
+
     // event handlers
-    onClientAdded(data) {
-      this.invoiceForm.client_id = data.id;
-      this.invoiceForm.client.id = data.id;
-      this.invoiceForm.client.name = data.name;
-      this.invoiceForm.client.email = data.email;
-      this.invoiceForm.client.phone_number = data.phone_number;
-      this.invoiceForm.client.address = data.address;
-      this.invoiceForm.client.country = data.country;
+    onClientAdded(client) {
+      this.invoiceForm.client_id = client.id;
+      this.invoiceForm.client.id = client.id;
+      this.invoiceForm.client.name = client.name;
+      this.invoiceForm.client.email = client.email;
+      this.invoiceForm.client.phone_number = client.phone_number;
+      this.invoiceForm.client.address = client.address;
+      this.invoiceForm.client.country = client.country;
+      this.updateInvoiceNumber(client.id, client.name);
     },
     onClientSelected(client) {
       this.invoiceForm.client_id = client.id;
@@ -637,7 +769,9 @@ export default {
       this.invoiceForm.client.phone_number = client.phone_number;
       this.invoiceForm.client.address = client.address;
       this.invoiceForm.client.country = client.country;
+      this.updateInvoiceNumber(client.id, client.name);
     },
+
     // below amir functions but can be reuse (read and verify)
     addRow: function () {
       this.invoiceForm.items.push({

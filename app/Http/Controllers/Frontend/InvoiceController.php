@@ -39,6 +39,7 @@ class InvoiceController extends Controller
             'invoice_notes' => $request->has("invoice_notes") ? json_encode($request->invoice_notes) : null,
             'invoice_terms' => $request->has("invoice_terms") ? json_encode($request->invoice_terms) : null,
             'selected_currency' => $request->has("selected_currency") ? $request->selected_currency : null,
+            'invoice_type' => $request->has("invoice_type") ? $request->invoice_type : null,
             'sub_total' => $request->has("sub_total") ? $request->sub_total : null,
             'total' => $request->has("total") ? $request->total : null
         ]);
