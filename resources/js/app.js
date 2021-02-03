@@ -56,11 +56,11 @@ Vue.component(HasError.name, HasError);
 Vue.component(AlertError.name, AlertError);
 Vue.component(AlertErrors.name, AlertErrors);
 Vue.component(AlertSuccess.name, AlertSuccess);
-Vue.use(Popover);
-Vue.use(Clipboard);
-Vue.use(Notifications);
-Vue.use(VModal);
-Vue.use(ToggleButton);
+Vue.use(Popover);//https://github.com/euvl/vue-js-popover
+Vue.use(Clipboard);//https://github.com/euvl/v-clipboard
+Vue.use(Notifications);// https://github.com/euvl/vue-notification
+Vue.use(VModal, { dialog: true });// https://euvl.github.io/vue-js-modal/
+Vue.use(ToggleButton);ToggleButton
 Vue.component("v-icon", Icon); //https://github.com/Justineo/vue-awesome
 Vue.use(SvgTransition); //https://github.com/kai-oswald/vue-svg-transition
 // Vue.component("AgGridVue", AgGridVue);

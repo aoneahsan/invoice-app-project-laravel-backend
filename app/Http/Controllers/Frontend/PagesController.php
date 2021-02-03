@@ -16,7 +16,7 @@ class PagesController extends Controller
     public function CreateInvoice(Request $request)
     {
         Inertia::setRootView("layouts.frontend.index");
-        return Inertia::render("Frontend/Invoice/Create");
+        return Inertia::render("Frontend/Invoice/StartCreatingInvoice");
     }
 
     public function Clients(Request $request)

@@ -476,6 +476,9 @@
         <div class="modal-footer"></div>
       </div>
     </modal>
+
+    <!-- vue modal dialogs -->
+    <v-dialog />
   </div>
 </template>
 

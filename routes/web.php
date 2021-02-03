@@ -36,8 +36,6 @@ Route::group([
     // #################################################################
     // ####################      GENERIC ROUTES      ###################
     // #################################################################
-    // invoice related
-    Route::get("/createinvoice")->uses("PagesController@CreateInvoice")->name("createinvoice");
 
     // check if email is not used yet
     Route::post("/check-email-exists")->uses("AuthController@checkEmailExists")->name("check-email-exists");
@@ -59,7 +57,7 @@ Route::group([
         Route::get("/sign-up")->uses("AuthController@registerView")->name("register.view");
         Route::post("/sign-up")->uses("AuthController@register")->name("register.action");
     });
-    
+
     // #################################################################
     // ####################      AUTH ROUTES      ######################
     // #################################################################
@@ -70,11 +68,11 @@ Route::group([
         Route::get('/email/verify/{id}/{hash}')->uses('AuthController@verifyEmailAction')->name('verification.verify')->middleware(['signed']);
         Route::get('/email/verification-notification')->uses('AuthController@resendVerificationEmail')->middleware(['throttle:2,1'])->name('verification.send');
         Route::get('/logout', 'AuthController@logout')->name('logout');
-        
+
         Route::get("/complete-signup")->uses("AuthController@completeSignupView")->name("complete-signup");
         Route::put("/user")->uses("AuthController@updateUserDetails")->name("user.update");
     });
-    
+
     // #################################################################
     // ###################     VERIFIED ROUTES     #####################
     // #################################################################
@@ -96,7 +94,9 @@ Route::group([
         Route::delete("/user/clients/{id}")->uses("User\UserClientController@destroy")->name("user.clients.delete");
 
         // user invoice routes
+        Route::get("/createinvoice")->uses("PagesController@CreateInvoice")->name("createinvoice");
         Route::get("/invoices")->uses("PagesController@Invoices")->name("invoices.view");
+        Route::get("/invoices/{invoice_unique_id}")->uses("InvoiceController@show")->name("invoice.view");
         Route::get("/user/invoices")->uses("InvoiceController@getinvoices")->name("user.invoices.get");
         Route::post("/user/invoices")->uses("InvoiceController@store")->name("user.invoices.post");
         Route::delete("/user/invoices/{id}")->uses("InvoiceController@destroy")->name("user.invoices.delete");

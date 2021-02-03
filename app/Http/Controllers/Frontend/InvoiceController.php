@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\InvoiceResource;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use JamesDordoy\LaravelVueDatatable\Http\Resources\DataTableCollectionResource;
 
 class InvoiceController extends Controller
@@ -51,6 +52,16 @@ class InvoiceController extends Controller
         } else {
             return response()->json(['message' => "Error occured while adding invoice."], 500);
         }
+    }
+
+    public function show(Request $request, $invoice_unique_id)
+    {
+        $item = Invoice::where("invoice_unique_id", $invoice_unique_id)->first();
+        Inertia::setRootView("layouts.frontend.index");
+        $itemResource = new InvoiceResource($item);
+        return Inertia::render("Frontend/Invoice/Create", [
+            "invoice" => $itemResource
+        ]);
     }
 
     public function update(Request $request, $invoice_unique_id)
