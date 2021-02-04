@@ -101,6 +101,9 @@ Route::group([
         Route::post("/user/invoices")->uses("InvoiceController@store")->name("user.invoices.post");
         Route::put("/user/invoices/{invoice_unique_id}")->uses("InvoiceController@update")->name("user.invoices.put");
         Route::delete("/user/invoices/{id}")->uses("InvoiceController@destroy")->name("user.invoices.delete");
+
+        // user download invoice route
+        Route::get("/download-invoice/{invoice_unique_id}", "InvoiceController@downloadInvoices")->name("invoice.download");
     });
 
     // #################################################################

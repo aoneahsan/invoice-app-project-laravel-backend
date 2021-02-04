@@ -26,7 +26,8 @@ import SvgTransition from "vue-svg-transition"; //https://github.com/kai-oswald/
 import DataTable from "laravel-vue-datatable"; //https://jamesdordoy.github.io/laravel-vue-datatable/
 import VueHtml2pdf from "vue-html2pdf"; //https://www.npmjs.com/package/vue-html2pdf
 import vueCountryRegionSelect from "vue-country-region-select"; //https://www.npmjs.com/package/vue-country-region-select
-import Vuex from "vuex"; //https://vuex.vuejs.org/installation.html#yarn
+// import Vuex from "vuex"; //https://vuex.vuejs.org/installation.html#yarn
+import VueCurrencyInput from "vue-currency-input"; //https://dm4t2.github.io/vue-currency-input/guide/#installation
 
 // other packages imports
 import "es6-promise/auto"; //https://github.com/stefanpenner/es6-promise
@@ -56,11 +57,12 @@ Vue.component(HasError.name, HasError);
 Vue.component(AlertError.name, AlertError);
 Vue.component(AlertErrors.name, AlertErrors);
 Vue.component(AlertSuccess.name, AlertSuccess);
-Vue.use(Popover);//https://github.com/euvl/vue-js-popover
-Vue.use(Clipboard);//https://github.com/euvl/v-clipboard
-Vue.use(Notifications);// https://github.com/euvl/vue-notification
-Vue.use(VModal, { dialog: true });// https://euvl.github.io/vue-js-modal/
-Vue.use(ToggleButton);ToggleButton
+Vue.use(Popover); //https://github.com/euvl/vue-js-popover
+Vue.use(Clipboard); //https://github.com/euvl/v-clipboard
+Vue.use(Notifications); // https://github.com/euvl/vue-notification
+Vue.use(VModal, { dialog: true }); // https://euvl.github.io/vue-js-modal/
+Vue.use(ToggleButton);
+ToggleButton;
 Vue.component("v-icon", Icon); //https://github.com/Justineo/vue-awesome
 Vue.use(SvgTransition); //https://github.com/kai-oswald/vue-svg-transition
 // Vue.component("AgGridVue", AgGridVue);
@@ -70,6 +72,11 @@ Vue.use(DataTable); //https://jamesdordoy.github.io/laravel-vue-datatable/
 Vue.use(VueHtml2pdf); //https://www.npmjs.com/package/vue-html2pdf
 Vue.use(vueCountryRegionSelect); //https://www.npmjs.com/package/vue-country-region-select
 Vue.component("file-upload", VueUploadComponent); //https://lian-yue.github.io/vue-upload-component/#/en/documents
+const VueCurrencyInput_pluginOptions = {//https://dm4t2.github.io/vue-currency-input/guide/#installation
+    /* see config reference */
+    globalOptions: { currency: "USD" }
+}; 
+Vue.use(VueCurrencyInput, VueCurrencyInput_pluginOptions); //https://dm4t2.github.io/vue-currency-input/guide/#installation
 
 // Custom Defined Components
 Vue.component("FrontendMain", FrontendMain);

@@ -36,19 +36,26 @@
             >
               Switch To Expense
             </button>
+            <button @click="downloadInvoice()" class="btn btn-white ml-2 lift">
+              Download
+            </button>
           </template>
-          <button @click="textResult()" class="btn btn-white ml-2 lift">
-            test
-          </button>
-          <button @click="generateReport()" class="btn btn-white ml-2 lift">
-            Generate Report
-          </button>
-          <button @click="downloadInvoice()" class="btn btn-white ml-2 lift">
-            Download
-          </button>
           <button @click="saveInvoice()" class="btn btn-primary ml-2 lift">
             Save
           </button>
+          <select
+            class="form-control form-control-sm d-inline-block ml-2"
+            style="width: 100px; height: 40px"
+            v-model="invoiceForm.selected_currency"
+          >
+            <option
+              v-for="(item, index) in currencies"
+              :key="index"
+              :value="item"
+            >
+              {{ item }}
+            </option>
+          </select>
         </div>
       </div>
     </template>
@@ -271,14 +278,24 @@
                             />
                           </td>
                           <td class="td">
-                            <input
-                              type="number"
+                            <currency-input
                               class="form-control form-control-sm"
+                              :currency="invoiceForm.selected_currency"
+                              :locale="userLocale"
+                              :allow-negative="false"
                               v-model.number="item.rate"
                             />
                           </td>
                           <td class="td text-right">
-                            {{ item.qty * item.rate }}
+                            {{
+                              (item.qty * item.rate).toLocaleString(
+                                userLocale,
+                                {
+                                  style: "currency",
+                                  currency: invoiceForm.selected_currency,
+                                }
+                              )
+                            }}
                           </td>
                           <td class="td">
                             <button
@@ -328,7 +345,9 @@
                                 v-model="invoiceForm.is_invoice_vat_applied"
                             /></span>
                             <label for="is_vat_applied"
-                              ><strong>VAT (10%)</strong></label
+                              ><strong
+                                >VAT ({{ invoiceForm.vat_value }}%)</strong
+                              ></label
                             >
                           </td>
                           <td colspan="3" class="text-right border-bottom">
@@ -438,11 +457,12 @@ export default {
       }),
       invoice_logo_url: "/images/sitelogo.jpeg",
       invoiceLogo: [],
-      currency: [{ name: "USD" }, { name: "EUR" }, { name: "ALL" }],
+      currencies: ["USD", "EUR", "GBP", "YEN", "INR", "IDR"],
       invoice_due_date_add_days: 15,
       hideInvoiceLogo: false,
       changes_not_saved: false,
       is_creating_invoice: true,
+      userLocale: "en",
     };
   },
   beforeMount() {
@@ -455,8 +475,6 @@ export default {
       invoiceData.client_id &&
         (this.invoiceForm.client_id = invoiceData.client_id);
       invoiceData.client && (this.invoiceForm.client = invoiceData.client);
-      invoiceData.invoice_logo &&
-        (this.invoiceForm.invoice_logo = invoiceData.invoice_logo);
       invoiceData.date && (this.invoiceForm.date = invoiceData.date);
       invoiceData.due_date &&
         (this.invoiceForm.due_date = invoiceData.due_date);
@@ -479,6 +497,8 @@ export default {
       invoiceData.sub_total &&
         (this.invoiceForm.sub_total = invoiceData.sub_total);
       invoiceData.total && (this.invoiceForm.total = invoiceData.total);
+      invoiceData.invoice_logo &&
+        (this.invoiceForm.invoice_logo = invoiceData.invoice_logo);
       invoiceData.invoice_logo_url &&
         (this.invoice_logo_url = invoiceData.invoice_logo_url);
     }
@@ -493,12 +513,12 @@ export default {
       this.invoiceForm.user.company = this.$page.user.company;
       this.invoiceForm.user.phone_number = this.$page.user.phone_number;
       this.invoiceForm.user.state = this.$page.user.state;
-      if (this.$page.user.logo_url) {
+      if (!invoiceData && this.$page.user.logo_url) {
         this.invoiceForm.invoice_logo = this.$page.user.logo;
         this.invoiceForm.user.logo = this.$page.user.logo_url;
         this.invoice_logo_url = this.$page.user.logo_url;
       }
-      if (this.$page.user.notes) {
+      if (!invoiceData && this.$page.user.notes) {
         this.invoiceForm.invoice_notes = this.$page.user.notes;
       }
     }
@@ -733,7 +753,10 @@ export default {
       this.startDownloadingInvoice();
     },
     startDownloadingInvoice() {
-      console.log("download");
+      window.open(
+        `/download-invoice/${this.invoice.data.invoice_unique_id}`,
+        "_blank"
+      );
     },
     saveInvoice() {
       if (this.invoiceLogo.length > 0) {
@@ -747,7 +770,7 @@ export default {
         this.invoiceForm
           .post("/user/invoices")
           .then((res) => {
-            console.log("saveInvoice == res = ", res);
+            // console.log("saveInvoice == res = ", res);
             this.$notify({
               group: "app",
               type: "success",
@@ -774,7 +797,7 @@ export default {
         this.invoiceForm
           .put("/user/invoices/" + this.invoice.data.invoice_unique_id)
           .then((res) => {
-            console.log("saveInvoice == res = ", res);
+            // console.log("saveInvoice == res = ", res);
             this.$notify({
               group: "app",
               type: "success",
@@ -810,7 +833,7 @@ export default {
       this.toggleChangesNotSaved(true); // avoid user changing page without saving changes
     },
     deleteRow(index) {
-      console.log(index);
+      // console.log(index);
       this.$delete(this.invoiceForm.items, index);
       this.toggleChangesNotSaved(true); // avoid user changing page without saving changes
     },
@@ -823,7 +846,10 @@ export default {
       });
       this.subtotal = subtotal;
       this.invoiceForm.sub_total = subtotal;
-      return subtotal;
+      return subtotal.toLocaleString(this.userLocale, {
+        style: "currency",
+        currency: this.invoiceForm.selected_currency,
+      });
     },
     calculateTotal: function () {
       this.toggleChangesNotSaved(true); // avoid user changing page without saving changes
@@ -836,21 +862,24 @@ export default {
         total = this.subtotal;
       }
       this.invoiceForm.total = total;
-      return total;
+      return total.toLocaleString(this.userLocale, {
+        style: "currency",
+        currency: this.invoiceForm.selected_currency,
+      });
     },
 
     // upload file component methods
     inputFile: function (newFile, oldFile) {
       if (newFile && oldFile && !newFile.active && oldFile.active) {
         // Get response data
-        console.log("response = ", newFile.response);
+        // console.log("response = ", newFile.response);
         if (newFile.xhr) {
-          console.log("newFile.xhr.status = ", newFile.xhr.status);
+          // console.log("newFile.xhr.status = ", newFile.xhr.status);
           //  Get the response status code
           if (newFile.xhr.status == 200) {
             if (newFile.response.data) {
               this.invoiceForm.invoice_logo = newFile.response.data;
-              console.log("newFile.response.data = ", newFile.response.data);
+              // console.log("newFile.response.data = ", newFile.response.data);
               this.finishSavingInvoice(); // here this will continue after file upload
             }
           }
@@ -908,77 +937,18 @@ export default {
       this.invoiceForm.client.country = client.country;
       this.updateInvoiceNumber(client.id, client.name);
     },
-
-    // methods for pdf plugin
-    onProgress(event) {
-      console.log("onProgress === event = ", event);
-    },
-    hasStartedGeneration() {
-      console.log("hasStartedGeneration");
-    },
-    hasGenerated(event) {
-      console.log("hasGenerated === event = ", event);
-    },
-    generateReport() {
-      this.$refs.html2Pdf.generatePdf();
-    },
-    async beforeDownload({ html2pdf, options, pdfContent }) {
-      await html2pdf()
-        .set(options)
-        .from(pdfContent)
-        .toPdf()
-        .get("pdf")
-        .then((pdf) => {
-          const totalPages = pdf.internal.getNumberOfPages();
-          for (let i = 1; i <= totalPages; i++) {
-            pdf.setPage(i);
-            pdf.setFontSize(10);
-            pdf.setTextColor(150);
-            pdf.text(
-              "Page " + i + " of " + totalPages,
-              pdf.internal.pageSize.getWidth() * 1,
-              pdf.internal.pageSize.getHeight() - 0
-            );
-          }
-        })
-        .save();
-    },
   },
   beforeDestroy(event) {
     console.log("event = ", event);
     if (this.changes_not_saved) {
-      // this.$modal.show("dialog", {
-      //   title: "Changes Not saved!",
-      //   text: "Changes Not saved, save now before leaving?",
-      //   buttons: [
-      //     {
-      //       title: "Cancel",
-      //       handler: () => {
-      //         this.$modal.hide("dialog");
-      //         return;
-      //       },
-      //     },
-      //     {
-      //       title: "Save & Continue",
-      //       handler: () => {
-      //         // this.finishSavingInvoice();
-      //         console.log("save changes & continue");
-      //       },
-      //     },
-      //     {
-      //       title: "Discard & Continue",
-      //       handler: () => {
-      //         console.log("leave changes & continue");
-      //       },
-      //     },
-      //   ],
-      // });
       if (confirm("Changes Not saved, save now before leaving?")) {
         if (this.invoiceLogo.length > 0) {
           this.$refs.upload.active = true;
         } else {
           this.finishSavingInvoice();
         }
+      } else {
+        return false;
       }
     }
   },

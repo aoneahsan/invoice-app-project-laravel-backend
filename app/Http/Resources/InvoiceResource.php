@@ -33,8 +33,8 @@ class InvoiceResource extends JsonResource
             "invoice_notes" => $this->invoice_notes,
             "selected_currency" => $this->selected_currency,
             "invoice_type" => $this->invoice_type,
-            "sub_total" => $this->sub_total,
-            "total" => $this->total,
+            "sub_total" => $this->sub_total ? floatval($this->sub_total) : 0,
+            "total" => $this->total ? floatval($this->total) : 0,
             "created_at" => $this->created_at
         ];
     }

@@ -506,12 +506,12 @@ export default {
       showingNavigationDropdown: false,
       // Modals Data
       addClientform: new Form({
-        name: "as",
-        email: "as@as.as",
-        address: "as",
-        company: "as",
-        country: "as",
-        phone_number: "12",
+        name: "",
+        email: "",
+        address: "",
+        company: "",
+        country: "",
+        phone_number: "",
       }),
       editUserForm: new Form({
         name: "",
@@ -554,6 +554,7 @@ export default {
             //   duration: 70000,
             //   speed: 1000,
             // });
+            this.addClientform.reset();
             this.$modal.hide("addClientModal");
             EventBus.$emit("event_clientAdded", res.data.data);
           }

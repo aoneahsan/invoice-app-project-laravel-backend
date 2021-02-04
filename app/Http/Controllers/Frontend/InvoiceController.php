@@ -25,6 +25,16 @@ class InvoiceController extends Controller
         return new DataTableCollectionResource($data);
     }
 
+    public function downloadInvoices(Request $request, $invoice_unique_id)
+    {
+        $item = Invoice::where("invoice_unique_id", $invoice_unique_id)->first();
+        Inertia::setRootView("layouts.frontend.index");
+        $itemResource = new InvoiceResource($item);
+        return Inertia::render("Frontend/Invoice/DownloadCreate", [
+            "invoice" => $itemResource
+        ]);
+    }
+
     public function store(Request $request)
     {
         $result = Invoice::create([
