@@ -55,7 +55,7 @@ Invoice app feedback
 
 -> On invoice I cannot change the currency or the VAT
 
--> On invoice the user should be able to select notes they have saved before (these notes should be connected with a client entry). So when creating a client entry there should be 2 additional fields (both text fields); 1 - Bank details 2 - Payment conditions  Both these should allow for basic text markup (bold, italic, text link and underlined). 
+-> On invoice the user should be able to select notes they have saved before (these notes should be connected with a client entry). So when creating a client entry there should be 2 additional fields (both text fields);1 - Bank details2 - Payment conditions Both these should allow for basic text markup (bold, italic, text link and underlined).
 
 -> I’m not sure if this is a feature already available, but for now I would NOT want a user to be able to send an invoice directly through our app to their clients. Simply because it could make us accountable for errors on late payments, and I want to avoid that (at least for now).
 

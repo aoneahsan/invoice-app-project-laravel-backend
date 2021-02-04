@@ -13,16 +13,13 @@ class Invoice extends Model
 
     protected $dataTableColumns = [
         'id' => [
-            'searchable' => true,
+            'searchable' => false,
+        ],
+        'invoice_unique_id' => [
+            'searchable' => false,
         ],
         'invoice_no' => [
             'searchable' => true,
-        ],
-        'user' => [
-            'searchable' => false,
-        ],
-        'client' => [
-            'searchable' => false,
         ],
         'date' => [
             'searchable' => true,
@@ -30,7 +27,16 @@ class Invoice extends Model
         'due_date' => [
             'searchable' => true,
         ],
-        'invoice_notes' => [
+        'selected_currency' => [
+            'searchable' => true,
+        ],
+        'vat_value' => [
+            'searchable' => true,
+        ],
+        'is_invoice_vat_applied' => [
+            'searchable' => true,
+        ],
+        'invoice_type' => [
             'searchable' => true,
         ],
         'sub_total' => [

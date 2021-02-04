@@ -29,6 +29,7 @@ class InvoiceController extends Controller
     {
         $result = Invoice::create([
             "invoice_unique_id" => uniqid(),
+            "invoice_no" => $request->has("invoice_no") ? $request->invoice_no : null,
             "user_id" => $request->user()->id,
             "client_id" => $request->has("client_id") ? $request->client_id : null,
             'user' => $request->has("user") ? json_encode($request->user) : null,
@@ -68,22 +69,23 @@ class InvoiceController extends Controller
     {
         $oldItem = Invoice::where("invoice_unique_id", $invoice_unique_id)->first();
         $result = $oldItem->update([
-            "user_id" => $request->user()->id,
-            "client_id" => $request->has("client_id") ? $request->client_id : null,
-            'user' => $request->has("user") ? json_encode($request->user) : null,
-            'client' => $request->has("client") ? json_encode($request->client) : null,
-            'invoice_logo' => $request->has("invoice_logo") ? $request->invoice_logo : null,
-            'date' => $request->has("date") ? $request->date : null,
-            'due_date' => $request->has("due_date") ? $request->due_date : null,
-            'vat_value' => $request->has("vat_value") ? $request->vat_value : null,
-            'is_invoice_vat_applied' => $request->has("is_invoice_vat_applied") ? $request->is_invoice_vat_applied : null,
-            'items' => $request->has("items") ? json_encode($request->items) : null,
-            'invoice_notes' => $request->has("invoice_notes") ? $request->invoice_notes : null,
-            'invoice_terms' => $request->has("invoice_terms") ? $request->invoice_terms : null,
-            'selected_currency' => $request->has("selected_currency") ? $request->selected_currency : null,
-            'invoice_type' => $request->has("invoice_type") ? $request->invoice_type : null,
-            'sub_total' => $request->has("sub_total") ? $request->sub_total : null,
-            'total' => $request->has("total") ? $request->total : null
+            "invoice_no" => $request->has("invoice_no") ? $request->invoice_no : $oldItem->invoice_no,
+            "user_id" => $request->has("user_id") ? $request->user_id : $oldItem->user_id,
+            "client_id" => $request->has("client_id") ? $request->client_id : $oldItem->client_id,
+            'user' => $request->has("user") ? json_encode($request->user) : $oldItem->user,
+            'client' => $request->has("client") ? json_encode($request->client) : $oldItem->client,
+            'invoice_logo' => $request->has("invoice_logo") ? $request->invoice_logo : $oldItem->invoice_logo,
+            'date' => $request->has("date") ? $request->date : $oldItem->date,
+            'due_date' => $request->has("due_date") ? $request->due_date : $oldItem->due_date,
+            'vat_value' => $request->has("vat_value") ? $request->vat_value : $oldItem->vat_value,
+            'is_invoice_vat_applied' => $request->has("is_invoice_vat_applied") ? $request->is_invoice_vat_applied : $oldItem->is_invoice_vat_applied,
+            'items' => $request->has("items") ? json_encode($request->items) : $oldItem->items,
+            'invoice_notes' => $request->has("invoice_notes") ? $request->invoice_notes : $oldItem->invoice_notes,
+            'invoice_terms' => $request->has("invoice_terms") ? $request->invoice_terms : $oldItem->invoice_terms,
+            'selected_currency' => $request->has("selected_currency") ? $request->selected_currency : $oldItem->selected_currency,
+            'invoice_type' => $request->has("invoice_type") ? $request->invoice_type : $oldItem->invoice_type,
+            'sub_total' => $request->has("sub_total") ? $request->sub_total : $oldItem->sub_total,
+            'total' => $request->has("total") ? $request->total : $oldItem->total
         ]);
         if ($result) {
             $item = Invoice::where("invoice_unique_id", $invoice_unique_id)->first();
@@ -93,9 +95,9 @@ class InvoiceController extends Controller
         }
     }
 
-    public function destroy(Request $request, $invoice_unique_id)
+    public function destroy(Request $request, $id)
     {
-        $item = Invoice::where("invoice_unique_id", $invoice_unique_id)->delete();
+        $item = Invoice::where("id", $id)->delete();
         if ($item) {
             return response()->json(['data' => "invoice deleted"], 200);
         } else {

@@ -1,7 +1,7 @@
 <template>
   <button :class="classes" @click="click(data)" title="Update">
     <span>
-      <i class="fa fa-trash" aria-hidden="true"></i>
+      <i class="fa fa-eye" aria-hidden="true"></i>
     </span>
     &nbsp;
     {{ name }}
@@ -20,7 +20,7 @@ export default {
       type: Object,
       default: () => ({
         btn: true,
-        "btn-danger": true,
+        "btn-primary": true,
         "btn-sm": true,
         "lift": true,
       }),

@@ -442,30 +442,45 @@ export default {
       invoice_due_date_add_days: 15,
       hideInvoiceLogo: false,
       changes_not_saved: false,
+      is_creating_invoice: true,
     };
   },
   beforeMount() {
     const invoiceData = this.invoice.data;
-      console.log("invoiceData = ", invoiceData);
+    console.log("invoiceData = ", invoiceData);
     if (invoiceData) {
+      this.is_creating_invoice = false; // invoice viewed so updating invoice instead of creating
       invoiceData.user_id && (this.invoiceForm.user_id = invoiceData.user_id);
       invoiceData.user && (this.invoiceForm.user = invoiceData.user);
-      invoiceData.client_id && (this.invoiceForm.client_id = invoiceData.client_id);
+      invoiceData.client_id &&
+        (this.invoiceForm.client_id = invoiceData.client_id);
       invoiceData.client && (this.invoiceForm.client = invoiceData.client);
-      invoiceData.invoice_logo && (this.invoiceForm.invoice_logo = invoiceData.invoice_logo);
+      invoiceData.invoice_logo &&
+        (this.invoiceForm.invoice_logo = invoiceData.invoice_logo);
       invoiceData.date && (this.invoiceForm.date = invoiceData.date);
-      invoiceData.due_date && (this.invoiceForm.due_date = invoiceData.due_date);
-      invoiceData.vat_value && (this.invoiceForm.vat_value = invoiceData.vat_value);
-      invoiceData.is_invoice_vat_applied && (this.invoiceForm.is_invoice_vat_applied = invoiceData.is_invoice_vat_applied);
+      invoiceData.due_date &&
+        (this.invoiceForm.due_date = invoiceData.due_date);
+      invoiceData.vat_value &&
+        (this.invoiceForm.vat_value = invoiceData.vat_value);
+      invoiceData.is_invoice_vat_applied &&
+        (this.invoiceForm.is_invoice_vat_applied =
+          invoiceData.is_invoice_vat_applied);
       invoiceData.items && (this.invoiceForm.items = invoiceData.items);
-      invoiceData.invoice_notes && (this.invoiceForm.invoice_notes = invoiceData.invoice_notes);
-      invoiceData.invoice_terms && (this.invoiceForm.invoice_terms = invoiceData.invoice_terms);
-      invoiceData.invoice_no && (this.invoiceForm.invoice_no = invoiceData.invoice_no);
-      invoiceData.selected_currency && (this.invoiceForm.selected_currency = invoiceData.selected_currency);
-      invoiceData.invoice_type && (this.invoiceForm.invoice_type = invoiceData.invoice_type);
-      invoiceData.sub_total && (this.invoiceForm.sub_total = invoiceData.sub_total);
+      invoiceData.invoice_notes &&
+        (this.invoiceForm.invoice_notes = invoiceData.invoice_notes);
+      invoiceData.invoice_terms &&
+        (this.invoiceForm.invoice_terms = invoiceData.invoice_terms);
+      invoiceData.invoice_no &&
+        (this.invoiceForm.invoice_no = invoiceData.invoice_no);
+      invoiceData.selected_currency &&
+        (this.invoiceForm.selected_currency = invoiceData.selected_currency);
+      invoiceData.invoice_type &&
+        (this.invoiceForm.invoice_type = invoiceData.invoice_type);
+      invoiceData.sub_total &&
+        (this.invoiceForm.sub_total = invoiceData.sub_total);
       invoiceData.total && (this.invoiceForm.total = invoiceData.total);
-      invoiceData.invoice_logo_url && (this.invoice_logo_url = invoiceData.invoice_logo_url);
+      invoiceData.invoice_logo_url &&
+        (this.invoice_logo_url = invoiceData.invoice_logo_url);
     }
     if (this.$page.user) {
       this.invoiceForm.user_id = this.$page.user.id;
@@ -561,14 +576,15 @@ export default {
     }
 
     // checking if invoice date is not set then setting a default invoice date
-    if (this.invoice) {
-      if (this.invoice.date) {
-        this.invoiceForm.date = this.invoice.date;
+
+    if (invoiceData) {
+      if (invoiceData.date) {
+        this.invoiceForm.date = invoiceData.date;
       } else {
         this.invoiceForm.date = invoiceCurrentDate;
       }
-      if (this.invoice.due_date) {
-        this.invoiceForm.due_date = this.invoice.due_date;
+      if (invoiceData.due_date) {
+        this.invoiceForm.due_date = invoiceData.due_date;
       } else {
         this.invoiceForm.due_date = invoiceDueDate;
       }
@@ -727,32 +743,61 @@ export default {
       }
     },
     finishSavingInvoice() {
-      this.invoiceForm
-        .post("/user/invoices")
-        .then((res) => {
-          console.log("saveInvoice == res = ", res);
-          this.$notify({
-            group: "app",
-            type: "success",
-            title: "Request Successfull",
-            text: "Changes saved Successfully!",
-            duration: 5000,
-            speed: 1000,
-            closeOnClick: true,
+      if (this.is_creating_invoice) {
+        this.invoiceForm
+          .post("/user/invoices")
+          .then((res) => {
+            console.log("saveInvoice == res = ", res);
+            this.$notify({
+              group: "app",
+              type: "success",
+              title: "Request Successfull",
+              text: "Changes saved Successfully!",
+              duration: 5000,
+              speed: 1000,
+              closeOnClick: true,
+            });
+            this.toggleChangesNotSaved(false); // letting user change page after saving changes
+          })
+          .catch((err) => {
+            this.$notify({
+              group: "app",
+              type: "error",
+              title: "Request Faild",
+              text: err.message,
+              duration: 5000,
+              speed: 1000,
+              closeOnClick: true,
+            });
           });
-          this.toggleChangesNotSaved(false); // letting user change page after saving changes
-        })
-        .catch((err) => {
-          this.$notify({
-            group: "app",
-            type: "error",
-            title: "Request Faild",
-            text: err.message,
-            duration: 5000,
-            speed: 1000,
-            closeOnClick: true,
+      } else {
+        this.invoiceForm
+          .put("/user/invoices/" + this.invoice.data.invoice_unique_id)
+          .then((res) => {
+            console.log("saveInvoice == res = ", res);
+            this.$notify({
+              group: "app",
+              type: "success",
+              title: "Request Successfull",
+              text: "Changes saved Successfully!",
+              duration: 5000,
+              speed: 1000,
+              closeOnClick: true,
+            });
+            this.toggleChangesNotSaved(false); // letting user change page after saving changes
+          })
+          .catch((err) => {
+            this.$notify({
+              group: "app",
+              type: "error",
+              title: "Request Faild",
+              text: err.message,
+              duration: 5000,
+              speed: 1000,
+              closeOnClick: true,
+            });
           });
-        });
+      }
     },
 
     // below amir functions but can be reuse (read and verify)
@@ -805,6 +850,7 @@ export default {
           if (newFile.xhr.status == 200) {
             if (newFile.response.data) {
               this.invoiceForm.invoice_logo = newFile.response.data;
+              console.log("newFile.response.data = ", newFile.response.data);
               this.finishSavingInvoice(); // here this will continue after file upload
             }
           }

@@ -99,6 +99,7 @@ Route::group([
         Route::get("/invoices/{invoice_unique_id}")->uses("InvoiceController@show")->name("invoice.view");
         Route::get("/user/invoices")->uses("InvoiceController@getinvoices")->name("user.invoices.get");
         Route::post("/user/invoices")->uses("InvoiceController@store")->name("user.invoices.post");
+        Route::put("/user/invoices/{invoice_unique_id}")->uses("InvoiceController@update")->name("user.invoices.put");
         Route::delete("/user/invoices/{id}")->uses("InvoiceController@destroy")->name("user.invoices.delete");
     });
 

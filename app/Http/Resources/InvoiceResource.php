@@ -18,6 +18,7 @@ class InvoiceResource extends JsonResource
         return [
             "id" => $this->id,
             "invoice_unique_id" => $this->invoice_unique_id,
+            "invoice_no" => $this->invoice_no,
             "user_id" => $this->user_id,
             "client_id" => $this->client_id,
             "user" => $this->user ? json_decode($this->user) : null,

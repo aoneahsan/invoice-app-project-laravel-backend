@@ -21,6 +21,7 @@
 
 <script>
 import cellDeleteInvoice from "./cellDeleteInvoice";
+import cellViewInvoice from "./cellViewInvoice";
 export default {
   data() {
     return {
@@ -31,23 +32,57 @@ export default {
           orderable: true,
         },
         {
-          label: "User",
-          name: "user.name",
+          label: "Invoice Number",
+          name: "invoice_no",
+          orderable: true,
+        },
+        // {
+        //   label: "Invoice Date",
+        //   name: "date",
+        //   orderable: false,
+        // },
+        {
+          label: "Due Date",
+          name: "due_date",
           orderable: false,
         },
         {
-          label: "Client",
-          name: "client.name",
-          orderable: false,
+          label: "Currency",
+          name: "selected_currency",
+          orderable: true,
         },
+        // {
+        //   label: "Invoice VAT",
+        //   name: "vat_value",
+        //   orderable: false,
+        // },
+        // {
+        //   label: "Is VAT Applied",
+        //   name: "is_invoice_vat_applied",
+        //   orderable: false,
+        // },
         {
-          name: "subtotal",
+          name: "sub_total",
           orderable: true,
           label: "Subtotal",
         },
         {
           name: "total",
           label: "Total",
+        },
+        {
+          label: "",
+          name: "View",
+          orderable: false,
+          classes: {
+            btn: true,
+            "btn-primary": true,
+            "btn-sm": true,
+            lift: true,
+          },
+          event: "click",
+          handler: this.viewSelectedRow,
+          component: cellViewInvoice,
         },
         {
           label: "",
@@ -71,10 +106,13 @@ export default {
     openAddClientModal() {
       this.$modal.show("addClientModal");
     },
+    viewSelectedRow(data) {
+      this.$inertia.visit("/invoices/" + data.invoice_unique_id);
+    },
     deleteSelectedRow(data) {
       if (confirm("Do you want to delete '" + data.name + "' client?")) {
         axios
-          .delete(`/user/clients/${data.id}`)
+          .delete(`/user/invoices/${data.id}`)
           .then((res) => {
             this.$notify({
               group: "app",
