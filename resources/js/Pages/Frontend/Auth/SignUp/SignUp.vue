@@ -14,7 +14,6 @@
                 <div class="card-body">
                   <form
                     @submit.prevent="register"
-                    @keydown="form.onKeydown($event)"
                     enctype="multipart/form-data"
                   >
                     <!-- name -->
@@ -22,7 +21,7 @@
                       <label
                         for="name"
                         class="col-md-4 col-form-label text-md-right"
-                        >Name*</label
+                        >Full Name*</label
                       >
 
                       <div class="col-md-6">
@@ -41,6 +40,7 @@
                         <has-error :form="form" field="name"></has-error>
                       </div>
                     </div>
+
                     <!-- email -->
                     <div class="form-group row">
                       <label
@@ -64,31 +64,88 @@
                         <has-error :form="form" field="email"></has-error>
                       </div>
                     </div>
-                    <!-- address -->
+
+                    <!-- company -->
                     <div class="form-group row">
                       <label
-                        for="address"
+                        for="company"
                         class="col-md-4 col-form-label text-md-right"
-                        >Address*</label
+                        >Company Name*</label
                       >
 
                       <div class="col-md-6">
                         <input
-                          id="address"
+                          id="company"
                           type="text"
                           class="form-control"
-                          :class="{ 'is-invalid': form.errors.has('address') }"
-                          name="address"
-                          v-model="form.address"
+                          :class="{ 'is-invalid': form.errors.has('company') }"
+                          name="company"
+                          v-model="form.company"
                           required
-                          autocomplete="address"
+                          autocomplete="company"
                         />
 
-                        <has-error :form="form" field="address"></has-error>
+                        <has-error :form="form" field="company"></has-error>
                       </div>
                     </div>
-                    <!-- state -->
+
+                    <!-- company_registration_number -->
                     <div class="form-group row">
+                      <label
+                        for="company_registration_number"
+                        class="col-md-4 col-form-label text-md-right"
+                        >Company Registration Number</label
+                      >
+
+                      <div class="col-md-6">
+                        <input
+                          id="company_registration_number"
+                          type="text"
+                          class="form-control"
+                          :class="{
+                            'is-invalid': form.errors.has(
+                              'company_registration_number'
+                            ),
+                          }"
+                          name="company_registration_number"
+                          v-model="form.company_registration_number"
+                          autocomplete="company_registration_number"
+                        />
+
+                        <has-error
+                          :form="form"
+                          field="company_registration_number"
+                        ></has-error>
+                      </div>
+                    </div>
+
+                    <!-- vat_number -->
+                    <div class="form-group row">
+                      <label
+                        for="vat_number"
+                        class="col-md-4 col-form-label text-md-right"
+                        >VAT Number</label
+                      >
+
+                      <div class="col-md-6">
+                        <input
+                          id="vat_number"
+                          type="text"
+                          class="form-control"
+                          :class="{
+                            'is-invalid': form.errors.has('vat_number'),
+                          }"
+                          name="vat_number"
+                          v-model="form.vat_number"
+                          autocomplete="vat_number"
+                        />
+
+                        <has-error :form="form" field="vat_number"></has-error>
+                      </div>
+                    </div>
+
+                    <!-- state -->
+                    <!-- <div class="form-group row">
                       <label
                         for="state"
                         class="col-md-4 col-form-label text-md-right"
@@ -108,7 +165,8 @@
 
                         <has-error :form="form" field="state"></has-error>
                       </div>
-                    </div>
+                    </div> -->
+
                     <!-- country -->
                     <div class="form-group row">
                       <label
@@ -145,6 +203,55 @@
                         <has-error :form="form" field="country"></has-error>
                       </div>
                     </div>
+
+                    <!-- city -->
+                    <div class="form-group row">
+                      <label
+                        for="city"
+                        class="col-md-4 col-form-label text-md-right"
+                        >City*</label
+                      >
+
+                      <div class="col-md-6">
+                        <input
+                          id="city"
+                          type="text"
+                          class="form-control"
+                          :class="{ 'is-invalid': form.errors.has('city') }"
+                          name="city"
+                          v-model="form.city"
+                          required
+                          autocomplete="city"
+                        />
+
+                        <has-error :form="form" field="city"></has-error>
+                      </div>
+                    </div>
+
+                    <!-- zipcode -->
+                    <div class="form-group row">
+                      <label
+                        for="zipcode"
+                        class="col-md-4 col-form-label text-md-right"
+                        >Zip Code*</label
+                      >
+
+                      <div class="col-md-6">
+                        <input
+                          id="zipcode"
+                          type="text"
+                          class="form-control"
+                          :class="{ 'is-invalid': form.errors.has('zipcode') }"
+                          name="zipcode"
+                          v-model="form.zipcode"
+                          required
+                          autocomplete="zipcode"
+                        />
+
+                        <has-error :form="form" field="zipcode"></has-error>
+                      </div>
+                    </div>
+
                     <!-- phone -->
                     <div class="form-group row">
                       <label
@@ -172,6 +279,65 @@
                         ></has-error>
                       </div>
                     </div>
+
+                    <!-- address -->
+                    <div class="form-group row">
+                      <label
+                        for="address"
+                        class="col-md-4 col-form-label text-md-right"
+                        >Address*</label
+                      >
+
+                      <div class="col-md-6">
+                        <input
+                          id="address"
+                          type="text"
+                          class="form-control"
+                          :class="{ 'is-invalid': form.errors.has('address') }"
+                          name="address"
+                          v-model="form.address"
+                          required
+                          autocomplete="address"
+                        />
+
+                        <has-error :form="form" field="address"></has-error>
+                      </div>
+                    </div>
+
+                    <!-- default_currency -->
+                    <div class="form-group row">
+                      <label
+                        for="default_currency"
+                        class="col-md-4 col-form-label text-md-right"
+                        >Default Currency</label
+                      >
+
+                      <div class="col-md-6">
+                        <select
+                          id="default_currency"
+                          class="form-control"
+                          :class="{
+                            'is-invalid': form.errors.has('default_currency'),
+                          }"
+                          v-model="form.default_currency"
+                        >
+                          <option value="">Select Currency</option>
+                          <option
+                            v-for="(item, index) in currencies"
+                            :key="index"
+                            :value="item"
+                          >
+                            {{ item }}
+                          </option>
+                        </select>
+
+                        <has-error
+                          :form="form"
+                          field="default_currency"
+                        ></has-error>
+                      </div>
+                    </div>
+
                     <!-- logo -->
                     <div class="form-group row">
                       <label
@@ -187,7 +353,6 @@
                           ref="upload"
                           post-action="/upload-files"
                           accept="image/*"
-                          extensions="jpg,gif,png,webp"
                           @input-file="inputFile"
                           :drop="true"
                           v-model="logoImage"
@@ -198,6 +363,7 @@
                         </file-upload>
                       </div>
                     </div>
+
                     <!-- password -->
                     <div class="form-group row">
                       <label
@@ -221,6 +387,7 @@
                         <has-error :form="form" field="password"></has-error>
                       </div>
                     </div>
+
                     <!-- confirm password -->
                     <div class="form-group row">
                       <label
@@ -250,6 +417,7 @@
                         ></has-error>
                       </div>
                     </div>
+
                     <!-- submit button -->
                     <div class="form-group row mb-0">
                       <div class="col-md-6 offset-md-4">
@@ -297,10 +465,17 @@ export default {
         country: "",
         phone_number: "",
         logo: "",
+        company: "",
+        company_registration_number: "",
+        city: "",
+        zipcode: "",
+        vat_number: "",
+        default_currency: "",
         password: "",
         password_confirmation: "",
       }),
       logoImage: [],
+      currencies: ["USD", "EUR", "GBP", "YEN", "INR", "IDR"],
     };
   },
   methods: {
@@ -335,7 +510,7 @@ export default {
       this.form
         .post("/sign-up")
         .then(({ data }) => {
-          this.$inertia.visit("/createinvoice");
+          this.$inertia.visit("/user/profile");
         })
         .catch((err) => {
           window.scrollTo(0, 0);

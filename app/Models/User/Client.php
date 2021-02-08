@@ -14,25 +14,49 @@ class Client extends Model
 
     protected $dataTableColumns = [
         'id' => [
-            'searchable' => false,
+            'searchable' => false
         ],
         'name' => [
-            'searchable' => true,
+            'searchable' => true
         ],
         'email' => [
-            'searchable' => true,
+            'searchable' => true
         ],
         'phone_number' => [
-            'searchable' => true,
+            'searchable' => false
         ],
         'company' => [
-            'searchable' => true,
+            'searchable' => true
         ],
         'country' => [
-            'searchable' => true,
+            'searchable' => true
         ],
         'address' => [
-            'searchable' => true,
+            'searchable' => false
+        ],
+        'notes' => [
+            'searchable' => false
+        ],
+        'company_registration_number' => [
+            'searchable' => false
+        ],
+        'city' => [
+            'searchable' => false
+        ],
+        'zipcode' => [
+            'searchable' => false
+        ],
+        'vat_number' => [
+            'searchable' => false
+        ],
+        'notes' => [
+            'searchable' => false
+        ],
+        'bank_details' => [
+            'searchable' => false
+        ],
+        'default_currency' => [
+            'searchable' => false
         ],
     ];
 

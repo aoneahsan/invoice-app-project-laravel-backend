@@ -28,6 +28,11 @@ class UserProfileResource extends JsonResource
             "notes" => $this->notes,
             "logo_url" => $this->logo ? Storage::url($this->logo) : null,
             "company" => $this->company,
+            "company_registration_number" => $this->company_registration_number,
+            "city" => $this->city,
+            "zipcode" => $this->zipcode,
+            "vat_number" => $this->vat_number,
+            "default_currency" => $this->default_currency,
             "created_at" => $this->created_at
         ];
     }

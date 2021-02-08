@@ -69,13 +69,14 @@ class AuthController extends AuthenticatedSessionController
     public function register(Request $request)
     {
         $request->validate([
-            // 'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ["required", "string", "min:6", "confirmed"],
-            // "phone_number" => ["string"],
             "address" => ["required", "string"],
-            // "state" => ["string"],
+            "company" => ["required", "string"],
             "country" => ["required", "string"],
+            "zipcode" => ["required"],
+            "city" => ["required"],
             // "logo" => ["file"]
         ]);
 
@@ -87,7 +88,13 @@ class AuthController extends AuthenticatedSessionController
             "address" => $request->address,
             "state" => $request->state,
             "country" => $request->country,
-            "logo" => $request->logo
+            "logo" => $request->logo,
+            'company' => $request->company,
+            'company_registration_number' => $request->company_registration_number,
+            'city' => $request->city,
+            'zipcode' => $request->zipcode,
+            'vat_number' => $request->vat_number,
+            'default_currency' => $request->default_currency
         ]);
 
         event(new Registered($user));
@@ -117,14 +124,21 @@ class AuthController extends AuthenticatedSessionController
             $filePath = $request->file("logo")->store("userdata");
         }
 
-        $user = User::where("id", $id)->first();
-        $result = User::where("id", $id)->update([
+        $user = User::where("id", $request->user()->id)->first();
+        $result = $user->update([
             'name' => $request->has('name') ? $request->name : $user->name,
             "phone_number" => $request->has("phone_number") ? $request->phone_number : $user->phone_number,
             "address" => $request->has("address") ? $request->address : $user->address,
             "state" => $request->has("state") ? $request->state : $user->state,
             "country" => $request->has("country") ? $request->country : $user->country,
-            "logo" => $filePath ? $filePath : $user->logo
+            "company" => $request->has("company") ? $request->company : $user->company,
+            "company_registration_number" => $request->has("company_registration_number") ? $request->company_registration_number : $user->company_registration_number,
+            "city" => $request->has("city") ? $request->city : $user->city,
+            "zipcode" => $request->has("zipcode") ? $request->zipcode : $user->zipcode,
+            "vat_number" => $request->has("vat_number") ? $request->vat_number : $user->vat_number,
+            "default_currency" => $request->has("default_currency") ? $request->default_currency : $user->default_currency,
+            "logo" => $request->has("logo") ? $request->logo : $user->logo,
+            "notes" => $request->has("notes") ? $request->notes : $user->notes
         ]);
 
         $updatedUser = User::where("email", $id)->first();

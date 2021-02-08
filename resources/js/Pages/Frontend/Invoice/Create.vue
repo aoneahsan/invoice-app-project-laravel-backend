@@ -85,38 +85,52 @@
                   >
                     <span
                       contenteditable="true"
-                      @blur="(event) => changeValue(event, 'user_name')"
-                      v-html="invoiceForm.user.name"
+                      @blur="(event) => changeValue(event, 'user_company_name')"
+                      v-html="invoiceForm.user.company"
                     ></span
-                    ><br />
+                    ><br v-if="invoiceForm.user.address" />
                     <span
                       contenteditable="true"
                       @blur="(event) => changeValue(event, 'user_address')"
                       v-html="invoiceForm.user.address"
                     ></span>
-                    <br />
+                    <br
+                      v-if="invoiceForm.user.zipcode || invoiceForm.user.city"
+                    />
                     <span
                       contenteditable="true"
-                      @blur="(event) => changeValue(event, 'user_state')"
-                      v-html="invoiceForm.user.state"
+                      @blur="(event) => changeValue(event, 'user_zipcode')"
+                      v-html="invoiceForm.user.zipcode"
                     ></span
-                    >,
+                    ><span
+                      v-if="invoiceForm.user.zipcode && invoiceForm.user.city"
+                      >,</span
+                    >
+                    <span
+                      contenteditable="true"
+                      @blur="(event) => changeValue(event, 'user_city')"
+                      v-html="invoiceForm.user.city"
+                    ></span
+                    ><br v-if="invoiceForm.user.country" />
                     <span
                       contenteditable="true"
                       @blur="(event) => changeValue(event, 'user_country')"
                       v-html="invoiceForm.user.country"
-                    ></span
-                    ><br />
-                    <span
-                      contenteditable="true"
-                      @blur="(event) => changeValue(event, 'user_email')"
-                      v-html="invoiceForm.user.email"
                     ></span>
-                    <br />
+                    <br v-if="invoiceForm.user.company_registration_number" />
                     <span
                       contenteditable="true"
-                      @blur="(event) => changeValue(event, 'user_phone_number')"
-                      v-html="invoiceForm.user.phone_number"
+                      @blur="
+                        (event) =>
+                          changeValue(event, 'user_company_registration_number')
+                      "
+                      v-html="invoiceForm.user.company_registration_number"
+                    ></span
+                    ><br v-if="invoiceForm.user.vat_number" />
+                    <span
+                      contenteditable="true"
+                      @blur="(event) => changeValue(event, 'user_vat_number')"
+                      v-html="invoiceForm.user.vat_number"
                     ></span
                     ><br />
                     <div class="edit mt-3" title="Edit This">
@@ -135,12 +149,23 @@
                         @click="openClientListModal"
                         class="nav-link active"
                       >
-                        {{ invoiceForm.client.name }}
-                        <br />
-                        {{ invoiceForm.client.email }} <br />
-                        {{ invoiceForm.client.address }} <br />
-                        {{ invoiceForm.client.country }} <br />
-                        {{ invoiceForm.client.phone_number }}
+                        {{ invoiceForm.client.company }}
+                        <br v-if="invoiceForm.client.company" />
+                        {{ invoiceForm.client.address }}
+                        <br
+                          v-if="
+                            invoiceForm.client.zipcode ||
+                            invoiceForm.client.city
+                          "
+                        />
+                        {{ invoiceForm.client.zipcode }},
+                        {{ invoiceForm.client.city }}
+                        <br
+                          v-if="invoiceForm.client.company_registration_number"
+                        />
+                        {{ invoiceForm.client.company_registration_number }}
+                        <br v-if="invoiceForm.client.vat_number" />
+                        {{ invoiceForm.client.vat_number }}
                       </a>
                       <a
                         class="nav-link active"
@@ -173,15 +198,12 @@
                       <file-upload
                         ref="upload"
                         accept="image/*"
-                        extensions="jpg,gif,png,webp"
                         v-model="invoiceLogo"
                         post-action="/upload-files"
                         @input-file="inputFile"
                         @input="updatetInvoiceLogo"
                         :drop="true"
                         :multiple="false"
-                        :directory="false"
-                        :drop-directory="false"
                         v-show="true"
                         @input-filter="invoiceLogoFilter"
                       >
@@ -203,7 +225,11 @@
                       v-if="invoiceForm.invoice_no"
                     >
                       <span class="text-muted mr-2">Invoice no:</span>
-                      <span>{{ invoiceForm.invoice_no }}</span>
+                      <span
+                        contenteditable="true"
+                        @blur="(event) => changeValue(event, 'invoice_no')"
+                        v-html="invoiceForm.invoice_no"
+                      ></span>
                     </div>
                     <div
                       class="d-flex mb-3 justify-content-end"
@@ -345,9 +371,7 @@
                                 v-model="invoiceForm.is_invoice_vat_applied"
                             /></span>
                             <label for="is_vat_applied"
-                              ><strong
-                                >VAT ({{ invoiceForm.vat_value }}%)</strong
-                              ></label
+                              ><strong>VAT (%)</strong></label
                             >
                           </td>
                           <td colspan="3" class="text-right border-bottom">
@@ -384,14 +408,20 @@
                     </table>
                   </div>
                   <hr class="my-5" />
-                  <!-- Title -->
                   <h6 class="text-uppercase">Notes</h6>
-
-                  <!-- Text -->
                   <p class="text-muted mb-0">
                     <textarea
                       @blur="toggleChangesNotSaved(true)"
                       v-model="invoiceForm.invoice_notes"
+                      style="width: 100%; height: auto"
+                    />
+                  </p>
+                  <!-- <hr class="my-5" /> -->
+                  <h6 class="text-uppercase mt-4">Bank Details</h6>
+                  <p class="text-muted mb-0">
+                    <textarea
+                      @blur="toggleChangesNotSaved(true)"
+                      v-model="invoiceForm.client.bank_details"
                       style="width: 100%; height: auto"
                     />
                   </p>
@@ -417,14 +447,20 @@ export default {
         client_id: null,
         user: {
           id: "USER_ID",
-          name: "USER_NAME",
-          email: "USER_EMAIL",
+          name: "user_company_name",
+          email: "USER_country",
           phone_number: "USER_NUMBER",
-          state: "USER_STATE",
+          state: "USER_zipcode",
           company: "USER_COMPANY",
-          country: "USER_COUNTRY",
+          country: "USER_City",
           address: "USER_ADDRESS",
           logo: "/images/sitelogo.jpeg",
+          company_registration_number: "",
+          city: "",
+          zipcode: "",
+          vat_number: "",
+          default_currency: "",
+          notes: "",
         },
         client: {
           id: null,
@@ -434,6 +470,13 @@ export default {
           address: "",
           company: "",
           logo: "",
+          company_registration_number: "",
+          city: "",
+          zipcode: "",
+          vat_number: "",
+          default_currency: "",
+          notes: "",
+          bank_details: "",
         },
         invoice_logo: null, // for now this and user.logo are same but can change
         date: null,
@@ -501,6 +544,8 @@ export default {
         (this.invoiceForm.invoice_logo = invoiceData.invoice_logo);
       invoiceData.invoice_logo_url &&
         (this.invoice_logo_url = invoiceData.invoice_logo_url);
+      invoiceData.selected_currency &&
+        (this.invoiceForm.selected_currency = invoiceData.selected_currency);
     }
     if (this.$page.user) {
       this.invoiceForm.user_id = this.$page.user.id;
@@ -511,15 +556,26 @@ export default {
       this.invoiceForm.user.state = this.$page.user.state;
       this.invoiceForm.user.country = this.$page.user.country;
       this.invoiceForm.user.company = this.$page.user.company;
+      this.invoiceForm.user.company_registration_number = this.$page.user.company_registration_number;
       this.invoiceForm.user.phone_number = this.$page.user.phone_number;
-      this.invoiceForm.user.state = this.$page.user.state;
+      this.invoiceForm.user.city = this.$page.user.city;
+      this.invoiceForm.user.zipcode = this.$page.user.zipcode;
+      this.invoiceForm.user.vat_number = this.$page.user.vat_number;
+      this.invoiceForm.user.default_currency = this.$page.user.default_currency;
+      this.invoiceForm.user.notes = this.$page.user.notes;
       if (!invoiceData && this.$page.user.logo_url) {
         this.invoiceForm.invoice_logo = this.$page.user.logo;
         this.invoiceForm.user.logo = this.$page.user.logo_url;
         this.invoice_logo_url = this.$page.user.logo_url;
       }
-      if (!invoiceData && this.$page.user.notes) {
+      if (!invoiceData.invoice_notes && this.$page.user.notes) {
         this.invoiceForm.invoice_notes = this.$page.user.notes;
+      }
+      if (!invoiceData.selected_currency && this.$page.user.default_currency) {
+        this.invoiceForm.selected_currency = this.$page.user.default_currency;
+      }
+      if (!invoiceData && this.$page.client.default_currency) {
+        this.invoiceForm.selected_currency = this.$page.client.default_currency;
       }
     }
     // setting date and due date
@@ -626,26 +682,29 @@ export default {
       console.log("test here");
     },
     changeValue(event, fieldName) {
-      if (fieldName == "user_name") {
+      if (fieldName == "user_company_name") {
         this.invoiceForm.user.name = event.target.innerText;
       }
-      if (fieldName == "user_email") {
+      if (fieldName == "user_country") {
         this.invoiceForm.user.email = event.target.innerText;
       }
       if (fieldName == "user_address") {
         this.invoiceForm.user.address = event.target.innerText;
       }
-      if (fieldName == "user_state") {
+      if (fieldName == "user_zipcode") {
         this.invoiceForm.user.state = event.target.innerText;
       }
-      if (fieldName == "user_country") {
+      if (fieldName == "user_city") {
         this.invoiceForm.user.country = event.target.innerText;
       }
-      if (fieldName == "user_phone_number") {
+      if (fieldName == "user_company_registration_number") {
         this.invoiceForm.user.phone_number = event.target.innerText;
       }
       if (fieldName == "user_company") {
         this.invoiceForm.user.company = event.target.innerText;
+      }
+      if (fieldName == "user_vat_number") {
+        this.invoiceForm.user.vat_number = event.target.innerText;
       }
       if (fieldName == "client_name") {
         this.invoiceForm.client.name = event.target.innerText;
@@ -667,6 +726,9 @@ export default {
       }
       if (fieldName == "client_company") {
         this.invoiceForm.client.company = event.target.innerText;
+      }
+      if (fieldName == "invoice_no") {
+        this.invoiceForm.invoice_no = event.target.innerText;
       }
       this.toggleChangesNotSaved(true); // avoid user changing page without saving changes
     },
@@ -857,7 +919,7 @@ export default {
       let total = 0;
       if (this.invoiceForm.is_invoice_vat_applied) {
         total =
-          this.subtotal - this.subtotal * (this.invoiceForm.vat_value / 100);
+          this.subtotal + this.subtotal * (this.invoiceForm.vat_value / 100);
       } else {
         total = this.subtotal;
       }
@@ -925,6 +987,22 @@ export default {
       this.invoiceForm.client.phone_number = client.phone_number;
       this.invoiceForm.client.address = client.address;
       this.invoiceForm.client.country = client.country;
+      this.invoiceForm.client.company = client.company;
+      this.invoiceForm.client.company_registration_number =
+        client.company_registration_number;
+      this.invoiceForm.client.phone_number = client.phone_number;
+      this.invoiceForm.client.city = client.city;
+      this.invoiceForm.client.zipcode = client.zipcode;
+      this.invoiceForm.client.vat_number = client.vat_number;
+      this.invoiceForm.client.default_currency = client.default_currency;
+      this.invoiceForm.client.notes = client.notes;
+      this.invoiceForm.client.bank_details = client.bank_details;
+      if (client.default_currency) {
+        this.invoiceForm.selected_currency = client.default_currency;
+      }
+      if (client.notes) {
+        this.invoiceForm.invoice_notes = client.notes;
+      }
       this.updateInvoiceNumber(client.id, client.name);
     },
     onClientSelected(client) {
@@ -935,6 +1013,22 @@ export default {
       this.invoiceForm.client.phone_number = client.phone_number;
       this.invoiceForm.client.address = client.address;
       this.invoiceForm.client.country = client.country;
+      this.invoiceForm.client.company = client.company;
+      this.invoiceForm.client.company_registration_number =
+        client.company_registration_number;
+      this.invoiceForm.client.phone_number = client.phone_number;
+      this.invoiceForm.client.city = client.city;
+      this.invoiceForm.client.zipcode = client.zipcode;
+      this.invoiceForm.client.vat_number = client.vat_number;
+      this.invoiceForm.client.default_currency = client.default_currency;
+      this.invoiceForm.client.notes = client.notes;
+      this.invoiceForm.client.bank_details = client.bank_details;
+      if (client.default_currency) {
+        this.invoiceForm.selected_currency = client.default_currency;
+      }
+      if (client.notes) {
+        this.invoiceForm.invoice_notes = client.notes;
+      }
       this.updateInvoiceNumber(client.id, client.name);
     },
   },

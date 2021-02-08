@@ -16,11 +16,11 @@
       pdf-orientation="portrait"
       pdf-content-width="100%"
       @progress="onProgress($event)"
-      @hasStartedGeneration="hasStartedGeneration()"
-      @hasGenerated="hasGenerated($event)"
-      @beforeDownload="beforeDownload($event)"
       ref="html2Pdf"
     >
+      <!-- @hasStartedGeneration="hasStartedGeneration()"
+      @hasGenerated="hasGenerated($event)" -->
+      <!-- @beforeDownload="beforeDownload($event)" -->
       <section slot="pdf-content" class="w-full">
         <div class="col-12 pt-12">
           <div class="container">
@@ -37,18 +37,32 @@
                         class="mt-2 mb-4 overlay profile-pic"
                         style="line-height: 25px; max-width: 500px"
                       >
-                        <span v-html="invoiceForm.user.name"></span><br />
+                        <span v-html="invoiceForm.user.company"></span
+                        ><br v-if="invoiceForm.user.address" />
                         <span v-html="invoiceForm.user.address"></span>
-                        <br />
-                        <span v-html="invoiceForm.user.state"></span>,
-                        <span v-html="invoiceForm.user.country"></span><br />
-                        <span v-html="invoiceForm.user.email"></span>
-                        <br />
-                        <span v-html="invoiceForm.user.phone_number"></span
-                        ><br />
-                        <div class="edit mt-3" title="Edit This">
-                          <v-icon name="edit"></v-icon>
-                        </div>
+                        <br
+                          v-if="
+                            invoiceForm.user.zipcode || invoiceForm.user.city
+                          "
+                        />
+                        <span v-html="invoiceForm.user.zipcode"></span
+                        ><span
+                          v-if="
+                            invoiceForm.user.zipcode && invoiceForm.user.city
+                          "
+                          >,</span
+                        >
+                        <span v-html="invoiceForm.user.city"></span
+                        ><br v-if="invoiceForm.user.country" />
+                        <span v-html="invoiceForm.user.country"></span>
+                        <br
+                          v-if="invoiceForm.user.company_registration_number"
+                        />
+                        <span
+                          v-html="invoiceForm.user.company_registration_number"
+                        ></span
+                        ><br v-if="invoiceForm.user.vat_number" />
+                        <span v-html="invoiceForm.user.vat_number"></span><br />
                       </div>
                       <p class="text-muted mt-5">Bill To:</p>
                       <div class="clickable">
@@ -61,12 +75,38 @@
                             v-if="invoiceForm.client.id"
                             class="nav-link active"
                           >
-                            {{ invoiceForm.client.name }}
-                            <br />
-                            {{ invoiceForm.client.email }} <br />
-                            {{ invoiceForm.client.address }} <br />
-                            {{ invoiceForm.client.country }} <br />
-                            {{ invoiceForm.client.phone_number }}
+                            <span v-html="invoiceForm.client.company"></span
+                            ><br v-if="invoiceForm.client.address" />
+                            <span v-html="invoiceForm.client.address"></span>
+                            <br
+                              v-if="
+                                invoiceForm.client.zipcode ||
+                                invoiceForm.client.city
+                              "
+                            />
+                            <span v-html="invoiceForm.client.zipcode"></span
+                            ><span
+                              v-if="
+                                invoiceForm.client.zipcode &&
+                                invoiceForm.client.city
+                              "
+                              >,</span
+                            >
+                            <span v-html="invoiceForm.client.city"></span
+                            ><br v-if="invoiceForm.client.country" />
+                            <span v-html="invoiceForm.client.country"></span>
+                            <br
+                              v-if="
+                                invoiceForm.client.company_registration_number
+                              "
+                            />
+                            <span
+                              v-html="
+                                invoiceForm.client.company_registration_number
+                              "
+                            ></span
+                            ><br v-if="invoiceForm.client.vat_number" />
+                            <span v-html="invoiceForm.client.vat_number"></span>
                           </a>
                           <a
                             class="nav-link active"
@@ -196,9 +236,9 @@
                                 }}
                               </td>
                               <td class="td">
-                                <button class="btn-rounded-circle badge-danger">
+                                <!-- <button class="btn-rounded-circle badge-danger">
                                   <v-icon name="times"></v-icon>
-                                </button>
+                                </button> -->
                               </td>
                             </tr>
                             <tr>
@@ -223,9 +263,7 @@
                               <td colspan="2" class="text-right">
                                 <span></span>
                                 <label for="is_vat_applied"
-                                  ><strong
-                                    >VAT ({{ invoiceForm.vat_value }}%)</strong
-                                  ></label
+                                  ><strong>VAT (%)</strong></label
                                 >
                               </td>
                               <td colspan="3" class="text-right border-bottom">
@@ -268,14 +306,20 @@
                           </tbody>
                         </table>
                       </div>
-                      <hr class="my-5" />
-                      <!-- Title -->
-                      <h6 class="text-uppercase">Notes</h6>
-
-                      <!-- Text -->
-                      <p class="text-muted mb-0">
-                        {{ invoiceForm.invoice_notes }}
-                      </p>
+                      <template v-if="invoiceForm.invoice_notes">
+                        <hr class="my-5" />
+                        <h6 class="text-uppercase">Notes</h6>
+                        <p class="text-muted mb-0">
+                          {{ invoiceForm.invoice_notes }}
+                        </p>
+                      </template>
+                      <template v-if="invoiceForm.client.bank_details">
+                        <!-- <hr class="my-5" /> -->
+                        <h6 class="text-uppercase mt-4">Bank Details</h6>
+                        <p class="text-muted mb-0">
+                          {{ invoiceForm.client.bank_details }}
+                        </p>
+                      </template>
                     </div>
                   </div>
                 </div>

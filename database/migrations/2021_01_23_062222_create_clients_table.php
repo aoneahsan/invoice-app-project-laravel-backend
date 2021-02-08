@@ -23,6 +23,12 @@ class CreateClientsTable extends Migration
             $table->string('company')->nullable();
             $table->string('country')->nullable();
             $table->longText('notes')->nullable();
+            $table->string('company_registration_number')->nullable();
+            $table->string('city')->nullable();
+            $table->string('zipcode')->nullable();
+            $table->string('vat_number')->nullable();
+            $table->string('default_currency')->nullable();
+            $table->longText('bank_details')->nullable();
             
             $table->softDeletes();
             $table->timestamps();

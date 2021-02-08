@@ -271,9 +271,10 @@
         </div>
         <div class="modal-body">
           <form @submit.prevent="addClient">
+            <!-- name* -->
             <div class="form-group">
               <label for="recipient-name" class="col-form-label text-muted"
-                >Full Name (required)</label
+                >Full Name*</label
               >
               <input
                 type="text"
@@ -285,9 +286,11 @@
               />
               <has-error :form="addClientform" field="name"></has-error>
             </div>
+
+            <!-- email -->
             <div class="form-group">
               <label for="recipient-name" class="col-form-label text-muted"
-                >E-mail address (required)</label
+                >E-mail address</label
               >
               <input
                 type="email"
@@ -295,69 +298,192 @@
                 class="form-control"
                 :class="{ 'is-invalid': addClientform.errors.has('email') }"
                 id="recipient-name"
-                required
               />
               <has-error :form="addClientform" field="email"></has-error>
             </div>
-            <div class="form-group">
-              <label for="recipient-name" class="col-form-label text-muted"
-                >Client's Address (required)</label
-              >
-              <input
-                type="text"
-                v-model="addClientform.address"
-                class="form-control"
-                :class="{ 'is-invalid': addClientform.errors.has('address') }"
-                id="recipient-name"
-                required
-              />
-              <has-error :form="addClientform" field="address"></has-error>
-            </div>
 
+            <!-- Company Name* -->
             <div class="form-group">
-              <label for="recipient-name" class="col-form-label text-muted"
-                >Client's Company</label
+              <label for="company" class="col-form-label text-muted"
+                >Company Name*</label
               >
               <input
                 type="text"
                 v-model="addClientform.company"
                 class="form-control"
                 :class="{ 'is-invalid': addClientform.errors.has('company') }"
-                id="recipient-name"
+                id="company"
                 required
               />
               <has-error :form="addClientform" field="company"></has-error>
             </div>
+
+            <!-- Company registration number -->
             <div class="form-group">
-              <label for="recipient-name" class="col-form-label text-muted"
-                >Country</label
+              <label
+                for="company_registration_number"
+                class="col-form-label text-muted"
+                >Company registration number</label
               >
               <input
                 type="text"
-                v-model="addClientform.country"
+                v-model="addClientform.company_registration_number"
+                class="form-control"
+                :class="{
+                  'is-invalid': addClientform.errors.has(
+                    'company_registration_number'
+                  ),
+                }"
+                id="company_registration_number"
+              />
+              <has-error
+                :form="addClientform"
+                field="company_registration_number"
+              ></has-error>
+            </div>
+
+            <!-- Country* -->
+            <div class="form-group">
+              <label for="country" class="col-form-label text-muted"
+                >Country*</label
+              >
+              <country-select
                 class="form-control"
                 :class="{ 'is-invalid': addClientform.errors.has('country') }"
-                id="recipient-name"
+                id="country"
+                name="country"
                 required
+                v-model="addClientform.country"
+                :country="addClientform.country"
+                :countryName="true"
+                topCountry="Pakistan"
               />
               <has-error :form="addClientform" field="country"></has-error>
             </div>
+
+            <!-- city* -->
             <div class="form-group">
-              <label for="recipient-name" class="col-form-label text-muted"
-                >Phone:</label
+              <label for="city" class="col-form-label text-muted">city*</label>
+              <input
+                type="text"
+                v-model="addClientform.city"
+                class="form-control"
+                :class="{ 'is-invalid': addClientform.errors.has('city') }"
+                id="city"
+                required
+              />
+              <has-error :form="addClientform" field="city"></has-error>
+            </div>
+
+            <!-- zipcode* -->
+            <div class="form-group">
+              <label for="zipcode" class="col-form-label text-muted"
+                >Zip Code*</label
+              >
+              <input
+                type="text"
+                v-model="addClientform.zipcode"
+                class="form-control"
+                :class="{ 'is-invalid': addClientform.errors.has('zipcode') }"
+                id="zipcode"
+                required
+              />
+              <has-error :form="addClientform" field="zipcode"></has-error>
+            </div>
+
+            <!-- address* -->
+            <div class="form-group">
+              <label for="address" class="col-form-label text-muted"
+                >Address*</label
+              >
+              <input
+                type="text"
+                v-model="addClientform.address"
+                class="form-control"
+                :class="{ 'is-invalid': addClientform.errors.has('address') }"
+                id="address"
+                required
+              />
+              <has-error :form="addClientform" field="address"></has-error>
+            </div>
+
+            <!-- vat_number -->
+            <div class="form-group">
+              <label for="vat_number" class="col-form-label text-muted"
+                >VAT Number</label
               >
               <input
                 type="number"
-                v-model="addClientform.phone_number"
+                v-model="addClientform.vat_number"
                 class="form-control"
-                id="recipient-name"
+                id="vat_number"
                 :class="{
-                  'is-invalid': addClientform.errors.has('phone_number'),
+                  'is-invalid': addClientform.errors.has('vat_number'),
                 }"
-                required
               />
-              <has-error :form="addClientform" field="phone_number"></has-error>
+              <has-error :form="addClientform" field="vat_number"></has-error>
             </div>
+
+            <!-- default_currency -->
+            <div class="form-group">
+              <label for="default_currency" class="col-form-label text-muted"
+                >Default Currency</label
+              >
+
+              <select
+                id="default_currency"
+                class="form-control"
+                :class="{
+                  'is-invalid': addClientform.errors.has('default_currency'),
+                }"
+                v-model="addClientform.default_currency"
+              >
+                <option value="">Select Currency</option>
+                <option
+                  v-for="(item, index) in currencies"
+                  :key="index"
+                  :value="item"
+                >
+                  {{ item }}
+                </option>
+              </select>
+
+              <has-error
+                :form="addClientform"
+                field="default_currency"
+              ></has-error>
+            </div>
+
+            <!-- notes -->
+            <div class="form-group">
+              <label for="notes" class="col-form-label text-muted">Notes</label>
+              <textarea
+                v-model="addClientform.notes"
+                class="form-control"
+                id="notes"
+                :class="{
+                  'is-invalid': addClientform.errors.has('notes'),
+                }"
+              ></textarea>
+              <has-error :form="addClientform" field="notes"></has-error>
+            </div>
+
+            <!-- bank_details -->
+            <div class="form-group">
+              <label for="bank_details" class="col-form-label text-muted"
+                >Bank Details</label
+              >
+              <textarea
+                v-model="addClientform.bank_details"
+                class="form-control"
+                id="bank_details"
+                :class="{
+                  'is-invalid': addClientform.errors.has('bank_details'),
+                }"
+              ></textarea>
+              <has-error :form="addClientform" field="bank_details"></has-error>
+            </div>
+
             <div class="modal-footer">
               <button
                 type="submit"
@@ -365,82 +491,6 @@
                 class="btn btn-primary w-100"
               >
                 Submit
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </modal>
-    <!-- Edit User Info Modal -->
-    <modal
-      name="editUserModal"
-      :scrollable="true"
-      height="auto"
-      :focusTrap="true"
-      :reset="true"
-    >
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Edit User</h5>
-        </div>
-        <div class="modal-body">
-          <form @submit.prevent="updateUserInfo">
-            <div class="form-group">
-              <label class="col-form-label">Name:</label>
-              <input
-                type="text"
-                v-model="editUserForm.name"
-                class="form-control"
-              />
-            </div>
-            <div class="form-group">
-              <label class="col-form-label">Address:</label>
-              <input
-                type="text"
-                v-model="editUserForm.address"
-                class="form-control"
-              />
-            </div>
-            <div class="form-group">
-              <label class="col-form-label">State:</label>
-              <input
-                type="text"
-                v-model="editUserForm.state"
-                class="form-control"
-              />
-            </div>
-            <div class="form-group">
-              <label class="col-form-label">Country:</label>
-              <input
-                type="text"
-                v-model="editUserForm.country"
-                class="form-control"
-              />
-            </div>
-            <div class="form-group">
-              <label class="col-form-label">Email:</label>
-              <input
-                type="text"
-                v-model="editUserForm.email"
-                class="form-control"
-              />
-            </div>
-            <div class="form-group">
-              <label class="col-form-label">Phone:</label>
-              <input
-                type="text"
-                v-model="editUserForm.phone"
-                class="form-control"
-              />
-            </div>
-
-            <div class="modal-footer">
-              <button
-                :disabled="editUserForm.busy"
-                data-dismiss="modal"
-                class="btn btn-primary w-100"
-              >
-                Edit User
               </button>
             </div>
           </form>
@@ -512,15 +562,50 @@ export default {
         company: "",
         country: "",
         phone_number: "",
+        notes: "",
+        company: "",
+        company_registration_number: "",
+        city: "",
+        zipcode: "",
+        vat_number: "",
+        default_currency: "",
+        bank_details: "",
+      }),
+      editClientform: new Form({
+        id: "",
+        name: "",
+        email: "",
+        address: "",
+        company: "",
+        country: "",
+        phone_number: "",
+        notes: "",
+        company: "",
+        company_registration_number: "",
+        city: "",
+        zipcode: "",
+        vat_number: "",
+        default_currency: "",
+        bank_details: "",
       }),
       editUserForm: new Form({
+        username: "",
         name: "",
         email: "",
         address: "",
         state: "",
         country: "",
-        phone: "",
+        phone_number: "",
+        logo: "",
+        notes: "",
+        company: "",
+        company_registration_number: "",
+        city: "",
+        zipcode: "",
+        vat_number: "",
+        default_currency: "",
       }),
+      currencies: ["USD", "EUR", "GBP", "YEN", "INR", "IDR"],
     };
   },
 
@@ -536,14 +621,44 @@ export default {
       if (this.$page.clients[index]) {
         EventBus.$emit("event_clientSelected", this.$page.clients[index]);
         this.$modal.hide("ClientsListModal");
-      }
-      else {
+      } else {
         alert("Invalid Client Selected.");
       }
     },
     addClient() {
       this.addClientform
         .post("/user/clients")
+        .then((res) => {
+          if (res) {
+            // this.$notify({
+            //   group: "app",
+            //   type: "success",
+            //   title: "Request Successfull",
+            //   text: "Client Added Successfully.",
+            //   duration: 70000,
+            //   speed: 1000,
+            // });
+            this.addClientform.reset();
+            this.$modal.hide("addClientModal");
+            EventBus.$emit("event_clientAdded", res.data.data);
+          }
+        })
+        .catch((err) => {
+          if (err) {
+            // this.$notify({
+            //   group: "app",
+            //   type: "error",
+            //   title: "Request Faild",
+            //   text: err.message,
+            //   duration: 70000,
+            //   speed: 1000,
+            // });
+          }
+        });
+    },
+    editClient() {
+      this.editClientform
+        .put("/user/clients")
         .then((res) => {
           if (res) {
             // this.$notify({
@@ -601,7 +716,7 @@ export default {
 </script>
 
 <style>
-  .user_selectable {
-    cursor: pointer;
-  }
+.user_selectable {
+  cursor: pointer;
+}
 </style>

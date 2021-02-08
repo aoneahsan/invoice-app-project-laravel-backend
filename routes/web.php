@@ -89,6 +89,8 @@ Route::group([
 
         // clients routes
         Route::get("/clients")->uses("PagesController@Clients")->name("clients.view");
+        Route::get("/clients/{id}")->uses("User\UserClientController@show")->name("client.show");
+        Route::put("/clients/{id}")->uses("User\UserClientController@update")->name("client.update");
         Route::get("/user/clients")->uses("User\UserClientController@getClients")->name("user.clients.get");
         Route::post("/user/clients")->uses("User\UserClientController@store")->name("user.clients.post");
         Route::delete("/user/clients/{id}")->uses("User\UserClientController@destroy")->name("user.clients.delete");

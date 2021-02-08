@@ -14,7 +14,7 @@
           <!-- name -->
           <div class="form-group row">
             <label for="name" class="col-md-4 col-form-label text-md-right"
-              >Name*</label
+              >Full Name*</label
             >
 
             <div class="col-md-6">
@@ -56,30 +56,85 @@
             </div>
           </div> -->
 
-          <!-- address -->
+          <!-- company -->
           <div class="form-group row">
-            <label for="address" class="col-md-4 col-form-label text-md-right"
-              >Address*</label
+            <label for="company" class="col-md-4 col-form-label text-md-right"
+              >Company Name*</label
             >
 
             <div class="col-md-6">
               <input
-                id="address"
+                id="company"
                 type="text"
                 class="form-control"
-                :class="{ 'is-invalid': updateUserform.errors.has('address') }"
-                name="address"
-                v-model="updateUserform.address"
+                :class="{ 'is-invalid': updateUserform.errors.has('company') }"
+                name="company"
+                v-model="updateUserform.company"
                 required
-                autocomplete="address"
+                autocomplete="company"
               />
 
-              <has-error :form="updateUserform" field="address"></has-error>
+              <has-error :form="updateUserform" field="company"></has-error>
+            </div>
+          </div>
+
+          <!-- company_registration_number -->
+          <div class="form-group row">
+            <label
+              for="company_registration_number"
+              class="col-md-4 col-form-label text-md-right"
+              >Company Registration Number</label
+            >
+
+            <div class="col-md-6">
+              <input
+                id="company_registration_number"
+                type="text"
+                class="form-control"
+                :class="{
+                  'is-invalid': updateUserform.errors.has(
+                    'company_registration_number'
+                  ),
+                }"
+                name="company_registration_number"
+                v-model="updateUserform.company_registration_number"
+                autocomplete="company_registration_number"
+              />
+
+              <has-error
+                :form="updateUserform"
+                field="company_registration_number"
+              ></has-error>
+            </div>
+          </div>
+
+          <!-- vat_number -->
+          <div class="form-group row">
+            <label
+              for="vat_number"
+              class="col-md-4 col-form-label text-md-right"
+              >VAT Number</label
+            >
+
+            <div class="col-md-6">
+              <input
+                id="vat_number"
+                type="text"
+                class="form-control"
+                :class="{
+                  'is-invalid': updateUserform.errors.has('vat_number'),
+                }"
+                name="vat_number"
+                v-model="updateUserform.vat_number"
+                autocomplete="vat_number"
+              />
+
+              <has-error :form="updateUserform" field="vat_number"></has-error>
             </div>
           </div>
 
           <!-- state -->
-          <div class="form-group row">
+          <!-- <div class="form-group row">
             <label for="state" class="col-md-4 col-form-label text-md-right"
               >State</label
             >
@@ -97,7 +152,7 @@
 
               <has-error :form="updateUserform" field="state"></has-error>
             </div>
-          </div>
+          </div> -->
 
           <!-- country -->
           <div class="form-group row">
@@ -122,8 +177,52 @@
             </div>
           </div>
 
-          <!-- phone number -->
+          <!-- city -->
           <div class="form-group row">
+            <label for="city" class="col-md-4 col-form-label text-md-right"
+              >City*</label
+            >
+
+            <div class="col-md-6">
+              <input
+                id="city"
+                type="text"
+                class="form-control"
+                :class="{ 'is-invalid': updateUserform.errors.has('city') }"
+                name="city"
+                v-model="updateUserform.city"
+                required
+                autocomplete="city"
+              />
+
+              <has-error :form="updateUserform" field="city"></has-error>
+            </div>
+          </div>
+
+          <!-- zipcode -->
+          <div class="form-group row">
+            <label for="zipcode" class="col-md-4 col-form-label text-md-right"
+              >Zip Code*</label
+            >
+
+            <div class="col-md-6">
+              <input
+                id="zipcode"
+                type="text"
+                class="form-control"
+                :class="{ 'is-invalid': updateUserform.errors.has('zipcode') }"
+                name="zipcode"
+                v-model="updateUserform.zipcode"
+                required
+                autocomplete="zipcode"
+              />
+
+              <has-error :form="updateUserform" field="zipcode"></has-error>
+            </div>
+          </div>
+
+          <!-- phone number -->
+          <!-- <div class="form-group row">
             <label
               for="phone_number"
               class="col-md-4 col-form-label text-md-right"
@@ -148,6 +247,62 @@
                 field="phone_number"
               ></has-error>
             </div>
+          </div> -->
+
+          <!-- address -->
+          <div class="form-group row">
+            <label for="address" class="col-md-4 col-form-label text-md-right"
+              >Address*</label
+            >
+
+            <div class="col-md-6">
+              <input
+                id="address"
+                type="text"
+                class="form-control"
+                :class="{ 'is-invalid': updateUserform.errors.has('address') }"
+                name="address"
+                v-model="updateUserform.address"
+                required
+                autocomplete="address"
+              />
+
+              <has-error :form="updateUserform" field="address"></has-error>
+            </div>
+          </div>
+
+          <!-- default_currency -->
+          <div class="form-group row">
+            <label
+              for="default_currency"
+              class="col-md-4 col-form-label text-md-right"
+              >Default Currency</label
+            >
+
+            <div class="col-md-6">
+              <select
+                id="default_currency"
+                class="form-control"
+                :class="{
+                  'is-invalid': updateUserform.errors.has('default_currency'),
+                }"
+                v-model="updateUserform.default_currency"
+              >
+                <option value="">Select Currency</option>
+                <option
+                  v-for="(item, index) in currencies"
+                  :key="index"
+                  :value="item"
+                >
+                  {{ item }}
+                </option>
+              </select>
+
+              <has-error
+                :form="updateUserform"
+                field="default_currency"
+              ></has-error>
+            </div>
           </div>
 
           <!-- logo -->
@@ -164,7 +319,6 @@
                   ref="upload"
                   post-action="/upload-files"
                   accept="image/*"
-                  extensions="jpg,gif,png,webp"
                   @input-file="inputFile"
                   :drop="true"
                   v-model="logoImage"
@@ -240,9 +394,16 @@ export default {
         phone_number: "",
         logo: "",
         notes: "",
+        company: "",
+        company_registration_number: "",
+        city: "",
+        zipcode: "",
+        vat_number: "",
+        default_currency: "",
       }),
       country: "",
       logoImage: [],
+      currencies: ["USD", "EUR", "GBP", "YEN", "INR", "IDR"],
     };
   },
   beforeMount() {
@@ -278,6 +439,15 @@ export default {
         .put("/user")
         .then((res) => {
           this.updateUserDataLocally(res.data.data);
+          this.$notify({
+              group: "app",
+              type: "success",
+              title: "Request Successfull",
+              text: "Profile Updated Successfully",
+              duration: 5000,
+              speed: 1000,
+              closeOnClick: true,
+            });
         })
         .catch((err) => {
           if (err) {
@@ -305,6 +475,12 @@ export default {
         this.updateUserform.logo = user.logo;
         this.updateUserform.logo_url = user.logo_url;
         this.updateUserform.notes = user.notes;
+        this.updateUserform.company = user.company;
+        this.updateUserform.company_registration_number = user.company_registration_number;
+        this.updateUserform.city = user.city;
+        this.updateUserform.zipcode = user.zipcode;
+        this.updateUserform.vat_number = user.vat_number;
+        this.updateUserform.default_currency = user.default_currency;
       }
     },
   },

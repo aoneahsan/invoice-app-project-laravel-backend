@@ -34,6 +34,11 @@ class CreateUsersTable extends Migration
             $table->longText('country')->nullable();
             $table->string('state')->nullable();
             $table->string('company')->nullable();
+            $table->string('company_registration_number')->nullable();
+            $table->string('city')->nullable();
+            $table->string('zipcode')->nullable();
+            $table->string('vat_number')->nullable();
+            $table->string('default_currency')->nullable();
             $table->string('logo')->nullable();
             $table->longText('notes')->nullable();
 

@@ -21,6 +21,7 @@
 
 <script>
 import cellDeleteClient from "./cellDeleteClient";
+import cellEditClient from "./cellEditClient";
 export default {
   data() {
     return {
@@ -28,6 +29,11 @@ export default {
         {
           label: "ID",
           name: "id",
+          orderable: true,
+        },
+        {
+          label: "Company Name",
+          name: "company",
           orderable: true,
         },
         {
@@ -40,22 +46,40 @@ export default {
           name: "email",
           orderable: true,
         },
-        {
-          name: "phone_number",
-          orderable: false,
-          label: "Phone Number",
-        },
-        {
-          name: "address",
-          label: "Address",
-        },
+        // {
+        //   name: "phone_number",
+        //   orderable: false,
+        //   label: "Phone Number",
+        // },
         {
           name: "country",
           label: "Country",
         },
         {
-          name: "company",
-          label: "Company",
+          name: "city",
+          label: "City",
+        },
+        {
+          name: "zipcode",
+          label: "Zip Code",
+        },
+        {
+          name: "default_currency",
+          label: "Default Currency",
+        },
+        {
+          label: "",
+          name: "Edit",
+          orderable: false,
+          classes: {
+            btn: true,
+            "btn-info": true,
+            "btn-sm": true,
+            lift: true,
+          },
+          event: "click",
+          handler: this.editClient,
+          component: cellEditClient,
         },
         {
           label: "",
@@ -68,7 +92,7 @@ export default {
             lift: true,
           },
           event: "click",
-          handler: this.displayRow,
+          handler: this.deleteClient,
           component: cellDeleteClient,
         },
       ],
@@ -79,7 +103,12 @@ export default {
     openAddClientModal() {
       this.$modal.show("addClientModal");
     },
-    displayRow(data) {
+    editClient(data) {
+      if (data.id) {
+        this.$inertia.visit("/clients/" + data.id);
+      }
+    },
+    deleteClient(data) {
       if (confirm("Do you want to delete '" + data.name + "' client?")) {
         axios
           .delete(`/user/clients/${data.id}`)
