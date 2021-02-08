@@ -563,7 +563,7 @@ export default {
       this.invoiceForm.user.vat_number = this.$page.user.vat_number;
       this.invoiceForm.user.default_currency = this.$page.user.default_currency;
       this.invoiceForm.user.notes = this.$page.user.notes;
-      if (!invoiceData && this.$page.user.logo_url) {
+      if (!invoiceData.invoice_logo_url && this.$page.user.logo_url) {
         this.invoiceForm.invoice_logo = this.$page.user.logo;
         this.invoiceForm.user.logo = this.$page.user.logo_url;
         this.invoice_logo_url = this.$page.user.logo_url;

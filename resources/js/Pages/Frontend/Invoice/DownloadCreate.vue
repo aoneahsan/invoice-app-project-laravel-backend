@@ -379,8 +379,8 @@ export default {
         invoice_no: null,
         selected_currency: "USD",
         invoice_type: "invoice", // "invoice" | "expense"
-        sub_total: "",
-        total: "",
+        sub_total: 0,
+        total: 0,
       }),
       invoice_logo_url: "/images/sitelogo.jpeg",
       invoiceLogo: [],
