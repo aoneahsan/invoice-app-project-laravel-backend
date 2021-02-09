@@ -36,7 +36,11 @@
             >
               Switch To Expense
             </button>
-            <button @click="downloadInvoice()" class="btn btn-white ml-2 lift">
+            <button
+              @click="downloadInvoice()"
+              :disabled="changes_not_saved"
+              class="btn btn-white ml-2 lift"
+            >
               Download
             </button>
           </template>
@@ -118,6 +122,9 @@
                       v-html="invoiceForm.user.country"
                     ></span>
                     <br v-if="invoiceForm.user.company_registration_number" />
+                    <span v-if="invoiceForm.user.company_registration_number"
+                      >Company Number:
+                    </span>
                     <span
                       contenteditable="true"
                       @blur="
@@ -127,6 +134,7 @@
                       v-html="invoiceForm.user.company_registration_number"
                     ></span
                     ><br v-if="invoiceForm.user.vat_number" />
+                    <span v-if="invoiceForm.user.vat_number">VAT Number: </span>
                     <span
                       contenteditable="true"
                       @blur="(event) => changeValue(event, 'user_vat_number')"
@@ -158,14 +166,31 @@
                             invoiceForm.client.city
                           "
                         />
-                        {{ invoiceForm.client.zipcode }},
-                        {{ invoiceForm.client.city }}
+                        {{ invoiceForm.client.zipcode
+                        }}<span
+                          v-if="
+                            invoiceForm.client.zipcode &&
+                            invoiceForm.client.city
+                          "
+                          >,</span
+                        >
+                        {{ invoiceForm.client.city
+                        }}<br v-if="invoiceForm.client.country" />
+                        {{ invoiceForm.client.country }}
                         <br
                           v-if="invoiceForm.client.company_registration_number"
                         />
-                        {{ invoiceForm.client.company_registration_number }}
+                        <span
+                          v-if="invoiceForm.client.company_registration_number"
+                          >{{
+                            "Company Number: " +
+                            invoiceForm.client.company_registration_number
+                          }}</span
+                        >
                         <br v-if="invoiceForm.client.vat_number" />
-                        {{ invoiceForm.client.vat_number }}
+                        <span v-if="invoiceForm.client.vat_number">{{
+                          "VAT Number: " + invoiceForm.client.vat_number
+                        }}</span>
                       </a>
                       <a
                         class="nav-link active"

@@ -11,10 +11,130 @@
       </div>
       <div class="modal-body">
         <form @submit.prevent="updateClient">
+          <!-- company -->
+          <div class="form-group row">
+            <label for="company" class="col-md-4 col-form-label text-md-right"
+              >Company Name*</label
+            >
+
+            <div class="col-md-6">
+              <input
+                id="company"
+                type="text"
+                class="form-control"
+                :class="{
+                  'is-invalid': updateClientform.errors.has('company'),
+                }"
+                name="company"
+                v-model="updateClientform.company"
+                required
+                autocomplete="company"
+                autofocus
+              />
+
+              <has-error :form="updateClientform" field="company"></has-error>
+            </div>
+          </div>
+
+          <!-- address -->
+          <div class="form-group row">
+            <label for="address" class="col-md-4 col-form-label text-md-right"
+              >Address*</label
+            >
+
+            <div class="col-md-6">
+              <input
+                id="address"
+                type="text"
+                class="form-control"
+                :class="{
+                  'is-invalid': updateClientform.errors.has('address'),
+                }"
+                name="address"
+                v-model="updateClientform.address"
+                required
+                autocomplete="address"
+              />
+
+              <has-error :form="updateClientform" field="address"></has-error>
+            </div>
+          </div>
+
+          <!-- zipcode -->
+          <div class="form-group row">
+            <label for="zipcode" class="col-md-4 col-form-label text-md-right"
+              >Zip Code*</label
+            >
+
+            <div class="col-md-6">
+              <input
+                id="zipcode"
+                type="text"
+                class="form-control"
+                :class="{
+                  'is-invalid': updateClientform.errors.has('zipcode'),
+                }"
+                name="zipcode"
+                v-model="updateClientform.zipcode"
+                required
+                autocomplete="zipcode"
+              />
+
+              <has-error :form="updateClientform" field="zipcode"></has-error>
+            </div>
+          </div>
+
+          <!-- city -->
+          <div class="form-group row">
+            <label for="city" class="col-md-4 col-form-label text-md-right"
+              >City*</label
+            >
+
+            <div class="col-md-6">
+              <input
+                id="city"
+                type="text"
+                class="form-control"
+                :class="{ 'is-invalid': updateClientform.errors.has('city') }"
+                name="city"
+                v-model="updateClientform.city"
+                required
+                autocomplete="city"
+              />
+
+              <has-error :form="updateClientform" field="city"></has-error>
+            </div>
+          </div>
+
+          <!-- country -->
+          <div class="form-group row">
+            <label for="country" class="col-md-4 col-form-label text-md-right"
+              >Country*</label
+            >
+
+            <div class="col-md-6">
+              <country-select
+                class="form-control"
+                :class="{
+                  'is-invalid': updateClientform.errors.has('country'),
+                }"
+                id="country"
+                name="country"
+                required
+                v-model="updateClientform.country"
+                :country="updateClientform.country"
+                :countryName="true"
+                topCountry="Pakistan"
+              />
+
+              <has-error :form="updateClientform" field="country"></has-error>
+            </div>
+          </div>
+
           <!-- name -->
           <div class="form-group row">
             <label for="name" class="col-md-4 col-form-label text-md-right"
-              >Full Name*</label
+              >Contact Full Name*</label
             >
 
             <div class="col-md-6">
@@ -27,7 +147,6 @@
                 v-model="updateClientform.name"
                 required
                 autocomplete="name"
-                autofocus
               />
 
               <has-error :form="updateClientform" field="name"></has-error>
@@ -52,28 +171,6 @@
               />
 
               <has-error :form="updateClientform" field="email"></has-error>
-            </div>
-          </div>
-
-          <!-- company -->
-          <div class="form-group row">
-            <label for="company" class="col-md-4 col-form-label text-md-right"
-              >Company Name*</label
-            >
-
-            <div class="col-md-6">
-              <input
-                id="company"
-                type="text"
-                class="form-control"
-                :class="{ 'is-invalid': updateClientform.errors.has('company') }"
-                name="company"
-                v-model="updateClientform.company"
-                required
-                autocomplete="company"
-              />
-
-              <has-error :form="updateClientform" field="company"></has-error>
             </div>
           </div>
 
@@ -128,145 +225,10 @@
                 autocomplete="vat_number"
               />
 
-              <has-error :form="updateClientform" field="vat_number"></has-error>
-            </div>
-          </div>
-
-          <!-- state -->
-          <!-- <div class="form-group row">
-            <label for="state" class="col-md-4 col-form-label text-md-right"
-              >State</label
-            >
-
-            <div class="col-md-6">
-              <input
-                id="state"
-                type="text"
-                class="form-control"
-                :class="{ 'is-invalid': updateClientform.errors.has('state') }"
-                name="state"
-                v-model="updateClientform.state"
-                autocomplete="state"
-              />
-
-              <has-error :form="updateClientform" field="state"></has-error>
-            </div>
-          </div> -->
-
-          <!-- country -->
-          <div class="form-group row">
-            <label for="country" class="col-md-4 col-form-label text-md-right"
-              >Country*</label
-            >
-
-            <div class="col-md-6">
-              <country-select
-                class="form-control"
-                :class="{ 'is-invalid': updateClientform.errors.has('country') }"
-                id="country"
-                name="country"
-                required
-                v-model="updateClientform.country"
-                :country="updateClientform.country"
-                :countryName="true"
-                topCountry="Pakistan"
-              />
-
-              <has-error :form="updateClientform" field="country"></has-error>
-            </div>
-          </div>
-
-          <!-- city -->
-          <div class="form-group row">
-            <label for="city" class="col-md-4 col-form-label text-md-right"
-              >City*</label
-            >
-
-            <div class="col-md-6">
-              <input
-                id="city"
-                type="text"
-                class="form-control"
-                :class="{ 'is-invalid': updateClientform.errors.has('city') }"
-                name="city"
-                v-model="updateClientform.city"
-                required
-                autocomplete="city"
-              />
-
-              <has-error :form="updateClientform" field="city"></has-error>
-            </div>
-          </div>
-
-          <!-- zipcode -->
-          <div class="form-group row">
-            <label for="zipcode" class="col-md-4 col-form-label text-md-right"
-              >Zip Code*</label
-            >
-
-            <div class="col-md-6">
-              <input
-                id="zipcode"
-                type="text"
-                class="form-control"
-                :class="{ 'is-invalid': updateClientform.errors.has('zipcode') }"
-                name="zipcode"
-                v-model="updateClientform.zipcode"
-                required
-                autocomplete="zipcode"
-              />
-
-              <has-error :form="updateClientform" field="zipcode"></has-error>
-            </div>
-          </div>
-
-          <!-- phone number -->
-          <!-- <div class="form-group row">
-            <label
-              for="phone_number"
-              class="col-md-4 col-form-label text-md-right"
-              >Phone Number</label
-            >
-
-            <div class="col-md-6">
-              <input
-                id="phone_number"
-                type="text"
-                class="form-control"
-                :class="{
-                  'is-invalid': updateClientform.errors.has('phone_number'),
-                }"
-                name="phone_number"
-                v-model="updateClientform.phone_number"
-                autocomplete="phone_number"
-              />
-
               <has-error
                 :form="updateClientform"
-                field="phone_number"
+                field="vat_number"
               ></has-error>
-            </div>
-          </div> -->
-
-          <!-- address -->
-          <div class="form-group row">
-            <label for="address" class="col-md-4 col-form-label text-md-right"
-              >Address*</label
-            >
-
-            <div class="col-md-6">
-              <input
-                id="address"
-                type="text"
-                class="form-control"
-                :class="{ 'is-invalid': updateClientform.errors.has('address') }"
-                name="address"
-                v-model="updateClientform.address"
-                required
-                autocomplete="address"
-              />
-
-              <has-error :form="updateClientform" field="address"></has-error>
             </div>
           </div>
 
@@ -304,8 +266,96 @@
             </div>
           </div>
 
-          <!-- logo -->
-          <!-- <div class="form-group row">
+          <!-- notes -->
+          <div class="form-group row">
+            <label for="notes" class="col-md-4 col-form-label text-md-right"
+              >Default Notes</label
+            >
+
+            <div class="col-md-6">
+              <textarea
+                id="notes"
+                type="text"
+                class="form-control"
+                :class="{
+                  'is-invalid': updateClientform.errors.has('notes'),
+                }"
+                name="notes"
+                v-model="updateClientform.notes"
+                autocomplete="notes"
+              ></textarea>
+
+              <has-error :form="updateClientform" field="notes"></has-error>
+            </div>
+          </div>
+
+          <!-- bank_details -->
+          <div class="form-group row">
+            <label
+              for="bank_details"
+              class="col-md-4 col-form-label text-md-right"
+              >Bank Details</label
+            >
+
+            <div class="col-md-6">
+              <textarea
+                id="bank_details"
+                type="text"
+                class="form-control"
+                :class="{
+                  'is-invalid': updateClientform.errors.has('bank_details'),
+                }"
+                name="bank_details"
+                v-model="updateClientform.bank_details"
+                autocomplete="bank_details"
+              ></textarea>
+
+              <has-error
+                :form="updateClientform"
+                field="bank_details"
+              ></has-error>
+            </div>
+          </div>
+
+          <!-- submit -->
+          <div class="form-group row mb-0">
+            <div class="col-md-6 offset-md-4">
+              <button
+                type="submit"
+                :disabled="updateClientform.busy"
+                class="btn btn-info lift"
+              >
+                Update
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- state -->
+    <!-- <div class="form-group row">
+            <label for="state" class="col-md-4 col-form-label text-md-right"
+              >State</label
+            >
+
+            <div class="col-md-6">
+              <input
+                id="state"
+                type="text"
+                class="form-control"
+                :class="{ 'is-invalid': updateClientform.errors.has('state') }"
+                name="state"
+                v-model="updateClientform.state"
+                autocomplete="state"
+              />
+
+              <has-error :form="updateClientform" field="state"></has-error>
+            </div>
+          </div> -->
+
+    <!-- logo -->
+    <!-- <div class="form-group row">
             <label for="logo" class="col-md-4 col-form-label text-md-right"
               >Logo</label
             >
@@ -337,67 +387,33 @@
             </div>
           </div> -->
 
-          <!-- notes -->
-          <div class="form-group row">
-            <label for="notes" class="col-md-4 col-form-label text-md-right"
-              >Default Notes</label
+    <!-- phone number -->
+    <!-- <div class="form-group row">
+            <label
+              for="phone_number"
+              class="col-md-4 col-form-label text-md-right"
+              >Phone Number</label
             >
 
             <div class="col-md-6">
-              <textarea
-                id="notes"
+              <input
+                id="phone_number"
                 type="text"
                 class="form-control"
                 :class="{
-                  'is-invalid': updateClientform.errors.has('notes'),
+                  'is-invalid': updateClientform.errors.has('phone_number'),
                 }"
-                name="notes"
-                v-model="updateClientform.notes"
-                autocomplete="notes"
-              ></textarea>
+                name="phone_number"
+                v-model="updateClientform.phone_number"
+                autocomplete="phone_number"
+              />
 
-              <has-error :form="updateClientform" field="notes"></has-error>
+              <has-error
+                :form="updateClientform"
+                field="phone_number"
+              ></has-error>
             </div>
-          </div>
-
-          <!-- bank_details -->
-          <div class="form-group row">
-            <label for="bank_details" class="col-md-4 col-form-label text-md-right"
-              >Bank Details</label
-            >
-
-            <div class="col-md-6">
-              <textarea
-                id="bank_details"
-                type="text"
-                class="form-control"
-                :class="{
-                  'is-invalid': updateClientform.errors.has('bank_details'),
-                }"
-                name="bank_details"
-                v-model="updateClientform.bank_details"
-                autocomplete="bank_details"
-              ></textarea>
-
-              <has-error :form="updateClientform" field="bank_details"></has-error>
-            </div>
-          </div>
-
-          <!-- submit -->
-          <div class="form-group row mb-0">
-            <div class="col-md-6 offset-md-4">
-              <button
-                type="submit"
-                :disabled="updateClientform.busy"
-                class="btn btn-info lift"
-              >
-                Update
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
+          </div> -->
   </FrontendMain>
 </template>
 
@@ -422,7 +438,7 @@ export default {
         zipcode: "",
         vat_number: "",
         default_currency: "",
-        bank_details: ""
+        bank_details: "",
       }),
       country: "",
       logoImage: [],
@@ -459,18 +475,18 @@ export default {
     },
     completeUpdateClient() {
       this.updateClientform
-        .put("/clients/"+this.updateClientform.id)
+        .put("/clients/" + this.updateClientform.id)
         .then((res) => {
           this.updateClientDataLocally(res.data.data);
           this.$notify({
-              group: "app",
-              type: "success",
-              title: "Request Successfull",
-              text: "Client Updated Successfully",
-              duration: 5000,
-              speed: 1000,
-              closeOnClick: true,
-            });
+            group: "app",
+            type: "success",
+            title: "Request Successfull",
+            text: "Client Updated Successfully",
+            duration: 5000,
+            speed: 1000,
+            closeOnClick: true,
+          });
         })
         .catch((err) => {
           if (err) {
@@ -499,7 +515,8 @@ export default {
         this.updateClientform.logo_url = client.logo_url;
         this.updateClientform.notes = client.notes;
         this.updateClientform.company = client.company;
-        this.updateClientform.company_registration_number = client.company_registration_number;
+        this.updateClientform.company_registration_number =
+          client.company_registration_number;
         this.updateClientform.city = client.city;
         this.updateClientform.zipcode = client.zipcode;
         this.updateClientform.vat_number = client.vat_number;

@@ -104,7 +104,7 @@ export default {
       this.form
         .post("/sign-in")
         .then(({ data }) => {
-          this.$inertia.visit("/createinvoice");
+          this.$inertia.visit("/user/profile");
         })
         .catch((err) => {
           if (err) {

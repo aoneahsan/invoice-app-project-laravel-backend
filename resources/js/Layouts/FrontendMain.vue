@@ -257,6 +257,7 @@
         </div>
       </div>
     </modal>
+
     <!-- Add Client Modal -->
     <modal
       name="addClientModal"
@@ -271,10 +272,91 @@
         </div>
         <div class="modal-body">
           <form @submit.prevent="addClient">
+            <!-- Company Name* -->
+            <div class="form-group">
+              <label for="company" class="col-form-label text-muted"
+                >Company Name*</label
+              >
+              <input
+                type="text"
+                v-model="addClientform.company"
+                class="form-control"
+                :class="{ 'is-invalid': addClientform.errors.has('company') }"
+                id="company"
+                required
+              />
+              <has-error :form="addClientform" field="company"></has-error>
+            </div>
+
+            <!-- address* -->
+            <div class="form-group">
+              <label for="address" class="col-form-label text-muted"
+                >Address*</label
+              >
+              <input
+                type="text"
+                v-model="addClientform.address"
+                class="form-control"
+                :class="{ 'is-invalid': addClientform.errors.has('address') }"
+                id="address"
+                required
+              />
+              <has-error :form="addClientform" field="address"></has-error>
+            </div>
+
+            <!-- zipcode* -->
+            <div class="form-group">
+              <label for="zipcode" class="col-form-label text-muted"
+                >Zip Code*</label
+              >
+              <input
+                type="text"
+                v-model="addClientform.zipcode"
+                class="form-control"
+                :class="{ 'is-invalid': addClientform.errors.has('zipcode') }"
+                id="zipcode"
+                required
+              />
+              <has-error :form="addClientform" field="zipcode"></has-error>
+            </div>
+
+            <!-- city* -->
+            <div class="form-group">
+              <label for="city" class="col-form-label text-muted">City*</label>
+              <input
+                type="text"
+                v-model="addClientform.city"
+                class="form-control"
+                :class="{ 'is-invalid': addClientform.errors.has('city') }"
+                id="city"
+                required
+              />
+              <has-error :form="addClientform" field="city"></has-error>
+            </div>
+
+            <!-- Country* -->
+            <div class="form-group">
+              <label for="country" class="col-form-label text-muted"
+                >Country*</label
+              >
+              <country-select
+                class="form-control"
+                :class="{ 'is-invalid': addClientform.errors.has('country') }"
+                id="country"
+                name="country"
+                required
+                v-model="addClientform.country"
+                :country="addClientform.country"
+                :countryName="true"
+                topCountry="Pakistan"
+              />
+              <has-error :form="addClientform" field="country"></has-error>
+            </div>
+
             <!-- name* -->
             <div class="form-group">
               <label for="recipient-name" class="col-form-label text-muted"
-                >Full Name*</label
+                >Contact Full Name*</label
               >
               <input
                 type="text"
@@ -302,22 +384,6 @@
               <has-error :form="addClientform" field="email"></has-error>
             </div>
 
-            <!-- Company Name* -->
-            <div class="form-group">
-              <label for="company" class="col-form-label text-muted"
-                >Company Name*</label
-              >
-              <input
-                type="text"
-                v-model="addClientform.company"
-                class="form-control"
-                :class="{ 'is-invalid': addClientform.errors.has('company') }"
-                id="company"
-                required
-              />
-              <has-error :form="addClientform" field="company"></has-error>
-            </div>
-
             <!-- Company registration number -->
             <div class="form-group">
               <label
@@ -340,71 +406,6 @@
                 :form="addClientform"
                 field="company_registration_number"
               ></has-error>
-            </div>
-
-            <!-- Country* -->
-            <div class="form-group">
-              <label for="country" class="col-form-label text-muted"
-                >Country*</label
-              >
-              <country-select
-                class="form-control"
-                :class="{ 'is-invalid': addClientform.errors.has('country') }"
-                id="country"
-                name="country"
-                required
-                v-model="addClientform.country"
-                :country="addClientform.country"
-                :countryName="true"
-                topCountry="Pakistan"
-              />
-              <has-error :form="addClientform" field="country"></has-error>
-            </div>
-
-            <!-- city* -->
-            <div class="form-group">
-              <label for="city" class="col-form-label text-muted">city*</label>
-              <input
-                type="text"
-                v-model="addClientform.city"
-                class="form-control"
-                :class="{ 'is-invalid': addClientform.errors.has('city') }"
-                id="city"
-                required
-              />
-              <has-error :form="addClientform" field="city"></has-error>
-            </div>
-
-            <!-- zipcode* -->
-            <div class="form-group">
-              <label for="zipcode" class="col-form-label text-muted"
-                >Zip Code*</label
-              >
-              <input
-                type="text"
-                v-model="addClientform.zipcode"
-                class="form-control"
-                :class="{ 'is-invalid': addClientform.errors.has('zipcode') }"
-                id="zipcode"
-                required
-              />
-              <has-error :form="addClientform" field="zipcode"></has-error>
-            </div>
-
-            <!-- address* -->
-            <div class="form-group">
-              <label for="address" class="col-form-label text-muted"
-                >Address*</label
-              >
-              <input
-                type="text"
-                v-model="addClientform.address"
-                class="form-control"
-                :class="{ 'is-invalid': addClientform.errors.has('address') }"
-                id="address"
-                required
-              />
-              <has-error :form="addClientform" field="address"></has-error>
             </div>
 
             <!-- vat_number -->
@@ -484,46 +485,18 @@
               <has-error :form="addClientform" field="bank_details"></has-error>
             </div>
 
+            <!-- CTA -->
             <div class="modal-footer">
               <button
                 type="submit"
                 :disabled="addClientform.busy"
                 class="btn btn-primary w-100"
               >
-                Submit
+                Create
               </button>
             </div>
           </form>
         </div>
-      </div>
-    </modal>
-    <!-- Select Currency Modal -->
-    <modal
-      name="selectCurrencyModal"
-      :scrollable="true"
-      height="auto"
-      :focusTrap="true"
-      :reset="true"
-    >
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Select Currency</h5>
-        </div>
-        <div
-          class="modal-body d-flex"
-          style="padding: 6px"
-          v-for="(cur, index) in $page.currencies"
-          :key="index"
-        >
-          <div
-            class="font-weight-bold ml-4 select-client"
-            data-dismiss="modal"
-            @click="addCurrency(index)"
-          >
-            {{ cur.name }}
-          </div>
-        </div>
-        <div class="modal-footer"></div>
       </div>
     </modal>
 

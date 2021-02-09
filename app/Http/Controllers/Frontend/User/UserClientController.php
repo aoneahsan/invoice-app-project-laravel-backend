@@ -18,7 +18,7 @@ class UserClientController extends Controller
         $orderBy = $request->input('dir');
         $searchValue = $request->input('search');
 
-        $query = Client::eloquentQuery($sortBy, $orderBy, $searchValue);
+        $query = Client::where("user_id", $request->user()->id)->eloquentQuery($sortBy, $orderBy, $searchValue);
 
         $data = $query->paginate($length);
 
@@ -60,7 +60,7 @@ class UserClientController extends Controller
 
     public function show(Request $request, $id)
     {
-        $item = Client::where("id", $id)->first();
+        $item = Client::where("user_id", $request->user()->id)->where("id", $id)->first();
         Inertia::setRootView("layouts.frontend.index");
         return Inertia::render("Frontend/Clients/Edit", [
             "client" => $item
@@ -77,7 +77,7 @@ class UserClientController extends Controller
             "zipcode" => "required"
         ]);
 
-        $client = Client::where("id", $id)->first();
+        $client = Client::where("user_id", $request->user()->id)->where("id", $id)->first();
         $item = $client->update([
             'name' => $request->has("name") ? $request->name : $client->name,
             'email' => $request->has("email") ? $request->email : $client->email,
@@ -103,7 +103,7 @@ class UserClientController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $item = Client::where("id", $id)->delete();
+        $item = Client::where("user_id", $request->user()->id)->where("id", $id)->delete();
         if ($item) {
             return response()->json(['data' => "Client deleted"], 200);
         } else {

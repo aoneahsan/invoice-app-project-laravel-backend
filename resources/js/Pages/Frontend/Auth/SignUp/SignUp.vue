@@ -16,6 +16,130 @@
                     @submit.prevent="register"
                     enctype="multipart/form-data"
                   >
+                    <!-- company -->
+                    <div class="form-group row">
+                      <label
+                        for="company"
+                        class="col-md-4 col-form-label text-md-right"
+                        >Company Name*</label
+                      >
+
+                      <div class="col-md-6">
+                        <input
+                          id="company"
+                          type="text"
+                          class="form-control"
+                          :class="{ 'is-invalid': form.errors.has('company') }"
+                          name="company"
+                          v-model="form.company"
+                          required
+                          autocomplete="company"
+                          autofocus
+                        />
+
+                        <has-error :form="form" field="company"></has-error>
+                      </div>
+                    </div>
+
+                    <!-- address -->
+                    <div class="form-group row">
+                      <label
+                        for="address"
+                        class="col-md-4 col-form-label text-md-right"
+                        >Address*</label
+                      >
+
+                      <div class="col-md-6">
+                        <input
+                          id="address"
+                          type="text"
+                          class="form-control"
+                          :class="{ 'is-invalid': form.errors.has('address') }"
+                          name="address"
+                          v-model="form.address"
+                          required
+                          autocomplete="address"
+                        />
+
+                        <has-error :form="form" field="address"></has-error>
+                      </div>
+                    </div>
+
+                    <!-- zipcode -->
+                    <div class="form-group row">
+                      <label
+                        for="zipcode"
+                        class="col-md-4 col-form-label text-md-right"
+                        >Zip Code*</label
+                      >
+
+                      <div class="col-md-6">
+                        <input
+                          id="zipcode"
+                          type="text"
+                          class="form-control"
+                          :class="{ 'is-invalid': form.errors.has('zipcode') }"
+                          name="zipcode"
+                          v-model="form.zipcode"
+                          required
+                          autocomplete="zipcode"
+                        />
+
+                        <has-error :form="form" field="zipcode"></has-error>
+                      </div>
+                    </div>
+
+                    <!-- city -->
+                    <div class="form-group row">
+                      <label
+                        for="city"
+                        class="col-md-4 col-form-label text-md-right"
+                        >City*</label
+                      >
+
+                      <div class="col-md-6">
+                        <input
+                          id="city"
+                          type="text"
+                          class="form-control"
+                          :class="{ 'is-invalid': form.errors.has('city') }"
+                          name="city"
+                          v-model="form.city"
+                          required
+                          autocomplete="city"
+                        />
+
+                        <has-error :form="form" field="city"></has-error>
+                      </div>
+                    </div>
+
+                    <!-- country -->
+                    <div class="form-group row">
+                      <label
+                        for="country"
+                        class="col-md-4 col-form-label text-md-right"
+                        >Country*</label
+                      >
+
+                      <div class="col-md-6">
+                        <country-select
+                          class="form-control"
+                          :class="{
+                            'is-invalid': form.errors.has('country'),
+                          }"
+                          id="country"
+                          name="country"
+                          required
+                          v-model="form.country"
+                          :country="form.country"
+                          :countryName="true"
+                          topCountry="Pakistan"
+                        />
+
+                        <has-error :form="form" field="country"></has-error>
+                      </div>
+                    </div>
+
                     <!-- name -->
                     <div class="form-group row">
                       <label
@@ -34,7 +158,6 @@
                           v-model="form.name"
                           required
                           autocomplete="name"
-                          autofocus
                         />
 
                         <has-error :form="form" field="name"></has-error>
@@ -62,30 +185,6 @@
                         />
 
                         <has-error :form="form" field="email"></has-error>
-                      </div>
-                    </div>
-
-                    <!-- company -->
-                    <div class="form-group row">
-                      <label
-                        for="company"
-                        class="col-md-4 col-form-label text-md-right"
-                        >Company Name*</label
-                      >
-
-                      <div class="col-md-6">
-                        <input
-                          id="company"
-                          type="text"
-                          class="form-control"
-                          :class="{ 'is-invalid': form.errors.has('company') }"
-                          name="company"
-                          v-model="form.company"
-                          required
-                          autocomplete="company"
-                        />
-
-                        <has-error :form="form" field="company"></has-error>
                       </div>
                     </div>
 
@@ -144,114 +243,6 @@
                       </div>
                     </div>
 
-                    <!-- state -->
-                    <!-- <div class="form-group row">
-                      <label
-                        for="state"
-                        class="col-md-4 col-form-label text-md-right"
-                        >State</label
-                      >
-
-                      <div class="col-md-6">
-                        <input
-                          id="state"
-                          type="text"
-                          class="form-control"
-                          :class="{ 'is-invalid': form.errors.has('state') }"
-                          name="state"
-                          v-model="form.state"
-                          autocomplete="state"
-                        />
-
-                        <has-error :form="form" field="state"></has-error>
-                      </div>
-                    </div> -->
-
-                    <!-- country -->
-                    <div class="form-group row">
-                      <label
-                        for="country"
-                        class="col-md-4 col-form-label text-md-right"
-                        >Country*</label
-                      >
-
-                      <div class="col-md-6">
-                        <!-- <input
-                          id="country"
-                          type="text"
-                          class="form-control"
-                          :class="{ 'is-invalid': form.errors.has('country') }"
-                          name="country"
-                          v-model="form.country"
-                          required
-                          autocomplete="country"
-                        /> -->
-                        <country-select
-                          class="form-control"
-                          :class="{
-                            'is-invalid': form.errors.has('country'),
-                          }"
-                          id="country"
-                          name="country"
-                          required
-                          v-model="form.country"
-                          :country="form.country"
-                          :countryName="true"
-                          topCountry="Pakistan"
-                        />
-
-                        <has-error :form="form" field="country"></has-error>
-                      </div>
-                    </div>
-
-                    <!-- city -->
-                    <div class="form-group row">
-                      <label
-                        for="city"
-                        class="col-md-4 col-form-label text-md-right"
-                        >City*</label
-                      >
-
-                      <div class="col-md-6">
-                        <input
-                          id="city"
-                          type="text"
-                          class="form-control"
-                          :class="{ 'is-invalid': form.errors.has('city') }"
-                          name="city"
-                          v-model="form.city"
-                          required
-                          autocomplete="city"
-                        />
-
-                        <has-error :form="form" field="city"></has-error>
-                      </div>
-                    </div>
-
-                    <!-- zipcode -->
-                    <div class="form-group row">
-                      <label
-                        for="zipcode"
-                        class="col-md-4 col-form-label text-md-right"
-                        >Zip Code*</label
-                      >
-
-                      <div class="col-md-6">
-                        <input
-                          id="zipcode"
-                          type="text"
-                          class="form-control"
-                          :class="{ 'is-invalid': form.errors.has('zipcode') }"
-                          name="zipcode"
-                          v-model="form.zipcode"
-                          required
-                          autocomplete="zipcode"
-                        />
-
-                        <has-error :form="form" field="zipcode"></has-error>
-                      </div>
-                    </div>
-
                     <!-- phone -->
                     <div class="form-group row">
                       <label
@@ -277,30 +268,6 @@
                           :form="form"
                           field="phone_number"
                         ></has-error>
-                      </div>
-                    </div>
-
-                    <!-- address -->
-                    <div class="form-group row">
-                      <label
-                        for="address"
-                        class="col-md-4 col-form-label text-md-right"
-                        >Address*</label
-                      >
-
-                      <div class="col-md-6">
-                        <input
-                          id="address"
-                          type="text"
-                          class="form-control"
-                          :class="{ 'is-invalid': form.errors.has('address') }"
-                          name="address"
-                          v-model="form.address"
-                          required
-                          autocomplete="address"
-                        />
-
-                        <has-error :form="form" field="address"></has-error>
                       </div>
                     </div>
 
@@ -347,20 +314,41 @@
                       >
 
                       <div class="col-md-6">
-                        <file-upload
-                          input-id="invoiceUserLogo"
-                          input-name="invoiceUserLogo"
-                          ref="upload"
-                          post-action="/upload-files"
-                          accept="image/*"
-                          @input-file="inputFile"
-                          :drop="true"
-                          v-model="logoImage"
-                          :multiple="false"
-                          ><button type="button" class="btn btn-primary lift">
-                            Upload Company Logo
-                          </button>
-                        </file-upload>
+                        <div class="row">
+                          <div class="col-7">
+                            <file-upload
+                              input-id="invoiceUserLogo"
+                              input-name="invoiceUserLogo"
+                              ref="upload"
+                              post-action="/upload-files"
+                              accept="image/*"
+                              @input-file="inputFile"
+                              :drop="true"
+                              v-model="logoImage"
+                              @input="updatetImageFunction"
+                              @input-filter="imageFilterFunction"
+                              :multiple="false"
+                              ><button
+                                type="button"
+                                class="btn btn-primary lift"
+                              >
+                                Upload Company Logo
+                              </button>
+                            </file-upload>
+                          </div>
+                          <div class="col-5">
+                            <div
+                              class="d-inline-block"
+                              style="width: 100px; height: 50px"
+                            >
+                              <img
+                                :src="logo_url"
+                                style="object-fit: cover"
+                                class="h-100"
+                              />
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
 
@@ -444,6 +432,28 @@
         </div>
       </div>
     </div>
+    <!-- state -->
+    <!-- <div class="form-group row">
+                      <label
+                        for="state"
+                        class="col-md-4 col-form-label text-md-right"
+                        >State</label
+                      >
+
+                      <div class="col-md-6">
+                        <input
+                          id="state"
+                          type="text"
+                          class="form-control"
+                          :class="{ 'is-invalid': form.errors.has('state') }"
+                          name="state"
+                          v-model="form.state"
+                          autocomplete="state"
+                        />
+
+                        <has-error :form="form" field="state"></has-error>
+                      </div>
+                    </div> -->
   </FrontendMain>
 </template>
 
@@ -474,6 +484,7 @@ export default {
         password: "",
         password_confirmation: "",
       }),
+      logo_url: null,
       logoImage: [],
       currencies: ["USD", "EUR", "GBP", "YEN", "INR", "IDR"],
     };
@@ -496,6 +507,36 @@ export default {
         }
       }
     },
+    imageFilterFunction(newFile, oldFile, prevent) {
+      if (newFile && !oldFile) {
+        if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newFile.name)) {
+          return prevent();
+        }
+        newFile.blob = "";
+        let URL = window.URL || window.webkitURL;
+        if (URL && URL.createObjectURL) {
+          newFile.blob = URL.createObjectURL(newFile.file);
+        }
+      }
+
+      if (newFile && oldFile) {
+        if (!newFile.version) {
+          newFile.version = 0;
+        }
+        newFile.version++;
+      }
+
+      if (!newFile && oldFile) {
+      }
+    },
+    updatetImageFunction(value) {
+      this.logoImage = value;
+      console.log();
+      if (this.logoImage[0]) {
+        this.logo_url = this.logoImage[0].blob;
+      }
+    },
+
     // register user
     register() {
       // Submit the form via a POST request
@@ -510,20 +551,28 @@ export default {
       this.form
         .post("/sign-up")
         .then(({ data }) => {
+          this.$notify({
+            group: "app",
+            type: "success",
+            title: "Request Successfull",
+            text: "Signup Completed Successfully.",
+            duration: 5000,
+            speed: 1000,
+          });
           this.$inertia.visit("/user/profile");
         })
         .catch((err) => {
           window.scrollTo(0, 0);
-          console.log("err = ", err);
-          if (err) {
-            // this.$notify({
-            //   group: "app",
-            //   type: "error",
-            //   title: "Request Faild",
-            //   text: err.message,
-            //   duration: 10000,
-            //   speed: 1000,
-            // });
+          console.log("err = ", err.response);
+          if (err.response.status == 422) {
+            this.$notify({
+              group: "app",
+              type: "error",
+              title: "Request Faild",
+              text: "Provide correct data to continue.",
+              duration: 5000,
+              speed: 1000,
+            });
           }
         });
     },

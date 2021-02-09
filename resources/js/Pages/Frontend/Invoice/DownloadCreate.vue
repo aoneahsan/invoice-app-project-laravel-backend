@@ -59,10 +59,15 @@
                           v-if="invoiceForm.user.company_registration_number"
                         />
                         <span
-                          v-html="invoiceForm.user.company_registration_number"
-                        ></span
+                          v-if="invoiceForm.user.company_registration_number"
+                          >Company Number:
+                          {{
+                            invoiceForm.user.company_registration_number
+                          }}</span
                         ><br v-if="invoiceForm.user.vat_number" />
-                        <span v-html="invoiceForm.user.vat_number"></span><br />
+                        <span v-if="invoiceForm.user.vat_number"
+                          >VAT Number: {{ invoiceForm.user.vat_number }}</span
+                        ><br />
                       </div>
                       <p class="text-muted mt-5">Bill To:</p>
                       <div class="clickable">
@@ -101,12 +106,18 @@
                               "
                             />
                             <span
-                              v-html="
+                              v-if="
                                 invoiceForm.client.company_registration_number
                               "
-                            ></span
+                              >Company Number:
+                              {{
+                                invoiceForm.client.company_registration_number
+                              }}</span
                             ><br v-if="invoiceForm.client.vat_number" />
-                            <span v-html="invoiceForm.client.vat_number"></span>
+                            <span v-if="invoiceForm.client.vat_number"
+                              >VAT Number:
+                              {{ invoiceForm.client.vat_number }}</span
+                            >
                           </a>
                           <a
                             class="nav-link active"

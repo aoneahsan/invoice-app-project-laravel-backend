@@ -7,19 +7,19 @@ import Vue from "vue";
 import { InertiaApp } from "@inertiajs/inertia-vue";
 import { InertiaForm } from "laravel-jetstream";
 import PortalVue from "portal-vue";
-import VueLoading from "vue-element-loading";
-import VueYoutube from "vue-youtube";
+// import VueLoading from "vue-element-loading";
+// import VueYoutube from "vue-youtube";
 // import Toasted from "vue-toasted";
 // import { InertiaProgress } from "@inertiajs/progress";
 import { HasError, AlertError, AlertErrors, AlertSuccess } from "vform";
-import Popover from "vue-js-popover"; //https://github.com/euvl/vue-js-popover
-import Clipboard from "v-clipboard"; //https://github.com/euvl/v-clipboard
-import ToggleButton from "vue-js-toggle-button"; //https://github.com/euvl/vue-js-toggle-button
+// import Popover from "vue-js-popover"; //https://github.com/euvl/vue-js-popover
+// import Clipboard from "v-clipboard"; //https://github.com/euvl/v-clipboard
+// import ToggleButton from "vue-js-toggle-button"; //https://github.com/euvl/vue-js-toggle-button
 import Notifications from "vue-notification"; // https://github.com/euvl/vue-notification
 import VModal from "vue-js-modal"; // https://euvl.github.io/vue-js-modal/
 import Icon from "vue-awesome/components/Icon"; //https://github.com/Justineo/vue-awesome
 // import Vuetable from "vuetable-2"; // https://www.vuetable.com/guide/getting-started.html
-import SvgTransition from "vue-svg-transition"; //https://github.com/kai-oswald/vue-svg-transition
+// import SvgTransition from "vue-svg-transition"; //https://github.com/kai-oswald/vue-svg-transition
 // import { AgGridVue } from "ag-grid-vue"; //https://www.ag-grid.com/documentation/vue/getting-started/
 // import Vuesax from "vuesax"; // https://github.com/lusaxweb/vuesax
 // import vSelect from "vue-select"; //https://vue-select.org/guide/install.html#yarn-npm
@@ -50,21 +50,20 @@ Vue.mixin({ methods: { route } });
 Vue.use(InertiaApp);
 Vue.use(InertiaForm);
 Vue.use(PortalVue);
-Vue.component("VueLoading", VueLoading); // https://www.npmjs.com/package/vue-element-loading
-Vue.use(VueYoutube, { global: true, componentId: "youtube" }); // https://www.npmjs.com/package/vue-youtube
+// Vue.component("VueLoading", VueLoading); // https://www.npmjs.com/package/vue-element-loading
+// Vue.use(VueYoutube, { global: true, componentId: "youtube" }); // https://www.npmjs.com/package/vue-youtube
 // Vue.use(Toasted); // https://www.npmjs.com/package/vue-toasted
 Vue.component(HasError.name, HasError);
 Vue.component(AlertError.name, AlertError);
 Vue.component(AlertErrors.name, AlertErrors);
 Vue.component(AlertSuccess.name, AlertSuccess);
-Vue.use(Popover); //https://github.com/euvl/vue-js-popover
-Vue.use(Clipboard); //https://github.com/euvl/v-clipboard
+// Vue.use(Popover); //https://github.com/euvl/vue-js-popover
+// Vue.use(Clipboard); //https://github.com/euvl/v-clipboard
 Vue.use(Notifications); // https://github.com/euvl/vue-notification
 Vue.use(VModal, { dialog: true }); // https://euvl.github.io/vue-js-modal/
-Vue.use(ToggleButton);
-ToggleButton;
+// Vue.use(ToggleButton);
 Vue.component("v-icon", Icon); //https://github.com/Justineo/vue-awesome
-Vue.use(SvgTransition); //https://github.com/kai-oswald/vue-svg-transition
+// Vue.use(SvgTransition); //https://github.com/kai-oswald/vue-svg-transition
 // Vue.component("AgGridVue", AgGridVue);
 // Vue.use(Vuesax);
 // Vue.component("v-select", vSelect); //https://vue-select.org/guide/install.html#yarn-npm

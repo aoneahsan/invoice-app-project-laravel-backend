@@ -18,7 +18,7 @@ class InvoiceController extends Controller
         $orderBy = $request->input('dir');
         $searchValue = $request->input('search');
 
-        $query = Invoice::eloquentQuery($sortBy, $orderBy, $searchValue);
+        $query = Invoice::where("user_id", $request->user()->id)->eloquentQuery($sortBy, $orderBy, $searchValue);
 
         $data = $query->paginate($length);
 
@@ -27,7 +27,7 @@ class InvoiceController extends Controller
 
     public function downloadInvoices(Request $request, $invoice_unique_id)
     {
-        $item = Invoice::where("invoice_unique_id", $invoice_unique_id)->first();
+        $item = Invoice::where("user_id", $request->user()->id)->where("invoice_unique_id", $invoice_unique_id)->first();
         Inertia::setRootView("layouts.frontend.index");
         $itemResource = new InvoiceResource($item);
         return Inertia::render("Frontend/Invoice/DownloadCreate", [
@@ -58,7 +58,7 @@ class InvoiceController extends Controller
             'total' => $request->has("total") ? $request->total : null
         ]);
         if ($result) {
-            $item = Invoice::where("id", $result->id)->first();
+            $item = Invoice::where("user_id", $request->user()->id)->where("id", $result->id)->first();
             return response()->json(['data' => new InvoiceResource($item)], 200);
         } else {
             return response()->json(['message' => "Error occured while adding invoice."], 500);
@@ -67,7 +67,7 @@ class InvoiceController extends Controller
 
     public function show(Request $request, $invoice_unique_id)
     {
-        $item = Invoice::where("invoice_unique_id", $invoice_unique_id)->first();
+        $item = Invoice::where("user_id", $request->user()->id)->where("invoice_unique_id", $invoice_unique_id)->first();
         Inertia::setRootView("layouts.frontend.index");
         $itemResource = new InvoiceResource($item);
         return Inertia::render("Frontend/Invoice/Create", [
@@ -77,7 +77,7 @@ class InvoiceController extends Controller
 
     public function update(Request $request, $invoice_unique_id)
     {
-        $oldItem = Invoice::where("invoice_unique_id", $invoice_unique_id)->first();
+        $oldItem = Invoice::where("user_id", $request->user()->id)->where("invoice_unique_id", $invoice_unique_id)->first();
         $result = $oldItem->update([
             "invoice_no" => $request->has("invoice_no") ? $request->invoice_no : $oldItem->invoice_no,
             "user_id" => $request->has("user_id") ? $request->user_id : $oldItem->user_id,
@@ -98,7 +98,7 @@ class InvoiceController extends Controller
             'total' => $request->has("total") ? $request->total : $oldItem->total
         ]);
         if ($result) {
-            $item = Invoice::where("invoice_unique_id", $invoice_unique_id)->first();
+            $item = Invoice::where("user_id", $request->user()->id)->where("invoice_unique_id", $invoice_unique_id)->first();
             return response()->json(['data' => new InvoiceResource($item)], 200);
         } else {
             return response()->json(['message' => "Error occured while updating invoice."], 500);
@@ -107,7 +107,7 @@ class InvoiceController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $item = Invoice::where("id", $id)->delete();
+        $item = Invoice::where("user_id", $request->user()->id)->where("id", $id)->delete();
         if ($item) {
             return response()->json(['data' => "invoice deleted"], 200);
         } else {

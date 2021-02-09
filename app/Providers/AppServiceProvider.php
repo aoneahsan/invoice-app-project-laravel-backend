@@ -17,6 +17,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // $this->app->bind('path.public', function() {
+        //     return base_path('../');
+        // });
+
         // Inertia Share
         Inertia::share("clients", function () {
             if (Auth::check()) {

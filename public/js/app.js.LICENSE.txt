@@ -7,6 +7,14 @@
  */
 
 /*!
+ * @overview es6-promise - a tiny implementation of Promises/A+.
+ * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
+ * @license   Licensed under MIT license
+ *            See https://raw.githubusercontent.com/stefanpenner/es6-promise/master/LICENSE
+ * @version   v4.2.8+1e68dce6
+ */
+
+/*!
  * Determine if an object is a Buffer
  *
  * @author   Feross Aboukhadijeh <https://feross.org>
@@ -32,9 +40,9 @@
  */
 
 /*!
- * vue-element-loading v1.1.6
- * (c) 2019-present biig_pongsatorn <biig_pongsatorn@hotmail.com>
- * Released under the MIT License.
+ * vuex v3.6.0
+ * (c) 2020 Evan You
+ * @license MIT
  */
 
 /*! 
@@ -145,11 +153,6 @@ PERFORMANCE OF THIS SOFTWARE.
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
  * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  */
-
-/**
-* @link https://github.com/gajus/sister for the canonical source repository
-* @license https://github.com/gajus/sister/blob/master/LICENSE BSD 3-Clause
-*/
 
 /** 
    * @license
