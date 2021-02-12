@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get("/init_urp", "SystemController@initRolePermissions");
+// Route::get("/init_urp", "SystemController@initRolePermissions");
 
-Route::get('/profile', function () {
-    return "ok";
-})->name("profile");
+// Route::get('/profile', function () {
+//     return "ok";
+// })->name("profile");
 
 // Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 //     return Inertia\Inertia::render('Dashboard');
@@ -114,5 +114,5 @@ Route::group([
     Route::redirect("/register", "/sign-up");
     Route::redirect("/login", "/sign-in");
 
-    Route::redirect("/", "/createinvoice");
+    Route::redirect("/", "/user/profile");
 });
