@@ -41,6 +41,7 @@ class CreateUsersTable extends Migration
             $table->string('default_currency')->nullable();
             $table->string('logo')->nullable();
             $table->longText('notes')->nullable();
+            $table->longText('bank_details')->nullable();
 
             $table->longText('extra_attributes')->nullable();
 

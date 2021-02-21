@@ -1,9 +1,6 @@
 <template>
-  <button :class="classes" @click="click(data)" title="Update">
-    <span>
-      <i class="fa fa-eye" aria-hidden="true"></i>
-    </span>
-    &nbsp;
+  <button :class="classes" @click="click(data)" title="Update" class="btn-min">
+    <v-icon name="edit"></v-icon>
     {{ name }}
   </button>
 </template>
@@ -22,9 +19,15 @@ export default {
         btn: true,
         "btn-primary": true,
         "btn-sm": true,
-        "lift": true,
+        lift: true,
       }),
     },
   },
 };
 </script>
+<style>
+.btn-min {
+  min-width: 76px;
+  min-height: 40px;
+}
+</style>

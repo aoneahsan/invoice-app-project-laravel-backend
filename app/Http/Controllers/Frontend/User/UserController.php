@@ -36,7 +36,8 @@ class UserController extends Controller
             "vat_number" => $request->has("vat_number") ? $request->vat_number : $user->vat_number,
             "default_currency" => $request->has("default_currency") ? $request->default_currency : $user->default_currency,
             "logo" => $request->has("logo") ? $request->logo : $user->logo,
-            "notes" => $request->has("notes") ? $request->notes : $user->notes
+            "notes" => $request->has("notes") ? $request->notes : $user->notes,
+            "bank_details" => $request->has("bank_details") ? $request->bank_details : $user->bank_details
         ]);
 
         $updatedUser = User::where("id", $request->user()->id)->first();

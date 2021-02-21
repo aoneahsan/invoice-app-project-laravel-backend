@@ -767,7 +767,7 @@ export default {
         this.$inertia.visit("/sign-in");
       }
     },
-    updateInvoiceNumber(clientID, clientName) {
+    updateInvoiceNumber(clientID, companyName) {
       axios
         .get("/check-client-invoices/" + clientID)
         .then((res) => {
@@ -775,12 +775,12 @@ export default {
           let invoiceNameLetters =
             this.invoiceForm.invoice_type == "invoice" ? "INV" : "EXP";
           // 2
-          let clientNameLetters = null;
-          if (clientName.length > 3) {
-            clientNameLetters = clientName.substring(0, 3).toUpperCase();
+          let companyNameLetters = null;
+          if (companyName.length > 3) {
+            companyNameLetters = companyName.substring(0, 3).toUpperCase();
           }
-          if (clientName.length <= 3) {
-            clientNameLetters = clientName.toUpperCase();
+          if (companyName.length <= 3) {
+            companyNameLetters = companyName.toUpperCase();
           }
           // 3
           let invoicesSendToClientAlready = res.data.data;
@@ -794,7 +794,7 @@ export default {
 
           this.invoiceForm.invoice_no =
             invoiceNameLetters +
-            clientNameLetters +
+            companyNameLetters +
             clientInvoiceNumber +
             currentYear;
 
@@ -1028,7 +1028,7 @@ export default {
       if (client.notes) {
         this.invoiceForm.invoice_notes = client.notes;
       }
-      this.updateInvoiceNumber(client.id, client.name);
+      this.updateInvoiceNumber(client.id, client.company);
     },
     onClientSelected(client) {
       this.invoiceForm.client_id = client.id;
@@ -1054,7 +1054,7 @@ export default {
       if (client.notes) {
         this.invoiceForm.invoice_notes = client.notes;
       }
-      this.updateInvoiceNumber(client.id, client.name);
+      this.updateInvoiceNumber(client.id, client.company);
     },
   },
   beforeDestroy(event) {

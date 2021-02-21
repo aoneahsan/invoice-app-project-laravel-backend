@@ -1,9 +1,6 @@
 <template>
-  <button :class="classes" @click="click(data)" title="Update">
-    <span>
-      <i class="fa fa-trash" aria-hidden="true"></i>
-    </span>
-    &nbsp;
+  <button :class="classes" @click="click(data)" title="Update" class="btn-min">
+    <v-icon name="trash"></v-icon>
     {{ name }}
   </button>
 </template>

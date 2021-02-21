@@ -37,6 +37,7 @@ class InvoiceController extends Controller
 
     public function store(Request $request)
     {
+        $user = $request->user();
         $result = Invoice::create([
             "invoice_unique_id" => uniqid(),
             "invoice_no" => $request->has("invoice_no") ? $request->invoice_no : null,
@@ -50,7 +51,7 @@ class InvoiceController extends Controller
             'vat_value' => $request->has("vat_value") ? $request->vat_value : null,
             'is_invoice_vat_applied' => $request->has("is_invoice_vat_applied") ? $request->is_invoice_vat_applied : null,
             'items' => $request->has("items") ? json_encode($request->items) : null,
-            'invoice_notes' => $request->has("invoice_notes") ? $request->invoice_notes : null,
+            'invoice_notes' => $request->has("invoice_notes") ? $request->invoice_notes : $user->notes,
             'invoice_terms' => $request->has("invoice_terms") ? $request->invoice_terms : null,
             'selected_currency' => $request->has("selected_currency") ? $request->selected_currency : null,
             'invoice_type' => $request->has("invoice_type") ? $request->invoice_type : null,

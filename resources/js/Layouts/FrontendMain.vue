@@ -356,7 +356,7 @@
             <!-- name* -->
             <div class="form-group">
               <label for="recipient-name" class="col-form-label text-muted"
-                >Contact Full Name*</label
+                >Contact Full Name</label
               >
               <input
                 type="text"
@@ -364,7 +364,6 @@
                 class="form-control"
                 :class="{ 'is-invalid': addClientform.errors.has('name') }"
                 id="recipient-name"
-                required
               />
               <has-error :form="addClientform" field="name"></has-error>
             </div>

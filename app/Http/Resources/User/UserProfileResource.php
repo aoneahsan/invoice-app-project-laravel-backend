@@ -26,6 +26,7 @@ class UserProfileResource extends JsonResource
             "country" => $this->country,
             "logo" => $this->logo,
             "notes" => $this->notes,
+            "bank_details" => $this->bank_details,
             "logo_url" => $this->logo ? Storage::url($this->logo) : null,
             "company" => $this->company,
             "company_registration_number" => $this->company_registration_number,

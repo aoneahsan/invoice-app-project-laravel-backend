@@ -302,6 +302,30 @@
             </div>
           </div>
 
+          <!-- bank_details -->
+          <div class="form-group row">
+            <label for="bank_details" class="col-md-4 col-form-label text-md-right"
+              >Bank Details</label
+            >
+
+            <div class="col-md-6">
+              <textarea
+                id="bank_details"
+                type="text"
+                class="form-control"
+                @change="changes_not_saved = true"
+                :class="{
+                  'is-invalid': updateUserform.errors.has('bank_details'),
+                }"
+                name="bank_details"
+                v-model="updateUserform.bank_details"
+                autocomplete="bank_details"
+              ></textarea>
+
+              <has-error :form="updateUserform" field="bank_details"></has-error>
+            </div>
+          </div>
+
           <!-- submit -->
           <div class="form-group row mb-0">
             <div class="col-md-6 offset-md-4">
@@ -336,6 +360,7 @@ export default {
         phone_number: "",
         logo: "",
         notes: "",
+        bank_details: "",
         company: "",
         company_registration_number: "",
         city: "",
@@ -455,6 +480,7 @@ export default {
         this.updateUserform.logo = user.logo;
         this.updateUserform.logo_url = user.logo_url;
         this.updateUserform.notes = user.notes;
+        this.updateUserform.bank_details = user.bank_details;
         this.updateUserform.company = user.company;
         this.updateUserform.company_registration_number =
           user.company_registration_number;
