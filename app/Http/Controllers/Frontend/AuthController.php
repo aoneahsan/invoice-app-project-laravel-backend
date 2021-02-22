@@ -94,7 +94,9 @@ class AuthController extends AuthenticatedSessionController
             'city' => $request->city,
             'zipcode' => $request->zipcode,
             'vat_number' => $request->vat_number,
-            'default_currency' => $request->default_currency
+            'default_currency' => $request->default_currency,
+            'notes' => $request->notes,
+            'bank_details' => $request->bank_details
         ]);
 
         event(new Registered($user));

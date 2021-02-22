@@ -134,7 +134,7 @@
           <!-- name -->
           <div class="form-group row">
             <label for="name" class="col-md-4 col-form-label text-md-right"
-              >Contact Full Name*</label
+              >Contact Full Name</label
             >
 
             <div class="col-md-6">
@@ -145,7 +145,6 @@
                 :class="{ 'is-invalid': updateClientform.errors.has('name') }"
                 name="name"
                 v-model="updateClientform.name"
-                required
                 autocomplete="name"
               />
 

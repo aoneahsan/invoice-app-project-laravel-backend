@@ -145,7 +145,7 @@
                       <label
                         for="name"
                         class="col-md-4 col-form-label text-md-right"
-                        >Full Name*</label
+                        >Full Name</label
                       >
 
                       <div class="col-md-6">
@@ -156,7 +156,6 @@
                           :class="{ 'is-invalid': form.errors.has('name') }"
                           name="name"
                           v-model="form.name"
-                          required
                           autocomplete="name"
                         />
 
@@ -352,6 +351,59 @@
                       </div>
                     </div>
 
+                    <!-- notes -->
+                    <!-- <div class="form-group row">
+                      <label
+                        for="notes"
+                        class="col-md-4 col-form-label text-md-right"
+                        >Default Notes</label
+                      >
+
+                      <div class="col-md-6">
+                        <textarea
+                          id="notes"
+                          type="text"
+                          class="form-control"
+                          :class="{
+                            'is-invalid': form.errors.has('notes'),
+                          }"
+                          name="notes"
+                          v-model="form.notes"
+                          autocomplete="notes"
+                        ></textarea>
+
+                        <has-error :form="form" field="notes"></has-error>
+                      </div>
+                    </div> -->
+
+                    <!-- bank_details -->
+                    <div class="form-group row">
+                      <label
+                        for="bank_details"
+                        class="col-md-4 col-form-label text-md-right"
+                        >Bank Details</label
+                      >
+
+                      <div class="col-md-6">
+                        <textarea
+                          id="bank_details"
+                          type="text"
+                          class="form-control"
+                          :class="{
+                            'is-invalid': form.errors.has('bank_details'),
+                          }"
+                          name="bank_details"
+                          v-model="form.bank_details"
+                          autocomplete="bank_details"
+                        ></textarea>
+
+                        <has-error
+                          :form="form"
+                          field="bank_details"
+                        ></has-error>
+                      </div>
+                    </div>
+
                     <!-- password -->
                     <div class="form-group row">
                       <label
@@ -483,6 +535,8 @@ export default {
         default_currency: "",
         password: "",
         password_confirmation: "",
+        bank_details: "",
+        notes: "",
       }),
       logo_url: null,
       logoImage: [],

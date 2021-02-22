@@ -7,7 +7,7 @@
           <div class="flex">
             <!-- Logo -->
             <div class="flex-shrink-0 flex items-center">
-              <inertia-link :href="route('createinvoice')">
+              <inertia-link :href="route('user.profile')">
                 <jet-application-mark class="block h-9 w-auto" />
               </inertia-link>
             </div>
@@ -231,8 +231,11 @@
           :key="index"
         >
           <div class="btn-rounded-circle badge-primary">
-            <div class="ml-3 mt-2">
+            <div class="ml-3 mt-2" v-if="client.name">
               {{ client.name.substring(0, 2) }}
+            </div>
+            <div class="ml-3 mt-2" v-if="client.company && !client.name">
+              {{ client.company.substring(0, 2) }}
             </div>
           </div>
           <div

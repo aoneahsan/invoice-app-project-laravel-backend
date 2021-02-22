@@ -1,14 +1,14 @@
 <template>
   <!-- https://www.npmjs.com/package/vue-element-loading -->
-  <vue-loading background-color="rgba(0,0,0,.45)" :active="loadingStatus">
-    <!-- <img
+  <!-- <vue-loading background-color="rgba(0,0,0,.45)" :active="loadingStatus">
+    <img
       class="img-responsive page-loading-img"
       src="images/sitelogo.jpeg"
       width="80px"
       height="auto"
-    /> -->
+    />
+  </vue-loading> -->
     <div class="lds-facebook"><div></div><div></div><div></div></div>
-  </vue-loading>
 </template>
 
 <script>
