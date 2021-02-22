@@ -67,7 +67,7 @@ Route::group([
         Route::get('/email/verify')->uses("AuthController@completeSignupView")->name('verification.notice');
         Route::get('/email/verify/{id}/{hash}')->uses('AuthController@verifyEmailAction')->name('verification.verify')->middleware(['signed']);
         Route::get('/email/verification-notification')->uses('AuthController@resendVerificationEmail')->middleware(['throttle:2,1'])->name('verification.send');
-        Route::get('/logout', 'AuthController@logout')->name('logout');
+        Route::get('/logout', 'AuthController@logout')->name('logout_url');
 
         Route::get("/complete-signup")->uses("AuthController@completeSignupView")->name("complete-signup");
         Route::put("/user")->uses("AuthController@updateUserDetails")->name("user.update");

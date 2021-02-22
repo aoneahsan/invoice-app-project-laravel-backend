@@ -229,7 +229,7 @@ export default {
     },
 
     logout() {
-      axios.post(route("logout").url()).then((response) => {
+      axios.post(route("logout_url").url()).then((response) => {
         window.location = "/";
       });
     },
