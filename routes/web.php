@@ -15,18 +15,17 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get("/init_urp", "SystemController@initRolePermissions");
 
-// Route::get('/profile', function () {
-//     return "ok";
-// })->name("profile");
+// #################################################################
+// ########################    REDIRECTS    ########################
+// #################################################################
+Route::redirect("/register", "/sign-up");
+Route::redirect("/login", "/sign-in");
 
-// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-//     return Inertia\Inertia::render('Dashboard');
-// })->name('dashboard');
+Route::redirect("/", "/user/profile");
 
 // #################################################################
 // ##################      FRONTEND ROUTES      ####################
 // #################################################################
-
 Route::group([
     // 'middleware' => [],
     'namespace' => 'Frontend',
@@ -52,8 +51,10 @@ Route::group([
     Route::group([
         "middleware" => ['guest']
     ], function () {
+        Route::get("/login")->uses("AuthController@loginView");
         Route::get("/sign-in")->uses("AuthController@loginView")->name("login.view");
         Route::post("/sign-in")->uses("AuthController@login")->name("login.action");
+        Route::get("/register")->uses("AuthController@registerView");
         Route::get("/sign-up")->uses("AuthController@registerView")->name("register.view");
         Route::post("/sign-up")->uses("AuthController@register")->name("register.action");
     });
@@ -107,12 +108,12 @@ Route::group([
         // user download invoice route
         Route::get("/download-invoice/{invoice_unique_id}", "InvoiceController@downloadInvoices")->name("invoice.download");
     });
-
-    // #################################################################
-    // ########################    REDIRECTS    ########################
-    // #################################################################
-    Route::redirect("/register", "/sign-up");
-    Route::redirect("/login", "/sign-in");
-
-    Route::redirect("/", "/user/profile");
 });
+
+Route::any(
+    '{query}',
+    function () {
+        return redirect('/sign-in');
+    }
+)
+    ->where('query', '.*');
