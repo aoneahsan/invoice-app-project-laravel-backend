@@ -3,25 +3,20 @@
 @import "tailwindcss/utilities";
 
 /* Vue Notification Package Custom CSS */
-.vue-notification-wrapper {
-    padding: 10px !important;
-    margin: 0 5px 5px !important;
-    font-size: 14px;
-    color: #ffffff;
-    background: #44a4fc;
-    border-left: 5px solid #187fe7;
+.vue-notification-group {
+    width: auto !important;
+    min-width: 300px !important;
 }
-.vue-notification-wrapper.warn {
-    background: #ffb648 !important;
-    border-left-color: #f48a06 !important;
+.vue-notification-wrapper .notification-title {
+    font-size: 17px !important;
+}
+.vue-notification-wrapper .notification-content {
+    font-size: 15px !important;
 }
 
-.vue-notification-wrapper.error {
-    background: #e54d42 !important;
-    border-left-color: #b82e24 !important;
-}
-
-.vue-notification-wrapper.success {
-    background: #68cd86 !important;
-    border-left-color: #42a85f !important;
+/* Disabled Button CSS */
+button:disabled {
+    background-color: #272727 !important;
+    cursor: not-allowed !important;
+    color: snow !important;
 }

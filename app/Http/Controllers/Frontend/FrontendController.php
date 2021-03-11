@@ -25,6 +25,9 @@ class FrontendController extends Controller
     public function checkClientInvoices(Request $request, $client_id)
     {
         $items = Invoice::where("user_id", $request->user()->id)->where("client_id", $client_id)->count();
+        if (empty($items)) {
+            return redirect("/");
+        }
         return response()->json(['data' => $items], 200);
     }
 }

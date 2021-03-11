@@ -1,7 +1,7 @@
 <template>
   <FrontendMain>
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+      <h2 class="text-xl font-semibold leading-tight text-gray-800">
         Client Details
       </h2>
     </template>
@@ -124,7 +124,6 @@
                 v-model="updateClientform.country"
                 :country="updateClientform.country"
                 :countryName="true"
-                topCountry="Pakistan"
               />
 
               <has-error :form="updateClientform" field="country"></has-error>
@@ -275,7 +274,7 @@
               <textarea
                 id="notes"
                 type="text"
-                class="form-control"
+                class="form-control js-autoresize"
                 :class="{
                   'is-invalid': updateClientform.errors.has('notes'),
                 }"
@@ -300,7 +299,7 @@
               <textarea
                 id="bank_details"
                 type="text"
-                class="form-control"
+                class="form-control js-autoresize"
                 :class="{
                   'is-invalid': updateClientform.errors.has('bank_details'),
                 }"
@@ -317,7 +316,7 @@
           </div>
 
           <!-- submit -->
-          <div class="form-group row mb-0">
+          <div class="mb-0 form-group row">
             <div class="col-md-6 offset-md-4">
               <button
                 type="submit"
@@ -418,6 +417,7 @@
 
 <script>
 import { Form } from "vform";
+import {setResizeListeners} from "./../../../utils/auto-resize";
 export default {
   props: ["client"],
   data() {
@@ -446,6 +446,9 @@ export default {
   },
   beforeMount() {
     this.updateClientDataLocally(this.client);
+  },
+  mounted() {
+    setResizeListeners(this.$el, ".js-autoresize");
   },
   methods: {
     // upload file
@@ -482,7 +485,7 @@ export default {
             type: "success",
             title: "Request Successfull",
             text: "Client Updated Successfully",
-            duration: 5000,
+            duration: 7000,
             speed: 1000,
             closeOnClick: true,
           });
@@ -494,7 +497,7 @@ export default {
               type: "error",
               title: "Request Faild",
               text: err.message,
-              duration: 5000,
+              duration: 7000,
               speed: 1000,
               closeOnClick: true,
             });

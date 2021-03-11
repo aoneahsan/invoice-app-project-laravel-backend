@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -23,7 +23,7 @@
 
 <body class="font-sans antialiased">
     @inertia
-    <script src="{{ asset('custom-assets/js/theme.min.js') }}" defer>
+    <script src="{{ asset('custom-assets/js/theme.min.js') }}" defer></script>
 </body>
 
 </html>

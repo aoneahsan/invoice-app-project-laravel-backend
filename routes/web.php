@@ -82,7 +82,7 @@ Route::group([
         "middleware" => ['auth']
     ], function () {
         // Dashboard route
-        Route::get('/dashboard')->uses("PagesController@Dashboard")->name('dashboard');
+        // Route::get('/dashboard')->uses("PagesController@Dashboard")->name('dashboard');
 
         // User profile routes
         Route::get('/user/profile')->uses("User\UserController@show")->name('user.profile');
@@ -107,13 +107,15 @@ Route::group([
 
         // user download invoice route
         Route::get("/download-invoice/{invoice_unique_id}", "InvoiceController@downloadInvoices")->name("invoice.download");
+        Route::get("/download-invoice2/{invoice_unique_id}", "InvoiceController@downloadInvoicesView")->name("invoice.download2");
     });
 });
 
 Route::any(
-    '{query}',
+    '/{query}',
     function () {
-        return redirect('/sign-in');
+        return redirect('/');
     }
-)
-    ->where('query', '.*');
+)->where('query', '.*');
+
+// Route::redirect("/dashboard", "/");

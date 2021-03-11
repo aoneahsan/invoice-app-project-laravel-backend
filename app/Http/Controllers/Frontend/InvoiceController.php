@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\InvoiceResource;
 use App\Models\Invoice;
+use App\Models\User;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Inertia\Inertia;
 use JamesDordoy\LaravelVueDatatable\Http\Resources\DataTableCollectionResource;
 
@@ -28,11 +31,45 @@ class InvoiceController extends Controller
     public function downloadInvoices(Request $request, $invoice_unique_id)
     {
         $item = Invoice::where("user_id", $request->user()->id)->where("invoice_unique_id", $invoice_unique_id)->first();
+        if (empty($item)) {
+            return redirect("/");
+        }
         Inertia::setRootView("layouts.frontend.index");
         $itemResource = new InvoiceResource($item);
         return Inertia::render("Frontend/Invoice/DownloadCreate", [
             "invoice" => $itemResource
         ]);
+    }
+
+    public function downloadInvoicesView(Request $request, $invoice_unique_id)
+    {
+        $item = Invoice::where("user_id", $request->user()->id)->where("invoice_unique_id", $invoice_unique_id)->first();
+        if (empty($item)) {
+            return redirect("/");
+        }
+        // Inertia::setRootView("layouts.frontend.index");
+        $itemResource = new InvoiceResource($item);
+        $user = User::where("id", $request->user()->id)->first();
+        // return Inertia::render("Frontend/Invoice/DownloadCreate", [
+        //     "invoice" => $itemResource
+        // ]);
+        $data = [
+            "itemResource" => $itemResource,
+            "user" => $user,
+            "item" => $item
+        ];
+        $pdfData = [
+            "data" => [
+                "itemResource" => $itemResource,
+                "user" => $user,
+                "item" => $item
+            ]
+        ];
+        // $pdf = App::make('dompdf.wrapper');
+        $pdf = PDF::loadView('invoices/download-invoice', $pdfData);
+        // return $pdf;
+        return $pdf->download();
+        return view("invoices/download-invoice", compact("data"));
     }
 
     public function store(Request $request)
@@ -69,6 +106,9 @@ class InvoiceController extends Controller
     public function show(Request $request, $invoice_unique_id)
     {
         $item = Invoice::where("user_id", $request->user()->id)->where("invoice_unique_id", $invoice_unique_id)->first();
+        if (empty($item)) {
+            return redirect("/");
+        }
         Inertia::setRootView("layouts.frontend.index");
         $itemResource = new InvoiceResource($item);
         return Inertia::render("Frontend/Invoice/Create", [
@@ -79,6 +119,9 @@ class InvoiceController extends Controller
     public function update(Request $request, $invoice_unique_id)
     {
         $oldItem = Invoice::where("user_id", $request->user()->id)->where("invoice_unique_id", $invoice_unique_id)->first();
+        if (empty($oldItem)) {
+            return redirect("/");
+        }
         $result = $oldItem->update([
             "invoice_no" => $request->has("invoice_no") ? $request->invoice_no : $oldItem->invoice_no,
             "user_id" => $request->has("user_id") ? $request->user_id : $oldItem->user_id,
@@ -100,6 +143,9 @@ class InvoiceController extends Controller
         ]);
         if ($result) {
             $item = Invoice::where("user_id", $request->user()->id)->where("invoice_unique_id", $invoice_unique_id)->first();
+            if (empty($item)) {
+                return redirect("/");
+            }
             return response()->json(['data' => new InvoiceResource($item)], 200);
         } else {
             return response()->json(['message' => "Error occured while updating invoice."], 500);
@@ -109,6 +155,9 @@ class InvoiceController extends Controller
     public function destroy(Request $request, $id)
     {
         $item = Invoice::where("user_id", $request->user()->id)->where("id", $id)->delete();
+        if (empty($item)) {
+            return redirect("/");
+        }
         if ($item) {
             return response()->json(['data' => "invoice deleted"], 200);
         } else {

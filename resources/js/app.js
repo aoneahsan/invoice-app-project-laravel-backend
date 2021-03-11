@@ -9,6 +9,7 @@ import { InertiaForm } from "laravel-jetstream";
 import PortalVue from "portal-vue";
 import { HasError, AlertError, AlertErrors, AlertSuccess } from "vform";//https://www.npmjs.com/package/vform
 import Notifications from "vue-notification"; // https://github.com/euvl/vue-notification
+import velocity from "velocity-animate"; // https://www.npmjs.com/package/velocity-animate
 import VModal from "vue-js-modal"; // https://euvl.github.io/vue-js-modal/
 import Icon from "vue-awesome/components/Icon"; //https://github.com/Justineo/vue-awesome
 import DataTable from "laravel-vue-datatable"; //https://jamesdordoy.github.io/laravel-vue-datatable/
@@ -32,7 +33,7 @@ Vue.component(HasError.name, HasError);//https://www.npmjs.com/package/vform
 Vue.component(AlertError.name, AlertError);//https://www.npmjs.com/package/vform
 Vue.component(AlertErrors.name, AlertErrors);//https://www.npmjs.com/package/vform
 Vue.component(AlertSuccess.name, AlertSuccess);//https://www.npmjs.com/package/vform
-Vue.use(Notifications); // https://github.com/euvl/vue-notification
+Vue.use(Notifications, { velocity }); // https://github.com/euvl/vue-notification
 Vue.use(VModal, { dialog: true }); // https://euvl.github.io/vue-js-modal/
 Vue.component("v-icon", Icon); //https://github.com/Justineo/vue-awesome
 Vue.use(vueCountryRegionSelect); //https://www.npmjs.com/package/vue-country-region-select
@@ -42,7 +43,7 @@ Vue.use(VueHtml2pdf); //https://www.npmjs.com/package/vue-html2pdf
 const VueCurrencyInput_pluginOptions = {//https://dm4t2.github.io/vue-currency-input/guide/#installation
     /* see config reference */
     globalOptions: { currency: "USD" }
-}; 
+};
 Vue.use(VueCurrencyInput, VueCurrencyInput_pluginOptions); //https://dm4t2.github.io/vue-currency-input/guide/#installation
 
 // Custom Defined Components

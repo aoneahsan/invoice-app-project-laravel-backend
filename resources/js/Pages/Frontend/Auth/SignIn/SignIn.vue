@@ -1,9 +1,9 @@
 <template>
   <FrontendMain>
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Login</h2>
+      <h2 class="text-xl font-semibold leading-tight text-gray-800">Login</h2>
     </template>
-    <div class="container-fluid pt-12">
+    <div class="pt-12 container-fluid">
       <div class="row justify-content-center">
         <div class="col-12 col-md-12 col-xl-10">
           <div class="row">
@@ -59,7 +59,7 @@
                       </div>
                     </div>
 
-                    <div class="form-group row mb-0">
+                    <div class="mb-0 form-group row">
                       <div class="col-md-6 offset-md-4">
                         <button
                           type="submit"
@@ -103,19 +103,31 @@ export default {
       // Submit the form via a POST request
       this.form
         .post("/sign-in")
-        .then(({ data }) => {
-          this.$inertia.visit("/user/profile");
+        .then((res) => {
+        //   console.log("Signin.vue === formsubmit == res = ", res);
+          this.$notify({
+            group: "app",
+            type: "success",
+            title: "Request Successfull",
+            text: "Signup Completed Successfully.",
+            duration: 7000,
+            speed: 1000,
+          });
+          setTimeout(() => {
+            this.$inertia.visit("/invoices");
+          }, 1000);
         })
         .catch((err) => {
+          console.log("Signin.vue === formsubmit == err = ", err);
           if (err) {
-            // this.$notify({
-            //   group: "app",
-            //   type: "error",
-            //   title: "Request Faild",
-            //   text: err.message,
-            //   duration: 10000,
-            //   speed: 1000,
-            // });
+            this.$notify({
+              group: "app",
+              type: "error",
+              title: "Request Faild",
+              text: "Invalid login details, kindly provide correct details",
+              duration: 7000,
+              speed: 1000,
+            });
           }
         });
     },

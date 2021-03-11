@@ -1,7 +1,7 @@
 <template>
   <FrontendMain>
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+      <h2 class="text-xl font-semibold leading-tight text-gray-800">
         Account Details
       </h2>
     </template>
@@ -121,7 +121,6 @@
                 :country="updateUserform.country"
                 :countryName="true"
                 @change="changes_not_saved = true"
-                topCountry="Pakistan"
               />
 
               <has-error :form="updateUserform" field="country"></has-error>
@@ -288,7 +287,7 @@
               <textarea
                 id="notes"
                 type="text"
-                class="form-control"
+                class="form-control js-autoresize"
                 @change="changes_not_saved = true"
                 :class="{
                   'is-invalid': updateUserform.errors.has('notes'),
@@ -304,7 +303,9 @@
 
           <!-- bank_details -->
           <div class="form-group row">
-            <label for="bank_details" class="col-md-4 col-form-label text-md-right"
+            <label
+              for="bank_details"
+              class="col-md-4 col-form-label text-md-right"
               >Bank Details</label
             >
 
@@ -312,7 +313,7 @@
               <textarea
                 id="bank_details"
                 type="text"
-                class="form-control"
+                class="form-control js-autoresize"
                 @change="changes_not_saved = true"
                 :class="{
                   'is-invalid': updateUserform.errors.has('bank_details'),
@@ -322,12 +323,15 @@
                 autocomplete="bank_details"
               ></textarea>
 
-              <has-error :form="updateUserform" field="bank_details"></has-error>
+              <has-error
+                :form="updateUserform"
+                field="bank_details"
+              ></has-error>
             </div>
           </div>
 
           <!-- submit -->
-          <div class="form-group row mb-0">
+          <div class="mb-0 form-group row">
             <div class="col-md-6 offset-md-4">
               <button
                 type="submit"
@@ -347,6 +351,7 @@
 
 <script>
 import { Form } from "vform";
+import { setResizeListeners } from "./../../../utils/auto-resize";
 export default {
   data() {
     return {
@@ -377,6 +382,9 @@ export default {
   },
   beforeMount() {
     this.updateUserDataLocally(this.$page.user);
+  },
+  mounted() {
+    setResizeListeners(this.$el, ".js-autoresize");
   },
   methods: {
     // upload file
@@ -449,7 +457,7 @@ export default {
             type: "success",
             title: "Request Successfull",
             text: "Profile Updated Successfully",
-            duration: 5000,
+            duration: 7000,
             speed: 1000,
             closeOnClick: true,
           });
@@ -461,7 +469,7 @@ export default {
               type: "error",
               title: "Request Faild",
               text: err.message,
-              duration: 5000,
+              duration: 7000,
               speed: 1000,
               closeOnClick: true,
             });

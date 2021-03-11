@@ -4,7 +4,7 @@
       <div class="row align-items-center">
         <div class="col">
           <!-- Pretitle -->
-          <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-1">
+          <h2 class="mb-1 text-xl font-semibold leading-tight text-gray-800">
             Payments
           </h2>
           <!-- Title -->
@@ -25,30 +25,30 @@
             <button
               @click="toggleInvoiceToExpense('invoice')"
               v-if="invoiceForm.invoice_type == 'expense'"
-              class="btn btn-success ml-2 lift"
+              class="ml-2 btn btn-success lift"
             >
               Switch To Invoice
             </button>
             <button
               @click="toggleInvoiceToExpense('expense')"
               v-if="invoiceForm.invoice_type == 'invoice'"
-              class="btn btn-danger ml-2 lift"
+              class="ml-2 btn btn-danger lift"
             >
               Switch To Expense
             </button>
             <button
               @click="downloadInvoice()"
               :disabled="changes_not_saved"
-              class="btn btn-white ml-2 lift"
+              class="ml-2 btn btn-white lift"
             >
               Download
             </button>
           </template>
-          <button @click="saveInvoice()" class="btn btn-primary ml-2 lift">
+          <button @click="saveInvoice()" class="ml-2 btn btn-primary lift">
             Save
           </button>
           <select
-            class="form-control form-control-sm d-inline-block ml-2"
+            class="ml-2 form-control form-control-sm d-inline-block"
             style="width: 100px; height: 40px"
             v-model="invoiceForm.selected_currency"
           >
@@ -63,12 +63,12 @@
         </div>
       </div>
     </template>
-    <div class="col-12 pt-12">
+    <div class="pt-12 col-12">
       <div class="container">
         <div class="row">
           <!-- Alert for Login -->
           <div class="col-12" v-if="!$page.user">
-            <div class="alert alert-primary text-center" role="alert">
+            <div class="text-center alert alert-primary" role="alert">
               <strong
                 >Kindly Login first before continue (no data will be saved
                 otherwise)</strong
@@ -77,10 +77,10 @@
           </div>
           <!-- Invoice Setting -->
 
-          <div class="col-11 col-lg-10 col-xl-10 mx-auto">
+          <div class="mx-auto col-11 col-lg-10 col-xl-10">
             <!-- Header -->
             <!-- Content -->
-            <div class="card card-body p-5">
+            <div class="p-5 card card-body">
               <div class="row">
                 <div class="col-12 col-md-6">
                   <div
@@ -141,14 +141,14 @@
                       v-html="invoiceForm.user.vat_number"
                     ></span
                     ><br />
-                    <div class="edit mt-3" title="Edit This">
+                    <div class="mt-3 edit" title="Edit This">
                       <v-icon name="edit"></v-icon>
                     </div>
                   </div>
-                  <p class="text-muted mt-5">Bill To:</p>
+                  <p class="mt-5 text-muted">Bill To:</p>
                   <div class="clickable">
                     <div
-                      class="ml-3 my-2"
+                      class="my-2 ml-3"
                       data-toggle="modal"
                       data-target="#exampleModal"
                     >
@@ -197,7 +197,7 @@
                         v-if="!invoiceForm.client.id"
                         @click="openClientListModal"
                       >
-                        <i class="fe fe-user ml-2"> </i>
+                        <i class="ml-2 fe fe-user"> </i>
                         Add Client
                       </a>
                     </div>
@@ -233,7 +233,7 @@
                         @input-filter="invoiceLogoFilter"
                       >
                         <img
-                          class="image rounded-circle ml-8"
+                          class="ml-8 image rounded-circle"
                           v-bind:src="invoice_logo_url"
                           v-show="!hideInvoiceLogo"
                           alt="User Company Logo"
@@ -244,12 +244,12 @@
                   </div>
 
                   <div class="mr-4">
-                    <h3 class="invoice mb-3">Invoice</h3>
+                    <h3 class="mb-3 invoice">Invoice</h3>
                     <div
-                      class="d-flex mb-3 justify-content-end"
+                      class="mb-3 d-flex justify-content-end"
                       v-if="invoiceForm.invoice_no"
                     >
-                      <span class="text-muted mr-2">Invoice no:</span>
+                      <span class="mr-2 text-muted">Invoice no:</span>
                       <span
                         contenteditable="true"
                         @blur="(event) => changeValue(event, 'invoice_no')"
@@ -257,26 +257,26 @@
                       ></span>
                     </div>
                     <div
-                      class="d-flex mb-3 justify-content-end"
+                      class="mb-3 d-flex justify-content-end"
                       v-if="!invoiceForm.invoice_no"
                     >
-                      <span class="text-muted mr-2">Invoice no:</span>
+                      <span class="mr-2 text-muted">Invoice no:</span>
                       <span>############</span>
                     </div>
-                    <div class="d-flex mb-3 justify-content-end">
-                      <span class="text-muted mr-2">Date:</span>
+                    <div class="mb-3 d-flex justify-content-end">
+                      <span class="mr-2 text-muted">Date:</span>
                       <input
                         type="date"
-                        class="form-control form-control-sm w-auto"
+                        class="w-auto form-control form-control-sm"
                         @blur="toggleChangesNotSaved(true)"
                         v-model="invoiceForm.date"
                       />
                     </div>
-                    <div class="d-flex mb-3 justify-content-end">
-                      <span class="text-muted mr-2">Due Date:</span>
+                    <div class="mb-3 d-flex justify-content-end">
+                      <span class="mr-2 text-muted">Due Date:</span>
                       <input
                         type="date"
-                        class="form-control form-control-sm w-auto"
+                        class="w-auto form-control form-control-sm"
                         @blur="toggleChangesNotSaved(true)"
                         v-model="invoiceForm.due_date"
                       />
@@ -304,7 +304,7 @@
                           <th class="bg-transparent border-top-0">
                             <span class="h6">Amount</span>
                           </th>
-                          <th class="bg-transparent border-top-0 text-right">
+                          <th class="text-right bg-transparent border-top-0">
                             <span class="h6"></span>
                           </th>
                         </tr>
@@ -337,7 +337,7 @@
                               v-model.number="item.rate"
                             />
                           </td>
-                          <td class="td text-right">
+                          <td class="text-right td">
                             {{
                               (item.qty * item.rate).toLocaleString(
                                 userLocale,
@@ -365,7 +365,7 @@
                             >
                               <v-icon name="plus"></v-icon>
                             </button>
-                            <span @click="addRow()" class="text-primary ml-2">
+                            <span @click="addRow()" class="ml-2 text-primary">
                               <a href="javascript:void(0)">
                                 Add a line item</a
                               ></span
@@ -434,20 +434,22 @@
                   </div>
                   <hr class="my-5" />
                   <h6 class="text-uppercase">Notes</h6>
-                  <p class="text-muted mb-0">
+                  <p class="mb-0 text-muted">
                     <textarea
                       @blur="toggleChangesNotSaved(true)"
                       v-model="invoiceForm.invoice_notes"
                       style="width: 100%; height: auto"
+                      class="form-control form-control-sm js-autoresize"
                     />
                   </p>
                   <!-- <hr class="my-5" /> -->
-                  <h6 class="text-uppercase mt-4">Bank Details</h6>
-                  <p class="text-muted mb-0">
+                  <h6 class="mt-4 text-uppercase">Bank Details</h6>
+                  <p class="mb-0 text-muted">
                     <textarea
                       @blur="toggleChangesNotSaved(true)"
                       v-model="invoiceForm.client.bank_details"
                       style="width: 100%; height: auto"
+                      class="form-control form-control-sm js-autoresize"
                     />
                   </p>
                 </div>
@@ -462,6 +464,7 @@
 
 <script>
 import { Form } from "vform";
+import { setResizeListeners } from "./../../../utils/auto-resize";
 
 export default {
   props: ["invoice"],
@@ -515,7 +518,7 @@ export default {
             rate: 0,
           },
         ],
-        invoice_notes: `We really appreciate your business and if there’s anything else we can do, please let us know! Also, should you need us to add VAT or anything else to this order, it’s super easy since this is a template, so just ask!`,
+        invoice_notes: ``,
         invoice_terms: null,
         invoice_no: null,
         selected_currency: "USD",
@@ -701,6 +704,7 @@ export default {
 
     // setting upload component to active
     this.$refs.upload.active = true;
+    setResizeListeners(this.$el, ".js-autoresize");
   },
   methods: {
     textResult() {
@@ -806,7 +810,7 @@ export default {
             type: "error",
             title: "Request Faild",
             text: err.message,
-            duration: 5000,
+            duration: 7000,
             speed: 1000,
             closeOnClick: true,
           });
@@ -863,7 +867,7 @@ export default {
               type: "success",
               title: "Request Successfull",
               text: "Changes saved Successfully!",
-              duration: 5000,
+              duration: 7000,
               speed: 1000,
               closeOnClick: true,
             });
@@ -875,7 +879,7 @@ export default {
               type: "error",
               title: "Request Faild",
               text: err.message,
-              duration: 5000,
+              duration: 7000,
               speed: 1000,
               closeOnClick: true,
             });
@@ -890,7 +894,7 @@ export default {
               type: "success",
               title: "Request Successfull",
               text: "Changes saved Successfully!",
-              duration: 5000,
+              duration: 7000,
               speed: 1000,
               closeOnClick: true,
             });
@@ -902,7 +906,7 @@ export default {
               type: "error",
               title: "Request Faild",
               text: err.message,
-              duration: 5000,
+              duration: 7000,
               speed: 1000,
               closeOnClick: true,
             });

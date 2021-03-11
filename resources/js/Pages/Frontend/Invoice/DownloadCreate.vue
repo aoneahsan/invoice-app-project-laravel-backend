@@ -10,7 +10,7 @@
       :preview-modal="true"
       :paginate-elements-by-height="1100"
       :filename="invoiceForm.invoice_no"
-      :pdf-quality="2"
+      :pdf-quality="10"
       :manual-pagination="true"
       pdf-format="a4"
       pdf-orientation="portrait"
@@ -22,15 +22,15 @@
       @hasGenerated="hasGenerated($event)" -->
       <!-- @beforeDownload="beforeDownload($event)" -->
       <section slot="pdf-content" class="w-full">
-        <div class="col-12 pt-12">
+        <div class="pt-12 col-12">
           <div class="container">
             <div class="row">
               <!-- Invoice Setting -->
 
-              <div class="col-11 col-lg-10 col-xl-10 mx-auto">
+              <div class="mx-auto col-11 col-lg-10 col-xl-10">
                 <!-- Header -->
                 <!-- Content -->
-                <div class="card card-body p-5">
+                <div class="p-5 card card-body">
                   <div class="row">
                     <div class="col-12 col-md-6">
                       <div
@@ -69,16 +69,16 @@
                           >VAT Number: {{ invoiceForm.user.vat_number }}</span
                         ><br />
                       </div>
-                      <p class="text-muted mt-5">Bill To:</p>
+                      <p class="mt-5 text-muted">Bill To:</p>
                       <div class="clickable">
                         <div
-                          class="ml-3 my-2"
+                          class="p-0 my-2 ml-3"
                           data-toggle="modal"
                           data-target="#exampleModal"
                         >
                           <a
                             v-if="invoiceForm.client.id"
-                            class="nav-link active"
+                            class="p-0 nav-link active"
                           >
                             <span v-html="invoiceForm.client.company"></span
                             ><br v-if="invoiceForm.client.address" />
@@ -123,7 +123,7 @@
                             class="nav-link active"
                             v-if="!invoiceForm.client.id"
                           >
-                            <i class="fe fe-user ml-2"> </i>
+                            <i class="ml-2 fe fe-user"> </i>
                             Client Details Will Show Here
                           </a>
                         </div>
@@ -134,7 +134,7 @@
                       <div style="min-width: 200px; min-height: 200px">
                         <label for="upload-photo">
                           <img
-                            class="image rounded-circle ml-8"
+                            class="ml-8 image rounded-circle"
                             v-bind:src="invoice_logo_url"
                             v-if="!hideInvoiceLogo"
                             alt="User Company Logo"
@@ -148,28 +148,28 @@
                       </div>
 
                       <div class="mr-4">
-                        <h3 class="invoice mb-3">Invoice</h3>
+                        <h3 class="mb-3 invoice">Invoice</h3>
                         <div
-                          class="d-flex mb-3 justify-content-end"
+                          class="mb-3 d-flex justify-content-end"
                           v-if="invoiceForm.invoice_no"
                         >
-                          <span class="text-muted mr-2">Invoice no:</span>
+                          <span class="mr-2 text-muted">Invoice no:</span>
                           <span>{{ invoiceForm.invoice_no }}</span>
                         </div>
-                        <div class="d-flex mb-3 justify-content-end">
-                          <span class="text-muted mr-2">Date:</span>
+                        <div class="mb-3 d-flex justify-content-end">
+                          <span class="mr-2 text-muted">Date:</span>
                           <input
                             type="date"
-                            class="form-control form-control-sm w-auto"
+                            class="w-auto form-control form-control-sm"
                             readonly
                             v-model="invoiceForm.date"
                           />
                         </div>
-                        <div class="d-flex mb-3 justify-content-end">
-                          <span class="text-muted mr-2">Due Date:</span>
+                        <div class="mb-3 d-flex justify-content-end">
+                          <span class="mr-2 text-muted">Due Date:</span>
                           <input
                             type="date"
-                            class="form-control form-control-sm w-auto"
+                            class="w-auto form-control form-control-sm"
                             readonly
                             v-model="invoiceForm.due_date"
                           />
@@ -198,7 +198,7 @@
                                 <span class="h6">Amount</span>
                               </th>
                               <th
-                                class="bg-transparent border-top-0 text-right"
+                                class="text-right bg-transparent border-top-0"
                               >
                                 <span class="h6"></span>
                               </th>
@@ -209,33 +209,21 @@
                               v-for="(item, index) in invoiceForm.items"
                               :key="index"
                             >
-                              <td class="td w-50">
-                                <input
-                                  readonly
-                                  class="form-control form-control-sm"
-                                  type="text"
-                                  v-model="item.item_detail"
-                                />
+                              <td class="td w-50" style="max-width: 50%">
+                                {{ item.item_detail }}
                               </td>
                               <td class="td">
-                                <input
-                                  type="number"
-                                  readonly
-                                  class="form-control form-control-sm"
-                                  v-model.number="item.qty"
-                                />
+                                {{ item.qty }}
                               </td>
                               <td class="td">
-                                <currency-input
-                                  :currency="invoiceForm.selected_currency"
-                                  :locale="userLocale"
-                                  :allow-negative="false"
-                                  readonly
-                                  class="form-control form-control-sm"
-                                  v-model.number="item.rate"
-                                />
+                                {{
+                                  item.rate.toLocaleString(userLocale, {
+                                    style: "currency",
+                                    currency: invoiceForm.selected_currency,
+                                  })
+                                }}
                               </td>
-                              <td class="td text-right">
+                              <td class="td">
                                 {{
                                   (item.qty * item.rate).toLocaleString(
                                     userLocale,
@@ -245,11 +233,6 @@
                                     }
                                   )
                                 }}
-                              </td>
-                              <td class="td">
-                                <!-- <button class="btn-rounded-circle badge-danger">
-                                  <v-icon name="times"></v-icon>
-                                </button> -->
                               </td>
                             </tr>
                             <tr>
@@ -279,12 +262,7 @@
                               </td>
                               <td colspan="3" class="text-right border-bottom">
                                 <span class="">
-                                  <input
-                                    type="number"
-                                    readonly
-                                    class="form-control form-control-sm"
-                                    v-model.number="invoiceForm.vat_value"
-                                  />
+                                  {{ invoiceForm.vat_value }}
                                 </span>
                               </td>
                             </tr>
@@ -320,14 +298,14 @@
                       <template v-if="invoiceForm.invoice_notes">
                         <hr class="my-5" />
                         <h6 class="text-uppercase">Notes</h6>
-                        <p class="text-muted mb-0">
+                        <p class="mb-0 text-muted">
                           {{ invoiceForm.invoice_notes }}
                         </p>
                       </template>
                       <template v-if="invoiceForm.client.bank_details">
                         <!-- <hr class="my-5" /> -->
-                        <h6 class="text-uppercase mt-4">Bank Details</h6>
-                        <p class="text-muted mb-0">
+                        <h6 class="mt-4 text-uppercase">Bank Details</h6>
+                        <p class="mb-0 text-muted">
                           {{ invoiceForm.client.bank_details }}
                         </p>
                       </template>
