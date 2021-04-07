@@ -417,7 +417,7 @@
 
 <script>
 import { Form } from "vform";
-import {setResizeListeners} from "./../../../utils/auto-resize";
+import { setResizeListeners } from "./../../../utils/auto-resize";
 export default {
   props: ["client"],
   data() {
@@ -489,6 +489,9 @@ export default {
             speed: 1000,
             closeOnClick: true,
           });
+          setTimeout(() => {
+            this.$inertia.visit("/clients");
+          }, 600);
         })
         .catch((err) => {
           if (err) {

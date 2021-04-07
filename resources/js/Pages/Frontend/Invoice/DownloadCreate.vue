@@ -5,37 +5,41 @@
     </button>
     <vue-html2pdf
       :show-layout="true"
-      :float-layout="true"
       :enable-download="true"
-      :preview-modal="true"
+      :float-layout="false"
+      :preview-modal="false"
       :paginate-elements-by-height="1100"
       :filename="invoiceForm.invoice_no"
       :pdf-quality="10"
       :manual-pagination="true"
-      pdf-format="a4"
       pdf-orientation="portrait"
       pdf-content-width="100%"
-      @progress="onProgress($event)"
       ref="html2Pdf"
+      pdf-format="a4"
+      @progress="onProgress($event)"
     >
-      <!-- @hasStartedGeneration="hasStartedGeneration()"
+      <!-- @beforeDownload="beforeDownload($event)"
+      @hasStartedGeneration="hasStartedGeneration()"
       @hasGenerated="hasGenerated($event)" -->
-      <!-- @beforeDownload="beforeDownload($event)" -->
       <section slot="pdf-content" class="w-full">
-        <div class="pt-12 col-12">
-          <div class="container">
+        <div class="px-0 col-12">
+          <div class="container-fuild">
             <div class="row">
               <!-- Invoice Setting -->
 
-              <div class="mx-auto col-11 col-lg-10 col-xl-10">
+              <div class="p-0 mx-auto col-12">
                 <!-- Header -->
                 <!-- Content -->
-                <div class="p-5 card card-body">
+                <div class="m-0 card card-body">
                   <div class="row">
-                    <div class="col-12 col-md-6">
+                    <div class="px-8 py-2 col-12 col-md-6">
                       <div
                         class="mt-2 mb-4 overlay profile-pic"
-                        style="line-height: 25px; max-width: 500px"
+                        style="
+                          line-height: 25px;
+                          max-width: 500px;
+                          font-weight: 600;
+                        "
                       >
                         <span v-html="invoiceForm.user.company"></span
                         ><br v-if="invoiceForm.user.address" />
@@ -69,8 +73,8 @@
                           >VAT Number: {{ invoiceForm.user.vat_number }}</span
                         ><br />
                       </div>
-                      <p class="mt-5 text-muted">Bill To:</p>
-                      <div class="clickable">
+                      <p style="font-weight: 700; margin-top: 84px">Bill To:</p>
+                      <div class="clickable" style="font-weight: 600; border: none !important;">
                         <div
                           class="p-0 my-2 ml-3"
                           data-toggle="modal"
@@ -140,39 +144,65 @@
                             alt="User Company Logo"
                             style="
                               object-fit: cover;
-                              width: 200px;
-                              height: 200px;
+                              width: 150px;
+                              height: 150px;
                             "
                           />
                         </label>
                       </div>
 
                       <div class="mr-4">
-                        <h3 class="mb-3 invoice">Invoice</h3>
+                        <h3 class="mb-3 invoice" style="padding-right: 90px">
+                          Invoice
+                        </h3>
                         <div
                           class="mb-3 d-flex justify-content-end"
                           v-if="invoiceForm.invoice_no"
                         >
-                          <span class="mr-2 text-muted">Invoice no:</span>
-                          <span>{{ invoiceForm.invoice_no }}</span>
+                          <div class="text-right col-6">
+                            <b class="mr-2" style="font-weight: 700"
+                              >Invoice no:</b
+                            >
+                          </div>
+                          <div class="col-6" style="font-weight: 600">
+                            <span>{{ invoiceForm.invoice_no }}</span>
+                          </div>
                         </div>
                         <div class="mb-3 d-flex justify-content-end">
-                          <span class="mr-2 text-muted">Date:</span>
-                          <input
+                          <div class="text-right col-6">
+                            <b
+                              class="mr-2"
+                              style="padding-right: 42px; font-weight: 700"
+                              >Date:</b
+                            >
+                          </div>
+                          <div class="col-6" style="font-weight: 600">
+                            {{ invoiceForm.date | moment("MMMM, Do YYYY") }}
+                          </div>
+                          <!-- <input
                             type="date"
                             class="w-auto form-control form-control-sm"
                             readonly
                             v-model="invoiceForm.date"
-                          />
+                          /> -->
                         </div>
                         <div class="mb-3 d-flex justify-content-end">
-                          <span class="mr-2 text-muted">Due Date:</span>
-                          <input
+                          <div class="text-right col-6">
+                            <b
+                              class="mr-2"
+                              style="padding-right: 9px; font-weight: 700"
+                              >Due Date:</b
+                            >
+                          </div>
+                          <div class="col-6" style="font-weight: 600">
+                            {{ invoiceForm.due_date | moment("MMMM, Do YYYY") }}
+                          </div>
+                          <!-- <input
                             type="date"
                             class="w-auto form-control form-control-sm"
                             readonly
                             v-model="invoiceForm.due_date"
-                          />
+                          /> -->
                         </div>
                         <br />
                       </div>
@@ -184,23 +214,42 @@
                       <div class="table-responsive">
                         <table class="table my-4">
                           <thead class="tablehead">
-                            <tr>
-                              <th class="bg-transparent border-top-0">
-                                <span class="h6">Item & Description</span>
+                            <tr style="font-weight: 700">
+                              <th
+                                class="bg-transparent border-top-0"
+                                colspan="2"
+                              >
+                                <span
+                                  class="h-6 text-black"
+                                  style="font-weight: 700"
+                                  >Item & Description</span
+                                >
                               </th>
                               <th class="bg-transparent border-top-0">
-                                <span class="h6">Quantity</span>
+                                <span
+                                  class="h-6 text-black"
+                                  style="font-weight: 700"
+                                  >Quantity</span
+                                >
                               </th>
                               <th class="bg-transparent border-top-0">
-                                <span class="h6">Rate</span>
+                                <span
+                                  class="h-6 text-black"
+                                  style="font-weight: 700"
+                                  >Rate</span
+                                >
                               </th>
                               <th class="bg-transparent border-top-0">
-                                <span class="h6">Amount</span>
+                                <span
+                                  class="h-6 text-black"
+                                  style="font-weight: 700"
+                                  >Amount</span
+                                >
                               </th>
                               <th
                                 class="text-right bg-transparent border-top-0"
                               >
-                                <span class="h6"></span>
+                                <span class="h-6 text-black"></span>
                               </th>
                             </tr>
                           </thead>
@@ -209,13 +258,17 @@
                               v-for="(item, index) in invoiceForm.items"
                               :key="index"
                             >
-                              <td class="td w-50" style="max-width: 50%">
+                              <td
+                                class="td w-50"
+                                style="max-width: 50%; font-weight: 600"
+                                colspan="2"
+                              >
                                 {{ item.item_detail }}
                               </td>
-                              <td class="td">
+                              <td class="td" style="font-weight: 600">
                                 {{ item.qty }}
                               </td>
-                              <td class="td">
+                              <td class="td" style="font-weight: 600">
                                 {{
                                   item.rate.toLocaleString(userLocale, {
                                     style: "currency",
@@ -223,7 +276,7 @@
                                   })
                                 }}
                               </td>
-                              <td class="td">
+                              <td class="td" style="font-weight: 600">
                                 {{
                                   (item.qty * item.rate).toLocaleString(
                                     userLocale,
@@ -236,11 +289,11 @@
                               </td>
                             </tr>
                             <tr>
-                              <td colspan="2" class="text-right">
+                              <td colspan="3" class="text-right">
                                 <strong>Subtotal</strong>
                               </td>
-                              <td colspan="3" class="text-right">
-                                <span class="">
+                              <td colspan="2" class="text-right">
+                                <span class="" style="font-weight: 600">
                                   {{
                                     invoiceForm.sub_total.toLocaleString(
                                       userLocale,
@@ -254,21 +307,31 @@
                               </td>
                             </tr>
                             <tr v-if="invoiceForm.is_invoice_vat_applied">
-                              <td colspan="2" class="text-right">
+                              <td colspan="3" class="text-right">
                                 <span></span>
                                 <label for="is_vat_applied"
-                                  ><strong>VAT (%)</strong></label
+                                  ><strong
+                                    >VAT ({{ invoiceForm.vat_value }}%)</strong
+                                  ></label
                                 >
                               </td>
-                              <td colspan="3" class="text-right border-bottom">
-                                <span class="">
-                                  {{ invoiceForm.vat_value }}
+                              <td colspan="2" class="text-right border-bottom">
+                                <span class="" style="font-weight: 600">
+                                  {{
+                                    (
+                                      invoiceForm.sub_total *
+                                      (invoiceForm.vat_value / 100)
+                                    ).toLocaleString(userLocale, {
+                                      style: "currency",
+                                      currency: invoiceForm.selected_currency,
+                                    })
+                                  }}
                                 </span>
                               </td>
                             </tr>
 
                             <tr>
-                              <td colspan="2" class="text-right">
+                              <td colspan="3" class="text-right">
                                 <strong
                                   data-toggle="modal"
                                   data-target="#exampleModalCurrency"
@@ -278,8 +341,8 @@
                                   }})</strong
                                 >
                               </td>
-                              <td colspan="3" class="text-right border-bottom">
-                                <span class="">
+                              <td colspan="2" class="text-right">
+                                <b class="" style="font-weight: 700">
                                   {{
                                     invoiceForm.total.toLocaleString(
                                       userLocale,
@@ -289,26 +352,49 @@
                                       }
                                     )
                                   }}
-                                </span>
+                                </b>
                               </td>
                             </tr>
                           </tbody>
                         </table>
                       </div>
-                      <template v-if="invoiceForm.invoice_notes">
-                        <hr class="my-5" />
-                        <h6 class="text-uppercase">Notes</h6>
-                        <p class="mb-0 text-muted">
-                          {{ invoiceForm.invoice_notes }}
-                        </p>
-                      </template>
-                      <template v-if="invoiceForm.client.bank_details">
-                        <!-- <hr class="my-5" /> -->
-                        <h6 class="mt-4 text-uppercase">Bank Details</h6>
-                        <p class="mb-0 text-muted">
-                          {{ invoiceForm.client.bank_details }}
-                        </p>
-                      </template>
+                      <div
+                        v-if="
+                          invoiceForm.invoice_notes ||
+                          invoiceForm.invoice_bank_details
+                        "
+                      >
+                        <template v-if="invoiceForm.invoice_notes">
+                          <hr class="my-5" />
+                          <h6 class="text-uppercase"><b>Notes</b></h6>
+                          <div
+                            class="mb-0"
+                            style="
+                              font-weight: 600;
+                              white-space: break-spaces;
+                              padding: 0 0 0 20px;
+                              margin: 6px 0 0 0;
+                            "
+                            v-html="invoiceForm.invoice_notes"
+                          ></div>
+                        </template>
+                        <template v-if="invoiceForm.invoice_bank_details">
+                          <!-- <hr class="my-5" /> -->
+                          <h6 class="mt-4 text-uppercase">
+                            <b>Bank Details</b>
+                          </h6>
+                          <div
+                            class="mb-0"
+                            style="
+                              font-weight: 600;
+                              white-space: break-spaces;
+                              padding: 0 0 0 20px;
+                              margin: 6px 0 0 0;
+                            "
+                            v-html="invoiceForm.invoice_bank_details"
+                          ></div>
+                        </template>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -364,6 +450,7 @@ export default {
           },
         ],
         invoice_notes: ``,
+        invoice_bank_details: "",
         invoice_terms: null,
         invoice_no: null,
         selected_currency: "USD",
@@ -384,6 +471,7 @@ export default {
   beforeMount() {
     const invoiceData = this.invoice.data;
     if (invoiceData) {
+      console.log("DownloadCreate.vue == invoiceData = ", invoiceData);
       this.is_creating_invoice = false; // invoice viewed so updating invoice instead of creating
       invoiceData.user_id && (this.invoiceForm.user_id = invoiceData.user_id);
       invoiceData.user && (this.invoiceForm.user = invoiceData.user);
@@ -401,6 +489,9 @@ export default {
       invoiceData.items && (this.invoiceForm.items = invoiceData.items);
       invoiceData.invoice_notes &&
         (this.invoiceForm.invoice_notes = invoiceData.invoice_notes);
+      invoiceData.invoice_bank_details &&
+        (this.invoiceForm.invoice_bank_details =
+          invoiceData.invoice_bank_details);
       invoiceData.invoice_terms &&
         (this.invoiceForm.invoice_terms = invoiceData.invoice_terms);
       invoiceData.invoice_no &&
@@ -452,6 +543,26 @@ export default {
 </script>
 
 <style>
+*,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+b,
+strong,
+small,
+td,
+tr,
+table,
+div,
+body,
+html,
+span {
+  font-family: "Open Sans", sans-serif !important;
+}
 .download-btn {
   position: fixed;
   top: 10px;

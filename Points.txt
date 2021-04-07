@@ -2,9 +2,6 @@
 
 On downloaded PDF - I’ve attached a visual of how I’d like the PDF to be laid out and look. Details are below.
 
-_Change font used to Open Sans
-
-_Please change font size, color and weight (semibold and regular) where shown on visual
 
 _Align user company logo to top right (as shown in visual)
 
@@ -39,7 +36,10 @@ I was wondering if you could make a few edits to the invoice generator. However,
 Here’s the list with edits:
 
 
+_Change font used to Open Sans
 
+
+_Please change font size, color and weight (semibold and regular) where shown on visual
 
 _Show success message after creating user profile/client profile
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,18 +22,21 @@ class InvoiceResource extends JsonResource
             "invoice_no" => $this->invoice_no,
             "user_id" => $this->user_id,
             "client_id" => $this->client_id,
-            // "user" => $this->user ? json_decode($this->user) : null,
-            "user" => $this->user,
-            // "client" => $this->client ? json_decode($this->client) : null,
-            "client" => $this->client,
+            "user" => $this->user ? json_decode($this->user) : null,
+            // "user" => $this->user,
+            "client" => $this->client ? json_decode($this->client) : null,
+            // "client" => $this->client,
             "invoice_logo" => $this->invoice_logo,
-            // "invoice_logo_url" => $this->invoice_logo ? Storage::url($this->invoice_logo) : null,
-            "date" => $this->date,
-            "due_date" => $this->due_date,
+            "invoice_logo_url" => $this->invoice_logo ? Storage::url($this->invoice_logo) : null,
+            "date" => $this->date ? Carbon::make($this->date)->toDateString() : $this->date,
+            // "date" => '2021-10-11',
+            "due_date" => $this->due_date ? Carbon::make($this->due_date)->toDateString() : $this->due_date,
             "vat_value" => $this->vat_value,
             "is_invoice_vat_applied" => $this->is_invoice_vat_applied,
-            "items" => $this->items,
+            "items" => $this->items ? json_decode($this->items) : [],
+            // "items" => $this->items,
             "invoice_notes" => $this->invoice_notes,
+            "invoice_bank_details" => $this->invoice_bank_details,
             "selected_currency" => $this->selected_currency,
             "invoice_type" => $this->invoice_type,
             "sub_total" => $this->sub_total,

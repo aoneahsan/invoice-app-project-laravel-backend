@@ -232,19 +232,25 @@
             data-dismiss="modal"
             @click="selectClient(index)"
           >
-            <span v-if="client.company"
-              ><span class="font-weight-bold">Company:</span>
-              {{ client.company }}</span
-            >
-            <div class="flex">
-              <span v-if="client.name" class="mr-3"
-                ><span class="font-weight-bold">Client:</span>
-                {{ client.name }}</span
+            <div v-if="!client.name && !client.email">
+              <span
+                v-if="client.company"
+                style="margin-top: 9px; display: block"
+                >{{ client.company }}</span
               >
-              <span v-if="client.email"
-                ><span class="font-weight-bold">Email:</span>
-                {{ client.email }}</span
-              >
+            </div>
+            <div v-if="client.name || client.email">
+              <span v-if="client.company">{{ client.company }}</span>
+              <div class="flex">
+                <span v-if="client.name" class="mr-3"
+                  ><span class="font-weight-bold">Client:</span>
+                  {{ client.name }}</span
+                >
+                <span v-if="client.email"
+                  ><span class="font-weight-bold">Email:</span>
+                  {{ client.email }}</span
+                >
+              </div>
             </div>
           </div>
         </div>

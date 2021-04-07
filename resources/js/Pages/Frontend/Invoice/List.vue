@@ -1,11 +1,11 @@
 <template>
   <FrontendMain>
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">User Invoices</h2>
+      <h2 class="text-xl font-semibold leading-tight text-gray-800">User Invoices</h2>
     </template>
-    <div class="col-12 py-8">
+    <div class="py-8 col-12">
       <div class="container">
-        <div class="col-12 pb-6">
+        <div class="pb-6 col-12">
           <inertia-link :href="route('createinvoice')" class="btn btn-primary lift">
             Create Invoice
           </inertia-link>
@@ -22,6 +22,7 @@
 <script>
 import cellDeleteInvoice from "./cellDeleteInvoice";
 import cellViewInvoice from "./cellViewInvoice";
+import cellDueDate from "./cellDueDate";
 export default {
   data() {
     return {
@@ -45,6 +46,7 @@ export default {
           label: "Due Date",
           name: "due_date",
           orderable: false,
+          component: cellDueDate
         },
         {
           label: "Currency",

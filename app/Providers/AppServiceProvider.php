@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Currency;
 use App\Models\User\Client;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
@@ -32,10 +31,6 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
-        Inertia::share("currencies", function() {
-            return Currency::where("is_active", true)->get();
-        });
-        
         // Sessions Variables
         Inertia::share("success_message", function () {
             return session()->get("success_message") ? session()->get("success_message") : null;

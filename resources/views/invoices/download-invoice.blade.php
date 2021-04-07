@@ -10,7 +10,22 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ asset('custom-assets/css/theme.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('custom-assets/css/theme.min.css') }}"> --}}
+
+    <style>
+        .row {
+            width: 100%;
+            padding: 0 -15px;
+        }
+        .col-12 {
+            width: 100%;
+            padding: 0 15px;
+        }
+        .col-md-6 {
+            width: 50%;
+            padding: 0 15px;
+        }
+    </style>
 </head>
 
 <body class="font-sans">

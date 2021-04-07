@@ -3,10 +3,11 @@
 </template>
 
 <script>
+import PageLoader from "./../../../GlobalComponents/PageLoader/PageLoader";
 export default {
   mounted() {
     if (this.$page.user) {
-        this.createInvoice();
+      this.createInvoice();
     } else {
       alert("Kindly Login to continue!");
       this.$inertia.visit("/sign-in");
@@ -19,6 +20,7 @@ export default {
         .post("/user/invoices")
         .then((res) => {
           const invoice = res.data.data;
+        //   this.$inertia.visit("/invoices/" + invoice.invoice_unique_id + "?isCreating=true");
           this.$inertia.visit("/invoices/" + invoice.invoice_unique_id);
         })
         .catch((err) => {
@@ -33,6 +35,9 @@ export default {
           });
         });
     },
+  },
+  components: {
+    PageLoader,
   },
 };
 </script>

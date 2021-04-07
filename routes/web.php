@@ -108,6 +108,7 @@ Route::group([
         // user download invoice route
         Route::get("/download-invoice/{invoice_unique_id}", "InvoiceController@downloadInvoices")->name("invoice.download");
         Route::get("/download-invoice2/{invoice_unique_id}", "InvoiceController@downloadInvoicesView")->name("invoice.download2");
+        Route::get("/download-invoice3/{invoice_unique_id}", "InvoiceController@downloadInvoicesPhpDownload")->name("invoice.download2");
     });
 });
 

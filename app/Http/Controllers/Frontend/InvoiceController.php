@@ -34,7 +34,7 @@ class InvoiceController extends Controller
         if (empty($item)) {
             return redirect("/");
         }
-        Inertia::setRootView("layouts.frontend.index");
+        Inertia::setRootView("layouts.frontend.download-invoice-layout");
         $itemResource = new InvoiceResource($item);
         return Inertia::render("Frontend/Invoice/DownloadCreate", [
             "invoice" => $itemResource
@@ -42,6 +42,30 @@ class InvoiceController extends Controller
     }
 
     public function downloadInvoicesView(Request $request, $invoice_unique_id)
+    {
+        $item = Invoice::where("user_id", $request->user()->id)->where("invoice_unique_id", $invoice_unique_id)->first();
+        if (empty($item)) {
+            return redirect("/");
+        }
+        $itemResource = new InvoiceResource($item);
+        $user = User::where("id", $request->user()->id)->first();
+        $data = [
+            "itemResource" => $itemResource,
+            "user" => $user,
+            "item" => $item
+        ];
+        $pdfData = [
+            "data" => [
+                "itemResource" => $itemResource,
+                "user" => $user,
+                "item" => $item
+            ]
+        ];
+        $pdf = PDF::loadView('invoices/download-invoice', $pdfData);
+        return view("invoices/download-invoice", compact("data"));
+    }
+
+    public function downloadInvoicesPhpDownload(Request $request, $invoice_unique_id)
     {
         $item = Invoice::where("user_id", $request->user()->id)->where("invoice_unique_id", $invoice_unique_id)->first();
         if (empty($item)) {
@@ -69,7 +93,7 @@ class InvoiceController extends Controller
         $pdf = PDF::loadView('invoices/download-invoice', $pdfData);
         // return $pdf;
         return $pdf->download();
-        return view("invoices/download-invoice", compact("data"));
+        // return view("invoices/download-invoice", compact("data"));
     }
 
     public function store(Request $request)
@@ -89,6 +113,7 @@ class InvoiceController extends Controller
             'is_invoice_vat_applied' => $request->has("is_invoice_vat_applied") ? $request->is_invoice_vat_applied : null,
             'items' => $request->has("items") ? json_encode($request->items) : null,
             'invoice_notes' => $request->has("invoice_notes") ? $request->invoice_notes : $user->notes,
+            'invoice_bank_details' => $request->has("invoice_bank_details") ? $request->invoice_bank_details : $user->bank_details,
             'invoice_terms' => $request->has("invoice_terms") ? $request->invoice_terms : null,
             'selected_currency' => $request->has("selected_currency") ? $request->selected_currency : null,
             'invoice_type' => $request->has("invoice_type") ? $request->invoice_type : null,
@@ -135,6 +160,7 @@ class InvoiceController extends Controller
             'is_invoice_vat_applied' => $request->has("is_invoice_vat_applied") ? $request->is_invoice_vat_applied : $oldItem->is_invoice_vat_applied,
             'items' => $request->has("items") ? json_encode($request->items) : $oldItem->items,
             'invoice_notes' => $request->has("invoice_notes") ? $request->invoice_notes : $oldItem->invoice_notes,
+            'invoice_bank_details' => $request->has("invoice_bank_details") ? $request->invoice_bank_details : $oldItem->invoice_bank_details,
             'invoice_terms' => $request->has("invoice_terms") ? $request->invoice_terms : $oldItem->invoice_terms,
             'selected_currency' => $request->has("selected_currency") ? $request->selected_currency : $oldItem->selected_currency,
             'invoice_type' => $request->has("invoice_type") ? $request->invoice_type : $oldItem->invoice_type,

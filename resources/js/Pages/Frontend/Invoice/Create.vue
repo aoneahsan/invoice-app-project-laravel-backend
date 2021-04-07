@@ -145,7 +145,7 @@
                       <v-icon name="edit"></v-icon>
                     </div>
                   </div>
-                  <p class="mt-5 text-muted">Bill To:</p>
+                  <p class="mt-14 text-muted">Bill To:</p>
                   <div class="clickable">
                     <div
                       class="my-2 ml-3"
@@ -447,7 +447,7 @@
                   <p class="mb-0 text-muted">
                     <textarea
                       @blur="toggleChangesNotSaved(true)"
-                      v-model="invoiceForm.client.bank_details"
+                      v-model="invoiceForm.invoice_bank_details"
                       style="width: 100%; height: auto"
                       class="form-control form-control-sm js-autoresize"
                     />
@@ -519,6 +519,7 @@ export default {
           },
         ],
         invoice_notes: ``,
+        invoice_bank_details: "",
         invoice_terms: null,
         invoice_no: null,
         selected_currency: "USD",
@@ -534,12 +535,15 @@ export default {
       changes_not_saved: false,
       is_creating_invoice: true,
       userLocale: "en",
+      isCreatingNewInvoice: false,
+      invoiceId: null,
     };
   },
   beforeMount() {
     const invoiceData = this.invoice.data;
     console.log("invoiceData = ", invoiceData);
     if (invoiceData) {
+      this.invoiceId = invoiceData.invoice_unique_id;
       this.is_creating_invoice = false; // invoice viewed so updating invoice instead of creating
       invoiceData.user_id && (this.invoiceForm.user_id = invoiceData.user_id);
       invoiceData.user && (this.invoiceForm.user = invoiceData.user);
@@ -557,6 +561,10 @@ export default {
       invoiceData.items && (this.invoiceForm.items = invoiceData.items);
       invoiceData.invoice_notes &&
         (this.invoiceForm.invoice_notes = invoiceData.invoice_notes);
+      invoiceData.invoice_bank_details &&
+        (this.invoiceForm.invoice_bank_details =
+          invoiceData.invoice_bank_details);
+
       invoiceData.invoice_terms &&
         (this.invoiceForm.invoice_terms = invoiceData.invoice_terms);
       invoiceData.invoice_no &&
@@ -696,6 +704,27 @@ export default {
       this.invoiceForm.date = invoiceCurrentDate;
       this.invoiceForm.due_date = invoiceDueDate;
     }
+
+    // listinging for unload event to delete invoice if not saved when creating first time
+    // window.addEventListener("beforeunload", (event) => {
+    //     console.log("beforeMount === window.addEventListener == event = ",event);
+    //   if (!this.isCreatingNewInvoice) return;
+    //   event.preventDefault();
+    //   // Chrome requires returnValue to be set.
+    //   event.returnValue = "";
+    //   console.log("beforeDestroy == isCreatingNewInvoice = true");
+    //   // delete invoice
+    //   this.$http
+    //     .delete(`/user/invoices/${this.invoiceId}`)
+    //     .then((res) => {
+    //       this.isCreatingNewInvoice = false;
+    //       console.log("beforeDestroy == invoice deleted == res = ", res);
+    //       this.$inertia.visit("/invoices");
+    //     })
+    //     .catch((err) => {
+    //       console.log("beforeDestroy == invoice deleted == err = ", err);
+    //     });
+    // });
   },
   mounted() {
     // listening for events
@@ -705,6 +734,8 @@ export default {
     // setting upload component to active
     this.$refs.upload.active = true;
     setResizeListeners(this.$el, ".js-autoresize");
+    var url = new URL(window.location.href);
+    this.isCreatingNewInvoice = url.searchParams.get("isCreating");
   },
   methods: {
     textResult() {
@@ -775,6 +806,10 @@ export default {
       axios
         .get("/check-client-invoices/" + clientID)
         .then((res) => {
+          console.log(
+            "Invoices => Create.vue === updateInvoiceNumber == res = ",
+            res
+          );
           // 1
           let invoiceNameLetters =
             this.invoiceForm.invoice_type == "invoice" ? "INV" : "EXP";
@@ -850,6 +885,7 @@ export default {
       );
     },
     saveInvoice() {
+      this.isCreatingNewInvoice = false;
       if (this.invoiceLogo.length > 0) {
         this.$refs.upload.active = true;
       } else {
@@ -1025,12 +1061,14 @@ export default {
       this.invoiceForm.client.vat_number = client.vat_number;
       this.invoiceForm.client.default_currency = client.default_currency;
       this.invoiceForm.client.notes = client.notes;
-      this.invoiceForm.client.bank_details = client.bank_details;
       if (client.default_currency) {
         this.invoiceForm.selected_currency = client.default_currency;
       }
       if (client.notes) {
         this.invoiceForm.invoice_notes = client.notes;
+      }
+      if (client.bank_details) {
+        this.invoiceForm.invoice_bank_details = client.bank_details;
       }
       this.updateInvoiceNumber(client.id, client.company);
     },
@@ -1071,7 +1109,7 @@ export default {
           this.finishSavingInvoice();
         }
       } else {
-        return false;
+        return;
       }
     }
   },
