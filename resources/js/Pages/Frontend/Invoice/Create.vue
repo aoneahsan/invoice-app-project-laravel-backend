@@ -237,7 +237,7 @@
                           v-bind:src="invoice_logo_url"
                           v-show="!hideInvoiceLogo"
                           alt="User Company Logo"
-                          style="object-fit: cover; width: 200px; height: 200px"
+                          style="width: 200px; height: 200px"
                         />
                       </file-upload>
                     </label>
@@ -1015,7 +1015,7 @@ export default {
     },
     invoiceLogoFilter(newFile, oldFile, prevent) {
       if (newFile && !oldFile) {
-        if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newFile.name)) {
+        if (!/\.(jpeg|jpe|jpg|gif|png|webp|svg)$/i.test(newFile.name)) {
           return prevent();
         }
         newFile.blob = "";
