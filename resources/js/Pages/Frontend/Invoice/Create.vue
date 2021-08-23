@@ -233,7 +233,7 @@
                         @input-filter="invoiceLogoFilter"
                       >
                         <img
-                          class="ml-8 image rounded-circle"
+                          class="ml-8 image"
                           v-bind:src="invoice_logo_url"
                           v-show="!hideInvoiceLogo"
                           alt="User Company Logo"
@@ -1015,7 +1015,16 @@ export default {
     },
     invoiceLogoFilter(newFile, oldFile, prevent) {
       if (newFile && !oldFile) {
-        if (!/\.(jpeg|jpe|jpg|gif|png|webp|svg)$/i.test(newFile.name)) {
+        if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newFile.name)) {
+          this.$notify({
+            group: "app",
+            type: "warning",
+            title: "Invalid File Type",
+            text: 'Supported Image Types: "jpeg, jpe, jpg, gif, png, webp".',
+            duration: 10000,
+            speed: 1000,
+            closeOnClick: true,
+          });
           return prevent();
         }
         newFile.blob = "";

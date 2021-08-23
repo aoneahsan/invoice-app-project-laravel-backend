@@ -138,12 +138,11 @@
                       <div style="min-width: 200px; min-height: 200px">
                         <label for="upload-photo">
                           <img
-                            class="ml-8 image rounded-circle"
+                            class="ml-8 image"
                             v-bind:src="invoice_logo_url"
                             v-if="!hideInvoiceLogo"
                             alt="User Company Logo"
                             style="
-                              object-fit: cover;
                               width: 150px;
                               height: 150px;
                             "

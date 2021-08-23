@@ -11,14 +11,14 @@
         <div class="col-auto">
           <!-- Buttons -->
           <a @click="generateReport" class="btn btn-white lift"> Download </a>
-          <!-- <a @click="generateReport" class="btn btn-primary ml-2 lift"> Pay </a> -->
+          <!-- <a @click="generateReport" class="ml-2 btn btn-primary lift"> Pay </a> -->
         </div>
       </div>
     </template>
-    <div class="col-12 pt-12">
+    <div class="pt-12 col-12">
       <div class="container">
         <div class="row">
-          <div class="col-11 col-lg-10 col-xl-10 mx-auto">
+          <div class="mx-auto col-11 col-lg-10 col-xl-10">
             <!-- https://vue-html2pdf-demo.netlify.app/     example on how to use -->
             <vue-html2pdf 
               :show-layout="true"
@@ -39,7 +39,7 @@
               ref="html2Pdf"
             >
               <section slot="pdf-content" class="w-full">
-                <div class="card card-body p-5 w-full">
+                <div class="w-full p-5 card card-body">
                   <div class="row">
                     <div class="col-12 col-md-6">
                       <div
@@ -52,7 +52,7 @@
                         {{ $page.user.email }} <br />
                         {{ $page.user.phone }}<br />
                         <div
-                          class="edit mt-3"
+                          class="mt-3 edit"
                           data-toggle="modal"
                           data-target="#useredit"
                           data-whatever="@mdo"
@@ -62,10 +62,10 @@
                           <i class="pencil"></i>
                         </div>
                       </div>
-                      <p class="text-muted mt-5">Bill To:</p>
+                      <p class="mt-5 text-muted">Bill To:</p>
                       <div class="clickable">
                         <div
-                          class="ml-3 my-2"
+                          class="my-2 ml-3"
                           data-toggle="modal"
                           data-target="#exampleModal"
                         >
@@ -82,7 +82,7 @@
                             v-if="!selected_client"
                             @click="openClientListModal"
                           >
-                            <i class="fe fe-user ml-2"> </i>
+                            <i class="ml-2 fe fe-user"> </i>
                             Add Client
                           </a>
                         </div>
@@ -93,10 +93,10 @@
                       <div>
                         <label for="upload-photo">
                           <img
-                            class="image rounded-circle ml-8"
+                            class="ml-8 image"
                             v-bind:src="$page.user.logo"
                             alt=""
-                            width="200px"
+                            style="width: 200px; height: 200px"
                           />
                           <form enctype="multipart/form-data">
                             <input
@@ -116,7 +116,7 @@
                         <div class="d-flex justify-content-end">
                           <input
                             type="text"
-                            class="form-control form-control-sm w-auto"
+                            class="w-auto form-control form-control-sm"
                             v-model="Itemform.invoice_no"
                             readonly
                           />
@@ -125,7 +125,7 @@
                         <div class="d-flex justify-content-end">
                           <input
                             type="date"
-                            class="form-control form-control-sm w-auto"
+                            class="w-auto form-control form-control-sm"
                             v-model="Itemform.date"
                           />
                         </div>
@@ -134,7 +134,7 @@
                         <div class="d-flex justify-content-end">
                           <input
                             type="date"
-                            class="form-control form-control-sm w-auto"
+                            class="w-auto form-control form-control-sm"
                             v-model="Itemform.due_date"
                           />
                         </div>
@@ -162,7 +162,7 @@
                                 <span class="h6">Amount</span>
                               </th>
                               <th
-                                class="bg-transparent border-top-0 text-right"
+                                class="text-right bg-transparent border-top-0"
                               >
                                 <span class="h6"></span>
                               </th>
@@ -194,7 +194,7 @@
                                   v-model.number="item.rate"
                                 />
                               </td>
-                              <td class="td text-right">
+                              <td class="text-right td">
                                 {{ item.qty * item.rate }}
                               </td>
                               <td class="td">
@@ -216,7 +216,7 @@
                                 </button>
                                 <span
                                   @click="addRow()"
-                                  class="text-primary ml-2"
+                                  class="ml-2 text-primary"
                                 >
                                   <a href="javascript:void(0)">
                                     Add a line item</a
@@ -297,7 +297,7 @@
                               :key="index"
                             >
                               <div
-                                class="font-weight-bold ml-4 select-client"
+                                class="ml-4 font-weight-bold select-client"
                                 data-dismiss="modal"
                                 @click="addCurrency(index)"
                               >
@@ -325,14 +325,14 @@
                         <button
                           type="button"
                           @click="createInvoice()"
-                          class="btn btn-primary btn-sm ml-4"
+                          class="ml-4 btn btn-primary btn-sm"
                         >
                           Create Invoice
                         </button>
                       </h6>
 
                       <!-- Text -->
-                      <p class="text-muted mb-0">
+                      <p class="mb-0 text-muted">
                         We really appreciate your business and if there’s
                         anything else we can do, please let us know! Also,
                         should you need us to add VAT or anything else to this
