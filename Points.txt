@@ -1,0 +1,60 @@
+
+
+On downloaded PDF - I’ve attached a visual of how I’d like the PDF to be laid out and look. Details are below.
+
+
+_Align user company logo to top right (as shown in visual)
+
+_Can we make sure that the ‘Bill to:’ section is at the same height as the ‘Invoice no.’ to make it visually easier to read?
+
+_Content sits too narrow on the page, there’s too much space on left and right of the PDF (see visual to what it should be)
+
+_The input field outlines (the grey boxes) should not show anywhere on the printed PDF
+
+_Date and Due Date input should be aligned with the Invoice number
+
+_Item description, Quantity, and Rate are all cut off when they exceed the max width of the field. Can we make sure that it just goes over 2 or 3 lines so everything can been read on the downloaded PDF?
+
+_Notes and Bank Details content are a continuous sentence. Any breaks (enter) added when creating the invoice are gone.
+
+Also, if you make these changes will the client details and invoices created be saved?
+
+------------------------------------------------------------
+
+
+On the PDF invoice it only shows the VAT percentage, not the actual amount. Can we show the percentage and sum of the VAT, please?
+
+
+
+
+---------------------------------------------------------------------------
+                                Done Points
+---------------------------------------------------------------------------
+I was wondering if you could make a few edits to the invoice generator. However, before you begin could you let me know how much it would cost to make these changes (I don’t want these to be included in the original project as I wasn’t clear on them in that brief)?
+
+
+Here’s the list with edits:
+
+
+_Change font used to Open Sans
+
+
+_Please change font size, color and weight (semibold and regular) where shown on visual
+
+_Show success message after creating user profile/client profile
+
+_When creating the invoice the content of the input field on Notes and Bank Details should adjust automatically to the length of the content.
+
+_Remove default text from notes section if left empty (’We really appreciate your business and if there’s anything`)
+
+
+_In the country drop down can Pakistan not be top of the list, but placed in its alphabetical order, please?
+
+
+----------------------
+
+I was wondering if you could make three small additional changes to the ones above;
+
+Could the ‘select client’ popup modal when creating an invoice show the company name as well, please (see screenshot)?
+
+After logging in can the user be directed to the invoices preview page (‘/invoices’) rather than the ‘user/profile’ page, please?

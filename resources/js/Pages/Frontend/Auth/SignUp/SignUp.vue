@@ -1,11 +1,11 @@
 <template>
   <FrontendMain>
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+      <h2 class="text-xl font-semibold leading-tight text-gray-800">
         Register
       </h2>
     </template>
-    <div class="container-fluid pt-12">
+    <div class="pt-12 container-fluid">
       <div class="row justify-content-center">
         <div class="col-12 col-md-12 col-xl-10">
           <div class="row">
@@ -13,7 +13,7 @@
               <div class="card">
                 <div class="card-body">
                   <form
-                    @submit.prevent="register"
+                    @submit.prevent="register()"
                     enctype="multipart/form-data"
                   >
                     <!-- company -->
@@ -133,7 +133,6 @@
                           v-model="form.country"
                           :country="form.country"
                           :countryName="true"
-                          topCountry="Pakistan"
                         />
 
                         <has-error :form="form" field="country"></has-error>
@@ -363,7 +362,7 @@
                         <textarea
                           id="notes"
                           type="text"
-                          class="form-control"
+                          class="form-control js-autoresize"
                           :class="{
                             'is-invalid': form.errors.has('notes'),
                           }"
@@ -388,7 +387,7 @@
                         <textarea
                           id="bank_details"
                           type="text"
-                          class="form-control"
+                          class="form-control js-autoresize"
                           :class="{
                             'is-invalid': form.errors.has('bank_details'),
                           }"
@@ -459,17 +458,18 @@
                     </div>
 
                     <!-- submit button -->
-                    <div class="form-group row mb-0">
+                    <div class="mb-0 form-group row">
                       <div class="col-md-6 offset-md-4">
                         <button
                           type="submit"
-                          :disabled="form.busy"
+                          :disabled="form.busy || accountCreated"
                           class="btn btn-primary"
                         >
                           Register
                         </button>
                         or
                         <inertia-link
+                          v-if="!accountCreated"
                           :href="route('login.view')"
                           class="text-primary"
                           >login</inertia-link
@@ -484,34 +484,14 @@
         </div>
       </div>
     </div>
-    <!-- state -->
-    <!-- <div class="form-group row">
-                      <label
-                        for="state"
-                        class="col-md-4 col-form-label text-md-right"
-                        >State</label
-                      >
-
-                      <div class="col-md-6">
-                        <input
-                          id="state"
-                          type="text"
-                          class="form-control"
-                          :class="{ 'is-invalid': form.errors.has('state') }"
-                          name="state"
-                          v-model="form.state"
-                          autocomplete="state"
-                        />
-
-                        <has-error :form="form" field="state"></has-error>
-                      </div>
-                    </div> -->
   </FrontendMain>
 </template>
 
 <script>
 import FrontendMain from "@/Layouts/FrontendMain";
 import { Form } from "vform";
+
+import {setResizeListeners} from "./../../../../utils/auto-resize";
 export default {
   components: {
     FrontendMain,
@@ -541,7 +521,11 @@ export default {
       logo_url: null,
       logoImage: [],
       currencies: ["USD", "EUR", "GBP", "YEN", "INR", "IDR"],
+      accountCreated: false,
     };
+  },
+  mounted() {
+    setResizeListeners(this.$el, ".js-autoresize");
   },
   methods: {
     // upload file
@@ -610,10 +594,12 @@ export default {
             type: "success",
             title: "Request Successfull",
             text: "Signup Completed Successfully.",
-            duration: 5000,
+            duration: 7000,
             speed: 1000,
           });
-          this.$inertia.visit("/user/profile");
+          setTimeout(() => {
+            this.$inertia.visit("/user/profile");
+          }, 1000);
         })
         .catch((err) => {
           window.scrollTo(0, 0);
@@ -624,7 +610,7 @@ export default {
               type: "error",
               title: "Request Faild",
               text: "Provide correct data to continue.",
-              duration: 5000,
+              duration: 7000,
               speed: 1000,
             });
           }

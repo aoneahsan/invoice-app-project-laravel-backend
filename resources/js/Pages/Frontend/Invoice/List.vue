@@ -22,6 +22,7 @@
 <script>
 import cellDeleteInvoice from "./cellDeleteInvoice";
 import cellViewInvoice from "./cellViewInvoice";
+import cellDueDate from "./cellDueDate";
 export default {
   data() {
     return {
@@ -45,6 +46,7 @@ export default {
           label: "Due Date",
           name: "due_date",
           orderable: false,
+          component: cellDueDate
         },
         {
           label: "Currency",
@@ -119,7 +121,7 @@ export default {
               type: "danger",
               title: "Request Successfull",
               text: "Client Deleted Successfully.",
-              duration: 5000,
+              duration: 7000,
               speed: 1000,
               closeOnClick: true,
             });
@@ -132,7 +134,7 @@ export default {
                 type: "error",
                 title: "Request Faild",
                 text: err.message,
-                duration: 5000,
+                duration: 7000,
                 speed: 1000,
                 closeOnClick: true,
               });

@@ -2,13 +2,13 @@
   <div class="min-h-screen bg-gray-100">
     <nav class="bg-white border-b border-gray-100">
       <!-- Primary Navigation Menu -->
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
           <div class="flex">
             <!-- Logo -->
-            <div class="flex-shrink-0 flex items-center">
+            <div class="flex items-center flex-shrink-0">
               <inertia-link :href="route('user.profile')">
-                <jet-application-mark class="block h-9 w-auto" />
+                <jet-application-mark class="block w-auto h-9" />
               </inertia-link>
             </div>
 
@@ -37,18 +37,18 @@
 
           <!-- Settings Dropdown -->
           <div class="hidden sm:flex sm:items-center sm:ml-6">
-            <div class="ml-3 relative">
+            <div class="relative ml-3">
               <jet-dropdown align="right" width="48">
                 <template #trigger>
                   <button
-                    class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
+                    class="flex items-center text-sm font-medium text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300"
                   >
                     <div v-if="!$page.user">Login/Register</div>
                     <div v-if="$page.user">Account</div>
 
                     <div class="ml-1">
                       <svg
-                        class="fill-current h-4 w-4"
+                        class="w-4 h-4 fill-current"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                       >
@@ -98,13 +98,13 @@
           </div>
 
           <!-- Hamburger -->
-          <div class="-mr-2 flex items-center sm:hidden">
+          <div class="flex items-center -mr-2 sm:hidden">
             <button
               @click="showingNavigationDropdown = !showingNavigationDropdown"
-              class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+              class="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500"
             >
               <svg
-                class="h-6 w-6"
+                class="w-6 h-6"
                 stroke="currentColor"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -156,7 +156,7 @@
         <div class="pt-4 pb-1 border-t border-gray-200">
           <div class="flex items-center px-4">
             <div class="ml-3">
-              <div class="font-medium text-base text-gray-800">
+              <div class="text-base font-medium text-gray-800">
                 Account Menu
               </div>
             </div>
@@ -183,7 +183,7 @@
 
     <!-- Page Heading -->
     <header class="bg-white shadow">
-      <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <slot name="header"></slot>
       </div>
     </header>
@@ -197,19 +197,8 @@
     <portal-target name="modal" multiple> </portal-target>
 
     <!-- Notifications -->
-    <notifications group="app" position="bottom right">
-      <template slot="body" slot-scope="props">
-        <div>
-          <a class="title">
-            {{ props.item.title }}
-          </a>
-          <a class="close" @click="props.close">
-            <i class="fa fa-fw fa-close"></i>
-          </a>
-          <div v-html="props.item.text"></div>
-        </div>
-      </template>
-    </notifications>
+    <!-- vue-notification package components Starts | https://github.com/euvl/vue-notification -->
+    <notifications position="bottom right" group="app" />
 
     <!-- Modals -->
     <!-- Clients List Modal -->
@@ -231,21 +220,37 @@
           :key="index"
         >
           <div class="btn-rounded-circle badge-primary">
-            <div class="ml-3 mt-2" v-if="client.name">
+            <div class="mt-2 ml-3" v-if="client.name">
               {{ client.name.substring(0, 2) }}
             </div>
-            <div class="ml-3 mt-2" v-if="client.company && !client.name">
+            <div class="mt-2 ml-3" v-if="client.company && !client.name">
               {{ client.company.substring(0, 2) }}
             </div>
           </div>
           <div
-            class="font-weight-bold ml-4 select-client"
+            class="ml-4 select-client"
             data-dismiss="modal"
             @click="selectClient(index)"
           >
-            {{ client.name }}
-            <div>
-              {{ client.email }}
+            <div v-if="!client.name && !client.email">
+              <span
+                v-if="client.company"
+                style="margin-top: 9px; display: block"
+                >{{ client.company }}</span
+              >
+            </div>
+            <div v-if="client.name || client.email">
+              <span v-if="client.company">{{ client.company }}</span>
+              <div class="flex">
+                <span v-if="client.name" class="mr-3"
+                  ><span class="font-weight-bold">Client:</span>
+                  {{ client.name }}</span
+                >
+                <span v-if="client.email"
+                  ><span class="font-weight-bold">Email:</span>
+                  {{ client.email }}</span
+                >
+              </div>
             </div>
           </div>
         </div>
@@ -351,7 +356,6 @@
                 v-model="addClientform.country"
                 :country="addClientform.country"
                 :countryName="true"
-                topCountry="Pakistan"
               />
               <has-error :form="addClientform" field="country"></has-error>
             </div>
@@ -462,7 +466,7 @@
               <label for="notes" class="col-form-label text-muted">Notes</label>
               <textarea
                 v-model="addClientform.notes"
-                class="form-control"
+                class="form-control js-autoresize"
                 id="notes"
                 :class="{
                   'is-invalid': addClientform.errors.has('notes'),
@@ -478,7 +482,7 @@
               >
               <textarea
                 v-model="addClientform.bank_details"
-                class="form-control"
+                class="form-control js-autoresize"
                 id="bank_details"
                 :class="{
                   'is-invalid': addClientform.errors.has('bank_details'),
@@ -513,6 +517,8 @@ import JetDropdown from "@/Jetstream/Dropdown";
 import JetDropdownLink from "@/Jetstream/DropdownLink";
 import JetNavLink from "@/Jetstream/NavLink";
 import JetResponsiveNavLink from "@/Jetstream/ResponsiveNavLink";
+
+import { setResizeListeners } from "./../utils/auto-resize";
 
 // Modals Imports
 import { Form } from "vform";
@@ -583,7 +589,9 @@ export default {
       currencies: ["USD", "EUR", "GBP", "YEN", "INR", "IDR"],
     };
   },
-
+  mounted() {
+    setResizeListeners(this.$el, ".js-autoresize");
+  },
   methods: {
     logout() {
       axios.post(route("logout_url").url()).then((response) => {
@@ -679,7 +687,7 @@ export default {
               type: "error",
               title: "Request Faild",
               text: err.message,
-              duration: 5000,
+              duration: 7000,
               speed: 1000,
               closeOnClick: true,
             });

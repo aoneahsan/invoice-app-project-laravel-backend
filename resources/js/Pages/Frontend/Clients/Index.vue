@@ -118,7 +118,7 @@ export default {
               type: "danger",
               title: "Request Successfull",
               text: "Client Deleted Successfully.",
-              duration: 5000,
+              duration: 7000,
               speed: 1000,
               closeOnClick: true,
             });
@@ -131,7 +131,7 @@ export default {
                 type: "error",
                 title: "Request Faild",
                 text: err.message,
-                duration: 5000,
+                duration: 7000,
                 speed: 1000,
                 closeOnClick: true,
               });

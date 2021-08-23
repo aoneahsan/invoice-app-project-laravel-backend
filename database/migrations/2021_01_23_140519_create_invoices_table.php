@@ -28,6 +28,7 @@ class CreateInvoicesTable extends Migration
             $table->boolean('is_invoice_vat_applied')->nullable();
             $table->longText('items')->nullable();
             $table->longText('invoice_notes')->nullable();
+            $table->longText('invoice_bank_details')->nullable();
             $table->longText('invoice_terms')->nullable();
             $table->string('selected_currency')->nullable();
             $table->string('invoice_type')->nullable();
