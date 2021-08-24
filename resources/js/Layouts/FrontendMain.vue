@@ -420,7 +420,7 @@
                 >VAT Number</label
               >
               <input
-                type="number"
+                type="text"
                 v-model="addClientform.vat_number"
                 class="form-control"
                 id="vat_number"
