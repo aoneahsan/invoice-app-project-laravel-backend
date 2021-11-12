@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
         $user->username = "aoneahsan";
         $user->name = "Ahsan Mahmood";
         $user->email = "aoneahsan@gmail.com";
-        $user->password = Hash::make("123123");
+        $user->password = Hash::make("ahsan123$%^");
         $user->email_verified_at = Carbon::now();
         $user->phone_number = "03046619706";
         $user->country_code = "92";
