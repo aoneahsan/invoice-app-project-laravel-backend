@@ -21,10 +21,7 @@ class AuthController extends Controller
     {
         try {
             $request->validate([
-                'username' => [
-                    'required', 'string', 'max:255',
-                    Rule::unique(User::class),
-                ],
+                'name' => ['required', 'string'],
                 'email' => [
                     'required',
                     'string',
@@ -32,13 +29,16 @@ class AuthController extends Controller
                     'max:255',
                     Rule::unique(User::class),
                 ],
-                'name' => ['required', 'string'],
                 'password' => ['required', 'string', 'min:6', 'confirmed'],
-                "address" => ['required', 'string'],
-                "company" => ['required', 'string'],
-                "country" => ['required', 'string'],
-                "zipcode" => ['required', 'string'],
-                "city" => ['required', 'string'],
+                'username' => [
+                    'nullable', 'string', 'max:255',
+                    Rule::unique(User::class),
+                ],
+                "address" => ['nullable', 'string'],
+                "company" => ['nullable', 'string'],
+                "country" => ['nullable', 'string'],
+                "zipcode" => ['nullable', 'string'],
+                "city" => ['nullable', 'string'],
                 "logo" => ['nullable', 'string'],
                 "phone_number" => ['nullable', 'string'],
                 "country_code" => ['nullable', 'string'],
@@ -121,12 +121,12 @@ class AuthController extends Controller
                     ]);
                 } else{
                     return ZHelpers::sendBackNotFoundResponse([
-                        'email' => ['Invalid Password.']
+                        'item' => ['Incorrect email or password']
                     ]);
                 }
             } else {
                 return ZHelpers::sendBackNotFoundResponse([
-                    'email' => ['Invalid Email.']
+                    'item' => ['Incorrect email or password']
                 ]);
             }
         } catch (\Throwable $th) {
@@ -155,5 +155,10 @@ class AuthController extends Controller
         } catch (\Throwable $th) {
             return ZHelpers::sendBackServerErrorResponse($th);
         }
+    }
+
+    public function verifyAuthState(Request $request)
+    {
+        return response()->json(['data' => true]);
     }
 }

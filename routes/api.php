@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Default\UserDetailController;
 use App\Http\Controllers\Invoice\ClientController;
 use App\Http\Controllers\Invoice\InvoiceController;
+use App\Http\Controllers\Testing\TestingController;
 use App\Zaions\Helpers\ZHelpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Testing 
+Route::controller(TestingController::class)->group(function () {
+    Route::get('/test-api', 'test');
+});
+
 // Auth
 Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register');
@@ -32,6 +38,7 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::post('/logout', 'Logout');
+        Route::post('/verify-authentication-status', 'verifyAuthState');
     });
 
     // Invoice
