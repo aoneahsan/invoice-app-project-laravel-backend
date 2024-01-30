@@ -2,6 +2,8 @@
 
 namespace App\Zaions\Helpers;
 use \Illuminate\Validation\ValidationException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ZHelpers
 {
@@ -113,4 +115,22 @@ class ZHelpers
         return null;
       }
     }
+
+
+      // store file & return file path
+  public static function storeFile(Request $request, $fileKey, $fileStorePath = 'uploaded-files')
+  {
+    if ($request->file($fileKey)) {
+      $filePath = Storage::putFile($fileStorePath, $request->file($fileKey), 'public');
+
+      $appUrl = env('FILESYSTEM_ROOT_URL', 'http://localhost:8000/storage/public');
+
+      return [
+        'fileUrl' => $appUrl . '/' . $filePath,
+        'filePath' => $filePath,
+      ];
+    } else {
+      return null;
+    }
+  }
 }

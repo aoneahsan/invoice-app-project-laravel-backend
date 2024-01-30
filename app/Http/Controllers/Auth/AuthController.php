@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Default\UserResource;
 use App\Models\Default\User;
+use App\Zaions\Enums\OnboardingEnum;
 use App\Zaions\Enums\RolesEnum;
 use App\Zaions\Helpers\ZHelpers;
 use Illuminate\Validation\Rule;
@@ -29,7 +30,7 @@ class AuthController extends Controller
                     'max:255',
                     Rule::unique(User::class),
                 ],
-                'password' => ['required', 'string', 'min:6', 'confirmed'],
+                'password' => ['required', 'string', 'min:6'],
                 'username' => [
                     'nullable', 'string', 'max:255',
                     Rule::unique(User::class),
@@ -53,9 +54,15 @@ class AuthController extends Controller
                 "notes" => ['nullable', 'string'],
                 "bank_details" => ['nullable', 'string'],
                 "is_active" => ['nullable', 'string'],
+                "onboarding_details" => ['nullable', 'json'],
                 "extra_attributes" => ['nullable', 'json'],
             ]);
-
+            $onboarding_details = [
+                OnboardingEnum::register->value => true,
+                OnboardingEnum::profile->value => false,
+                OnboardingEnum::currency->value => false,
+                OnboardingEnum::bank_details->value => false,
+            ];
             $user = User::create([
                 'unique_id' => uniqid(),
                 'username' => $request->has('username') ? $request->username : null,
@@ -73,6 +80,7 @@ class AuthController extends Controller
                 'default_currency' => $request->has('default_currency') ? $request->default_currency : null,
                 'notes' => $request->has('notes') ? $request->notes : null,
                 'bank_details' => $request->has('bank_details') ? $request->bank_details : null,
+                'onboarding_details' => $onboarding_details ?? null,
                 'is_active' => $request->has('is_active') ? $request->is_active : null,
                 'extra_attributes' => $request->has('extra_attributes') ? $request->extra_attributes : null,
             ]);

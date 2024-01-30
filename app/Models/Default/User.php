@@ -48,6 +48,8 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
+        'onboarding_details' => 'array',
+        'logo' => 'array',
         'extra_attributes' => 'array',
         'bank_details' => 'array',
         'email_verified_at' => 'datetime',

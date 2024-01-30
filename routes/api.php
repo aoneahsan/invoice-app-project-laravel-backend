@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Default\UserController;
 use App\Http\Controllers\Default\UserDetailController;
 use App\Http\Controllers\Invoice\ClientController;
 use App\Http\Controllers\Invoice\InvoiceController;
@@ -39,6 +40,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::post('/logout', 'Logout');
         Route::post('/verify-authentication-status', 'verifyAuthState');
+    });
+
+    Route::controller(UserController::class)->group(function () {
+        Route::put('/profile-details', 'profileDetails');
+        Route::put('/currency-details', 'currencyDetails');
+        Route::put('/bank-details', 'bankDetails');
     });
 
     // Invoice
