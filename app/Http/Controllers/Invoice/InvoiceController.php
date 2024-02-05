@@ -52,31 +52,36 @@ class InvoiceController extends Controller
                 "invoice_no" => ['nullable', 'string'],
                 "user" => ['nullable', 'json'],
                 "client" => ['nullable', 'json'],
-                "invoice_logo" => ['nullable', 'string'],
+                "invoice_logo" => ['nullable', 'file'],
                 "date" => ['nullable', 'string'],
                 "due_date" => ['nullable', 'string'],
-                "vat_value" => ['nullable', 'string'],
+                "vat_value" => ['nullable', 'numeric'],
                 "is_invoice_vat_applied" => ['nullable', 'boolean'],
                 "items" => ['nullable', 'json'],
                 "invoice_notes" => ['nullable', 'string'],
-                "invoice_bank_details" => ['nullable', 'json'],
+                "invoice_bank_details" => ['nullable', 'string'],
                 "invoice_terms" => ['nullable', 'json'],
                 "selected_currency" => ['nullable', 'string'],
                 "invoice_type" => ['nullable', 'string'],
-                "sub_total" => ['nullable', 'string'],
-                "total" => ['nullable', 'string'],
+                "sub_total" => ['nullable', 'numeric'],
+                "total" => ['nullable', 'numeric'],
                 "is_active" => ['nullable', 'boolean'],
                 "extra_attributes" => ['nullable', 'json'],
             ]);
 
+            $fileData = null;
+            if ($request->has("invoice_logo")) {
+                $fileData = ZHelpers::storeFile($request, "invoice_logo");
+            }
+
             $result = Invoice::create([
-                "unique_Id" => uniqid(),
+                "unique_id" => uniqid(),
                 "invoice_no" => $request->has("invoice_no") ? $request->invoice_no : null,
                 "user_id" => $request->user()->id,
                 "client_id" => $request->has("client_id") ? $request->client_id : null,
                 'user' => $request->has("user") ? ZHelpers::zJsonDecode($request->user) : null,
                 'client' => $request->has("client") ? ZHelpers::zJsonDecode($request->client) : null,
-                'invoice_logo' => $request->has("invoice_logo") ? $request->invoice_logo : null,
+                'invoice_logo' => $fileData ??  null,
                 'date' => $request->has("date") ? $request->date : null,
                 'due_date' => $request->has("due_date") ? $request->due_date : null,
                 'vat_value' => $request->has("vat_value") ? $request->vat_value : null,
@@ -118,7 +123,7 @@ class InvoiceController extends Controller
 
             Gate::allowIf($user->hasPermissionTo(PermissionsEnum::view_invoice->name));
 
-            $invoice = Invoice::where('user_id', $user->id)->where('unique_Id', $invoice_id)->first();
+            $invoice = Invoice::where('user_id', $user->id)->where('unique_id', $invoice_id)->first();
 
             if ($invoice) {
                 return ZHelpers::sendBackRequestCompletedResponse([
@@ -148,7 +153,7 @@ class InvoiceController extends Controller
 
             Gate::allowIf($user->hasPermissionTo(PermissionsEnum::update_invoice->name));
 
-            $invoice = Invoice::where('user_id', $user->id)->where('unique_Id', $invoice_id)->first();
+            $invoice = Invoice::where('user_id', $user->id)->where('unique_id', $invoice_id)->first();
 
             if ($invoice) {
                 $request->validate([
@@ -172,6 +177,7 @@ class InvoiceController extends Controller
                     "extra_attributes" => ['nullable', 'json'],
                 ]);
 
+
                 $invoice->update([
                     "client_id" => $request->has("client_id") ? $request->client_id : $invoice->client_id,
                     "invoice_no" => $request->has("invoice_no") ? $request->invoice_no : $invoice->invoice_no,
@@ -194,7 +200,7 @@ class InvoiceController extends Controller
                     'extra_attributes' => $request->has("extra_attributes") ? ZHelpers::zJsonDecode($request->extra_attributes) : $invoice->extra_attributes,
                 ]);
 
-                $invoice = Invoice::where('user_id', $user->id)->where('unique_Id', $invoice_id)->first();
+                $invoice = Invoice::where('user_id', $user->id)->where('unique_id', $invoice_id)->first();
 
                 return ZHelpers::sendBackRequestCompletedResponse([
                     'item' => new InvoiceResource($invoice)
@@ -222,7 +228,7 @@ class InvoiceController extends Controller
 
             Gate::allowIf($user->hasPermissionTo(PermissionsEnum::delete_invoice->name));
 
-            $invoice = Invoice::where('user_id', $user->id)->where('unique_Id', $invoice_id)->first();
+            $invoice = Invoice::where('user_id', $user->id)->where('unique_id', $invoice_id)->first();
 
             if ($invoice) {
                 $invoice->delete();

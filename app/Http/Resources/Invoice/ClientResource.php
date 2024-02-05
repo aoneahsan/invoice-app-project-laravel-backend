@@ -21,6 +21,7 @@ class ClientResource extends JsonResource
             "phone_number" => $this->phone_number ?? null,
             "address" => $this->address ?? null,
             "company" => $this->company ?? null,
+            "city" => $this->city ?? null,
             "company_registration_number" => $this->company_registration_number ?? null,
             "zipcode" => $this->zipcode ?? null,
             "vat_number" => $this->vat_number ?? null,

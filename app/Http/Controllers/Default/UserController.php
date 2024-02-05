@@ -51,7 +51,7 @@ class UserController extends Controller
                 ]);
             } else {
                 return ZHelpers::sendBackBadRequestResponse([
-                    'user' => 'Invalid Request, No User found.'
+                    'item' => 'Invalid Request, No User found.'
                 ]);
             }
         } catch (\Throwable $th) {
@@ -123,6 +123,7 @@ class UserController extends Controller
                 $user->forceFill([
                     'logo' => $fileData,
                     'bank_details' => $request->has('bank_details') ? $request->bank_details : $user->bank_details,
+                    'onboarding_details' => $onboarding_details ?? $user->onboarding_details,
                 ])->save();
                 $updatedUserInfo = User::where('id', $request->user()->id)->first();
 

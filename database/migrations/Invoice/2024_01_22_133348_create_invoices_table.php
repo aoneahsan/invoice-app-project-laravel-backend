@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->string("unique_Id")->default(uniqid())->nullable();
+            $table->string('unique_id')->default(uniqid())->nullable();
 
             // User id
             $table->unsignedBigInteger('user_id');
