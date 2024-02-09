@@ -1,8 +1,15 @@
 {
-    "name": "laravel/laravel",
+    "name": "zaions/invoice-generator-app",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "The Best Invoice Generator SaaS App available online, create your account today and get started.",
+    "keywords": [
+        "zaions",
+        "ahsan mahmood",
+        "invoice app",
+        "invoice generator app",
+        "saas app",
+        "best free online app"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.1",
