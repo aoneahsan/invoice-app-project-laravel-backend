@@ -12,6 +12,36 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
+    public function changeEmailAndPassword(Request $request)
+    {
+        try {
+            $user = User::where('id', $request->user()->id)->first();
+
+            $request->validate([
+                "email" => ['required', 'string'],
+                "password" => ['required', 'string'],
+            ]);
+
+            if ($user) {
+                $user->forceFill([
+                    'email' => $request->has('email') ? $request->email : $user->email,
+                    'password' => $request->has('password') ? $request->password : $user->password,
+                ])->save();
+                $updatedUserInfo = User::where('id', $request->user()->id)->first();
+
+                return ZHelpers::sendBackRequestCompletedResponse([
+                    'item' => new UserResource($updatedUserInfo)
+                ]);
+            } else {
+                return ZHelpers::sendBackBadRequestResponse([
+                    'user' => 'Invalid Request, No User found.'
+                ]);
+            }
+        } catch (\Throwable $th) {
+            return ZHelpers::sendBackServerErrorResponse($th);
+        }
+    }
+
     //
     public function profileDetails(Request $request)
     {
@@ -28,10 +58,13 @@ class UserController extends Controller
                 "vat_number" => ['required', 'string'],
             ]);
 
-            $onboarding_details = [
-                ...$user->onboarding_details,
-                OnboardingEnum::profile->value => true,
-            ];
+            $onboarding_details = null;
+            if($user->onboarding_details === null || $user->onboarding_details[OnboardingEnum::profile->value] !== true) {
+                $onboarding_details = [
+                    ...($user->onboarding_details ?? []),
+                    OnboardingEnum::profile->value => true,
+                ];
+            }
 
             if ($user) {
                 $user->forceFill([
@@ -69,19 +102,17 @@ class UserController extends Controller
                 "default_currency" => ['required', 'string'],
             ]);
 
-            $fileData = null;
-            if ($request->has("logo")) {
-                $fileData = ZHelpers::storeFile($request, "logo");
+            $onboarding_details = null;
+            if($user->onboarding_details === null || !array_key_exists(OnboardingEnum::currency->value, $user->onboarding_details) || $user->onboarding_details[OnboardingEnum::currency->value] !== true) {
+                $onboarding_details = [
+                    ...($user->onboarding_details ?? []),
+                    OnboardingEnum::currency->value => true,
+                ];
             }
-
-            $onboarding_details = [
-                ...$user->onboarding_details,
-                OnboardingEnum::currency->value => true,
-            ];
 
             if ($user) {
                 $user->forceFill([
-                    'logo' => $fileData,
+                    'logo' => $request->has('logo') ? ZHelpers::zJsonDecode($request->logo) : $user->logo,
                     'default_currency' => $request->has('default_currency') ? $request->default_currency : $user->default_currency,
                     'onboarding_details' => $onboarding_details ?? $user->onboarding_details,
                 ])->save();
@@ -107,21 +138,20 @@ class UserController extends Controller
 
             $request->validate([
                 "bank_details" => ['required', 'string'],
+                "logo" => ['nullable', 'string'],
             ]);
 
-            $fileData = null;
-            if ($request->has("logo")) {
-                $fileData = ZHelpers::storeFile($request, "logo");
+            $onboarding_details = null;
+            if($user->onboarding_details === null || !array_key_exists(OnboardingEnum::bank_details->value, $user->onboarding_details) || $user->onboarding_details[OnboardingEnum::bank_details->value] !== true) {
+                $onboarding_details = [
+                    ...($user->onboarding_details ?? []),
+                    OnboardingEnum::bank_details->value => true,
+                ];
             }
-
-            $onboarding_details = [
-                ...$user->onboarding_details,
-                OnboardingEnum::bank_details->value => true,
-            ];
 
             if ($user) {
                 $user->forceFill([
-                    'logo' => $fileData,
+                    'logo' => $request->has('logo') ? $request->logo : $user->logo,
                     'bank_details' => $request->has('bank_details') ? $request->bank_details : $user->bank_details,
                     'onboarding_details' => $onboarding_details ?? $user->onboarding_details,
                 ])->save();

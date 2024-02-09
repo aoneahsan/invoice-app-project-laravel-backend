@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
         $superAdmin = User::firstOrCreate(
             ['email' => env('SUPER_ADMIN_EMAIL')],
             [
-                'unique_Id' => uniqid(),
+                'unique_id' => uniqid(),
                 'username' => 'aoneahsan',
                 'name' => 'Ahsan Mahmood',
                 'password' => Hash::make("ahsan123$%^"),
@@ -60,7 +60,7 @@ class UserSeeder extends Seeder
         $admin = User::firstOrCreate(
             ['email' => 'admin@gmail.com'],
             [
-                'unique_Id' => uniqid(),
+                'unique_id' => uniqid(),
                 'username' => 'admin',
                 'name' => 'Admin',
                 'password' => Hash::make("ahsan123$%^"),
@@ -91,7 +91,7 @@ class UserSeeder extends Seeder
         $user = User::firstOrCreate(
             ['email' => 'user@gmail.com'],
             [
-                'unique_Id' => uniqid(),
+                'unique_id' => uniqid(),
                 'username' => 'user',
                 'name' => 'User',
                 'password' => Hash::make("ahsan123$%^"),
@@ -122,7 +122,7 @@ class UserSeeder extends Seeder
         $buyer = User::firstOrCreate(
             ['email' => 'buyer@gmail.com'],
             [
-                'unique_Id' => uniqid(),
+                'unique_id' => uniqid(),
                 'username' => 'buyer',
                 'name' => 'Buyer',
                 'password' => Hash::make("ahsan123$%^"),
@@ -153,7 +153,7 @@ class UserSeeder extends Seeder
         $seller = User::firstOrCreate(
             ['email' => 'seller@gmail.com'],
             [
-                'unique_Id' => uniqid(),
+                'unique_id' => uniqid(),
                 'username' => 'seller',
                 'name' => 'Seller',
                 'password' => Hash::make("ahsan123$%^"),
@@ -184,7 +184,7 @@ class UserSeeder extends Seeder
         $buyerSeller = User::firstOrCreate(
             ['email' => 'buyerSeller@gmail.com'],
             [
-                'unique_Id' => uniqid(),
+                'unique_id' => uniqid(),
                 'username' => 'buyerSeller',
                 'name' => 'BuyerSeller',
                 'password' => Hash::make("ahsan123$%^"),

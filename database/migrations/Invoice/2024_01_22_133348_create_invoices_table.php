@@ -21,8 +21,8 @@ return new class extends Migration
             $table->unsignedBigInteger('client_id')->nullable();
             $table->string('invoice_no')->nullable();
             $table->json('user')->nullable();
-            $table->json('client')->nullable();
-            $table->string('invoice_logo')->nullable();
+            // $table->json('client')->nullable();
+            $table->json('invoice_logo')->nullable();
             $table->datetime('date')->nullable();
             $table->datetime('due_date')->nullable();
             $table->string('vat_value')->nullable();
@@ -31,7 +31,7 @@ return new class extends Migration
             $table->text('invoice_notes')->nullable();
             $table->json('invoice_bank_details')->nullable();
             $table->json('invoice_terms')->nullable();
-            $table->string('selected_currency')->nullable();
+            $table->json('selected_currency')->nullable();
             $table->string('invoice_type')->nullable();
             $table->string('sub_total')->nullable();
             $table->string('total')->nullable();

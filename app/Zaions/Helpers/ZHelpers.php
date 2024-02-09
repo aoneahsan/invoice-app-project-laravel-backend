@@ -118,10 +118,10 @@ class ZHelpers
 
 
       // store file & return file path
-  public static function storeFile(Request $request, $fileKey, $fileStorePath = 'uploaded-files')
+  public static function storeFile(Request $request, $fileKey, $fileStorePath = 'public/uploaded-files')
   {
     if ($request->file($fileKey)) {
-      $filePath = Storage::putFile($fileStorePath, $request->file($fileKey), 'public');
+      $filePath = Storage::putFile($fileStorePath, $request->file($fileKey), ['public']);
 
       $appUrl = env('FILESYSTEM_ROOT_URL', 'http://localhost:8000/storage/public');
 
@@ -131,6 +131,38 @@ class ZHelpers
       ];
     } else {
       return null;
+    }
+  }
+
+    // check if file exists
+    public static function checkIfFileExists($filePath)
+    {
+      return $filePath && Storage::exists($filePath);
+    }
+  
+    // get full file url
+    public static function getFullFileUrl($filePath): string | null
+    {
+      if (ZHelpers::checkIfFileExists($filePath)) {
+        $fileUrl = Storage::url($filePath);
+  
+        $appUrl = env('FILESYSTEM_ROOT_URL', 'http://localhost:8000/storage/public');
+  
+        return $appUrl . $fileUrl;
+      } else {
+        return null;
+      }
+    }
+
+      // delete file if exists
+  public static function deleteFile($filePath)
+  {
+    if ($filePath && ZHelpers::checkIfFileExists($filePath)) {
+      $deleted = Storage::delete($filePath);
+
+      return $deleted;
+    } else {
+      return false;
     }
   }
 }

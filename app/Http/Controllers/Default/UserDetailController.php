@@ -46,7 +46,7 @@ class UserDetailController extends Controller
             ]);
 
             $result = UserDetails::create([
-                "unique_Id" => uniqid(),
+                "unique_id" => uniqid(),
                 "user_id" => $user->id,
                 'user_intro' => $request->has('user_intro') ? $request->user_intro : null,
                 'user_description' => $request->has('user_description') ? $request->user_description : null,

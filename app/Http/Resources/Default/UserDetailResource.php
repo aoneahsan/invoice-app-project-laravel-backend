@@ -15,7 +15,7 @@ class UserDetailResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->unique_Id,
+            "id" => $this->unique_id,
             "user_intro" =>  $this->user_intro ?? null,
             "user_description" => $this->user_description ?? null,
             "user_average_response_time" => $this->user_average_response_time ?? null,

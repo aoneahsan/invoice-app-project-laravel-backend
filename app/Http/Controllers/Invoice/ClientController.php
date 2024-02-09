@@ -24,10 +24,10 @@ class ClientController extends Controller
 
             Gate::allowIf($user->hasPermissionTo(PermissionsEnum::viewAny_client->name));
 
-            $allClients = Client::where('user_id', $user->id)->get();
+            $allClients = Client::where('user_id', $user->id)->withCount('invoices')->get();
 
             return ZHelpers::sendBackRequestCompletedResponse([
-                'items' => ClientResource::collection($allClients) 
+                'items' => ClientResource::collection($allClients)
             ]);
         } catch (\Throwable $th) {
             return ZHelpers::sendBackServerErrorResponse($th);
@@ -59,14 +59,14 @@ class ClientController extends Controller
                 "company_registration_number" => ['nullable', 'string'],
                 "vat_number" => ['nullable', 'string'],
                 "default_currency" => ['nullable', 'string'],
-                "bank_details" => ['nullable', 'json'],
+                "bank_details" => ['nullable', 'text'],
                 "notes" => ['nullable', 'string'],
                 "is_active" => ['nullable', 'string'],
                 "extra_attributes" => ['nullable', 'json'],
             ]);
 
             $result = Client::create([
-                "unique_Id" => uniqid(),
+                "unique_id" => uniqid(),
                 "user_id" => $user->id,
                 'name' => $request->has('name') ? $request->name : null,
                 'email' => $request->has('email') ? $request->email : null,
@@ -111,7 +111,7 @@ class ClientController extends Controller
 
             Gate::allowIf($user->hasPermissionTo(PermissionsEnum::view_invoice->name));
 
-            $client = Client::where('user_id', $user->id)->where('unique_Id', $client_id)->first();
+            $client = Client::where('user_id', $user->id)->where('unique_id', $client_id)->first();
 
             if ($client) {
                 return ZHelpers::sendBackRequestCompletedResponse([
@@ -141,7 +141,7 @@ class ClientController extends Controller
 
             Gate::allowIf($user->hasPermissionTo(PermissionsEnum::update_client->name));
 
-            $client = Client::where('user_id', $user->id)->where('unique_Id', $client_id)->first();
+            $client = Client::where('user_id', $user->id)->where('unique_id', $client_id)->first();
 
             if ($client) {
                 $request->validate([
@@ -181,7 +181,7 @@ class ClientController extends Controller
                     'extra_attributes' => $request->has('extra_attributes') ? ZHelpers::zJsonDecode($request->extra_attributes) : $client->extra_attributes,
                 ]);
 
-                $client = Client::where('user_id', $user->id)->where('unique_Id', $client_id)->first();
+                $client = Client::where('user_id', $user->id)->where('unique_id', $client_id)->first();
 
                 return ZHelpers::sendBackRequestCompletedResponse([
                     'item' => new ClientResource($client)
@@ -209,7 +209,7 @@ class ClientController extends Controller
 
             Gate::allowIf($user->hasPermissionTo(PermissionsEnum::delete_client->name));
 
-            $client = Client::where('user_id', $user->id)->where('unique_Id', $client_id)->first();
+            $client = Client::where('user_id', $user->id)->where('unique_id', $client_id)->first();
 
             if ($client) {
                 $client->delete();

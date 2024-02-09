@@ -17,16 +17,20 @@ class UserResource extends JsonResource
     {
         $onboarding = true;
 
-        if ($this->onboarding_details &&
+        if ($this->onboarding_details !== null &&
+        array_key_exists(OnboardingEnum::register->value, $this->onboarding_details) &&
         $this->onboarding_details[OnboardingEnum::register->value] === true &&
+        array_key_exists(OnboardingEnum::profile->value, $this->onboarding_details) &&
         $this->onboarding_details[OnboardingEnum::profile->value] === true &&
+        array_key_exists(OnboardingEnum::currency->value, $this->onboarding_details) &&
         $this->onboarding_details[OnboardingEnum::currency->value] === true &&
+        array_key_exists(OnboardingEnum::bank_details->value, $this->onboarding_details) &&
         $this->onboarding_details[OnboardingEnum::bank_details->value] === true) {
             $onboarding = false;
         }
 
         return [
-            "id" => $this->unique_Id ? $this->unique_Id : null,
+            "id" => $this->unique_id ? $this->unique_id : null,
             "username" => $this->username ? $this->username : null,
             "name" => $this->name ? $this->name : null,
             "email" => $this->email ? $this->email : null,
