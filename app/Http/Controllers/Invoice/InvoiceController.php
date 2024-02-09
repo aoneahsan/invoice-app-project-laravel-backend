@@ -179,7 +179,7 @@ class InvoiceController extends Controller
                     "invoice_notes" => ['nullable', 'string'],
                     "invoice_bank_details" => ['nullable', 'string'],
                     "invoice_terms" => ['nullable', 'json'],
-                    "selected_currency" => ['nullable', 'string'],
+                    "selected_currency" => ['nullable', 'json'],
                     // "invoice_type" => ['nullable', 'string'],
                     "sub_total" => ['nullable', 'numeric'],
                     "total" => ['nullable', 'numeric'],
@@ -215,7 +215,7 @@ class InvoiceController extends Controller
                     'invoice_notes' => $request->has("invoice_notes") ? $request->invoice_notes : $user->invoice_notes,
                     'invoice_bank_details' => $request->has("invoice_bank_details") ? ZHelpers::zJsonDecode($request->invoice_bank_details) : $user->bank_details,
                     'invoice_terms' => $request->has("invoice_terms") ? ZHelpers::zJsonDecode($request->invoice_terms) : $invoice->invoice_terms,
-                    'selected_currency' => $request->has("selected_currency") ? $request->selected_currency : $invoice->selected_currency,
+                    'selected_currency' => $request->has("selected_currency") ?  ZHelpers::zJsonDecode($request->selected_currency) : $invoice->selected_currency,
                     // 'invoice_type' => $request->has("invoice_type") ? $request->invoice_type : $invoice->invoice_type,
                     'sub_total' => $request->has("sub_total") ? $request->sub_total : $invoice->sub_total,
                     'total' => $request->has("total") ? $request->total : $invoice->total,
@@ -267,14 +267,14 @@ class InvoiceController extends Controller
     }
 
 
-    public function downloadInvoicesPhpDownload(Request $request, $invoice_id, $type)
+    public function downloadInvoicesPhpDownload(Request $request, $type, $invoice_id)
     {
         try {
             $user = $request->user();
 
             Gate::allowIf($user->hasPermissionTo(PermissionsEnum::download_invoice->name));
 
-            $item = Invoice::where("user_id", $user->id)->where("unique_id", $invoice_id)->first();
+            $item = Invoice::where("user_id", $user->id)->where("unique_id", $invoice_id)->where("invoice_type", $type)->first();
 
             if (empty($item)) {
                 return ZHelpers::sendBackNotFoundResponse([
@@ -287,11 +287,11 @@ class InvoiceController extends Controller
             // return Inertia::render("Frontend/Invoice/DownloadCreate", [
             //     "invoice" => $itemResource
             // ]);
-            $data = [
-                "itemResource" => $itemResource,
-                "user" => $user,
-                "item" => $item
-            ];
+            // $data = [
+            //     "itemResource" => $itemResource,
+            //     "user" => $user,
+            //     "item" => $item
+            // ];
             $pdfData = [
                 "data" => [
                     "itemResource" => $itemResource,
@@ -302,7 +302,7 @@ class InvoiceController extends Controller
             // $pdf = App::make('dompdf.wrapper');
             $pdf = Pdf::loadView('invoices/download-invoice', $pdfData);
             // return $pdf;
-            return $pdf->download();
+            return $pdf->download('name.pdf');
             // return view("invoices/download-invoice", compact("data"));
         } catch (\Throwable $th) {
             return ZHelpers::sendBackServerErrorResponse($th);

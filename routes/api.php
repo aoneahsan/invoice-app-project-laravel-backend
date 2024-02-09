@@ -66,7 +66,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/user/invoice/{type}/update/{invoice_id}', 'update');
         Route::delete('/user/invoice/{type}/destroy/{invoice_id}', 'destroy');
 
-        Route::get('/user/invoice/download/{invoice_id}', 'downloadInvoicesPhpDownload');
+        Route::post('/user/invoice/{type}/download/{invoice_id}', 'downloadInvoicesPhpDownload');
     });
 
     // User Details

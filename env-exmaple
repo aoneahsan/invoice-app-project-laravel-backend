@@ -4,6 +4,7 @@ APP_KEY=
 APP_DEBUG=true
 APP_URL="http://localhost:8000"
 FILESYSTEM_ROOT_URL="http://localhost:8000/storage"
+FILESYSTEM_DRIVER="local"
 
 LOG_CHANNEL=stack
 LOG_DEPRECATIONS_CHANNEL=null
