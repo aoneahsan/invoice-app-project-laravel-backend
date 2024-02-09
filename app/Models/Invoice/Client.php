@@ -3,6 +3,7 @@
 namespace App\Models\Invoice;
 
 use App\Models\Default\User;
+use App\Zaions\Enums\InvoiceType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,7 +28,18 @@ class Client extends Model
         return  $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function invoices(): HasMany {
+    public function invoicesAndExpenses(): HasMany
+    {
         return  $this->hasMany(Invoice::class, 'client_id', 'id');
+    }
+
+    public function invoices(): HasMany
+    {
+        return  $this->invoicesAndExpenses()->where('invoice_type', InvoiceType::inv->value);
+    }
+
+    public function expenses(): HasMany
+    {
+        return  $this->invoicesAndExpenses()->where('invoice_type', InvoiceType::exp->value);
     }
 }
