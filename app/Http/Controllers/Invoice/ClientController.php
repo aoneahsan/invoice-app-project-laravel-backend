@@ -78,7 +78,7 @@ class ClientController extends Controller
                 'zipcode' => $request->has('zipcode') ?  $request->zipcode : null,
                 'vat_number' => $request->has('vat_number') ?  $request->vat_number : null,
                 'default_currency' => $request->has('default_currency') ?  $request->default_currency : null,
-                'bank_details' => $request->has('bank_details') ?  ZHelpers::zJsonDecode($request->bank_details) : null,
+                'bank_details' => $request->has('bank_details') ?  $request->bank_details : null,
                 'notes' => $request->has('notes') ?  $request->notes : null,
                 'country' => $request->has('country') ?  $request->country : null,
                 'is_active' => $request->has('is_active') ?  $request->is_active : true,

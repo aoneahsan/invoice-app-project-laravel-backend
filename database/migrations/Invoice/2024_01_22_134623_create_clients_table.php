@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('zipcode')->nullable();
             $table->string('vat_number')->nullable();
             $table->string('default_currency')->nullable();
-            $table->json('bank_details')->nullable();
+            $table->string('bank_details')->nullable();
 
             // foreign
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
