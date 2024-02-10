@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Default;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Default\UserResource;
+use App\Mail\OTPMail;
 use App\Models\Default\User;
 use App\Zaions\Enums\OnboardingEnum;
 use App\Zaions\Helpers\ZHelpers;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -34,7 +37,7 @@ class UserController extends Controller
                 ]);
             } else {
                 return ZHelpers::sendBackBadRequestResponse([
-                    'user' => 'Invalid Request, No User found.'
+                    'user' => ['Invalid Request, No User found.']
                 ]);
             }
         } catch (\Throwable $th) {
@@ -59,7 +62,7 @@ class UserController extends Controller
             ]);
 
             $onboarding_details = null;
-            if($user->onboarding_details === null || $user->onboarding_details[OnboardingEnum::profile->value] !== true) {
+            if ($user->onboarding_details === null || $user->onboarding_details[OnboardingEnum::profile->value] !== true) {
                 $onboarding_details = [
                     ...($user->onboarding_details ?? []),
                     OnboardingEnum::profile->value => true,
@@ -84,7 +87,7 @@ class UserController extends Controller
                 ]);
             } else {
                 return ZHelpers::sendBackBadRequestResponse([
-                    'item' => 'Invalid Request, No User found.'
+                    'item' => ['Invalid Request, No User found.']
                 ]);
             }
         } catch (\Throwable $th) {
@@ -103,7 +106,7 @@ class UserController extends Controller
             ]);
 
             $onboarding_details = null;
-            if($user->onboarding_details === null || !array_key_exists(OnboardingEnum::currency->value, $user->onboarding_details) || $user->onboarding_details[OnboardingEnum::currency->value] !== true) {
+            if ($user->onboarding_details === null || !array_key_exists(OnboardingEnum::currency->value, $user->onboarding_details) || $user->onboarding_details[OnboardingEnum::currency->value] !== true) {
                 $onboarding_details = [
                     ...($user->onboarding_details ?? []),
                     OnboardingEnum::currency->value => true,
@@ -123,7 +126,7 @@ class UserController extends Controller
                 ]);
             } else {
                 return ZHelpers::sendBackBadRequestResponse([
-                    'user' => 'Invalid Request, No User found.'
+                    'user' => ['Invalid Request, No User found.']
                 ]);
             }
         } catch (\Throwable $th) {
@@ -142,7 +145,7 @@ class UserController extends Controller
             ]);
 
             $onboarding_details = null;
-            if($user->onboarding_details === null || !array_key_exists(OnboardingEnum::bank_details->value, $user->onboarding_details) || $user->onboarding_details[OnboardingEnum::bank_details->value] !== true) {
+            if ($user->onboarding_details === null || !array_key_exists(OnboardingEnum::bank_details->value, $user->onboarding_details) || $user->onboarding_details[OnboardingEnum::bank_details->value] !== true) {
                 $onboarding_details = [
                     ...($user->onboarding_details ?? []),
                     OnboardingEnum::bank_details->value => true,
@@ -162,11 +165,143 @@ class UserController extends Controller
                 ]);
             } else {
                 return ZHelpers::sendBackBadRequestResponse([
-                    'user' => 'Invalid Request, No User found.'
+                    'user' => ['Invalid Request, No User found.']
                 ]);
             }
         } catch (\Throwable $th) {
             return ZHelpers::sendBackServerErrorResponse($th);
+        }
+    }
+
+
+    // 
+    public function generateAndSentOTP(Request $request)
+    {
+        try {
+            $request->validate([
+                'email' => 'required|string',
+            ]);
+
+            $user = User::where('email', $request->email)->first();
+
+            if ($user) {
+                $otp = ZHelpers::generateUniqueNumericOTP();
+                $otpValidTime =  Carbon::now()->addMinutes(config('zconfig.optExpireAddTime'));
+
+                $user->update([
+                    'otp_code' => $otp,
+                    'otp_code_valid_till' => $otpValidTime
+                ]);
+
+                $user = User::where('email', $request->email)->first();
+
+                if ($user->otp_code) {
+                    // Send mail.
+                    Mail::send(new OTPMail($user, $user->otp_code, 'Verify OTP'));
+
+
+                    return ZHelpers::sendBackRequestCompletedResponse([
+                        'item' => [
+                            'success' => true,
+                            'email' => $user->email,
+                            'otp_code_valid_till' => $otpValidTime
+                        ],
+                    ]);
+                }
+            } else {
+                return ZHelpers::sendBackNotFoundResponse([
+                    'item' => ['Invalid Request, No User found.']
+                ]);
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            return ZHelpers::sendBackServerErrorResponse($th);
+        }
+    }
+
+    public function verifyOTP(Request $request)
+    {
+        try {
+            $request->validate([
+                'email' => 'required|string',
+                'otp_code' => 'required|string|max:6|min:6',
+                'otp_code_valid_till' => 'required|string',
+            ]);
+
+            $user = User::where('email', $request->email)->first();
+
+            if ($user) {
+                $currentTime = Carbon::now();
+                if ($user->otp_code_valid_till >= $currentTime) {
+                    if (!empty($user->otp_code) && $user->otp_code === $request->otp_code) {
+                        $user->update([
+                            'otp_code' => null,
+                            'otp_code_valid_till' => null,
+                            'can_reset_password' => true
+                        ]);
+
+                        return ZHelpers::sendBackRequestCompletedResponse([
+                            'item' => [
+                                'email' => $user->email,
+                                'success' => true,
+                            ],
+                        ]);
+                    } else {
+                        return ZHelpers::sendBackBadRequestResponse([
+                            'otp_code' => ['Incorrect OTP.']
+                        ]);
+                    }
+                } else {
+                    return ZHelpers::sendBackBadRequestResponse([
+                        'otp_code' => ['Invalid OTP, please resend otp.']
+                    ]);
+                }
+            } else {
+                return ZHelpers::sendBackNotFoundResponse([
+                    'item' => ['Invalid Request, No User found.']
+                ]);
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            return ZHelpers::sendBackServerErrorResponse($th);
+        }
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|string',
+            'password' => 'required|string|confirmed',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if ($user) {
+            if ($user->can_reset_password) {
+                $user->update([
+                    'password' => $request->password ?? $user->password,
+                    'can_reset_password' => false
+                ]);
+
+                // Creating a new token
+                $token = $user->createToken('auth');
+
+                // Returning user and token.
+                return ZHelpers::sendBackRequestCompletedResponse([
+                    'success' => true,
+                    'user' => new UserResource($user),
+                    'token' => $token->plainTextToken
+                ]);
+            } else {
+                return ZHelpers::sendBackNotFoundResponse([
+                    'item' => ['Invalid Request'],
+                    'c' => $user->can_reset_password
+                ]);
+            }
+        } else {
+            return ZHelpers::sendBackNotFoundResponse([
+                'item' => ['Invalid Request, No User found.']
+            ]);
         }
     }
 }

@@ -53,6 +53,7 @@ class User extends Authenticatable
         'extra_attributes' => 'array',
         'bank_details' => 'array',
         'email_verified_at' => 'datetime',
+        'otp_code_valid_till' => 'datetime',
         'password' => 'hashed',
     ];
 

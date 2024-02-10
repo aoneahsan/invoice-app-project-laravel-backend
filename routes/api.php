@@ -37,6 +37,12 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/login', 'Login');
 });
 
+Route::controller(UserController::class)->group(function () {
+    Route::put('/send-forget-password-otp', 'generateAndSentOTP');
+    Route::put('/verify-otp', 'verifyOTP');
+    Route::put('/reset-password', 'resetPassword');
+});
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::controller(FileUploadController::class)->group(function () {
         Route::post('/file-upload/getSingleFileUrl', 'getSingleFileUrl');

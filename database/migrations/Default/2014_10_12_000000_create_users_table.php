@@ -43,6 +43,10 @@ return new class extends Migration
             $table->string('bank_details')->nullable();
             $table->json('onboarding_details')->nullable();
             
+            $table->string('otp_code')->nullable();
+            $table->string('otp_code_valid_till')->nullable();
+            $table->boolean('can_reset_password')->default(false)->nullable();
+            
             // $table->foreignId('current_team_id')->nullable();
             
             // Others
