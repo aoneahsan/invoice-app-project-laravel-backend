@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
 
         // Super Admin
         $superAdmin = User::firstOrCreate(
-            ['email' => env('SUPER_ADMIN_EMAIL')],
+            ['email' => env('SUPER_ADMIN_EMAIL', 'tester@zaions.com')],
             [
                 'unique_id' => uniqid(),
                 'username' => 'aoneahsan',
@@ -51,7 +51,7 @@ class UserSeeder extends Seeder
                 'default_currency' => "USD",
                 'logo' => "username",
                 'notes' => "Thanks for your business.",
-                'bank_details' => "Account Title: Ahsan Mahmood, Account Email: " . env('SUPER_ADMIN_EMAIL')
+                'bank_details' => "Account Title: Ahsan Mahmood, Account Email: " . env('SUPER_ADMIN_EMAIL', 'tester@zaions.com')
             ]
         );
         $superAdmin->assignRole($superAdminRole);
@@ -69,7 +69,7 @@ class UserSeeder extends Seeder
                 'country_code' => "92",
                 'country_code_text' => "pk",
                 'location' => "lahore, pakistan",
-               // 'role' => "developer",
+                // 'role' => "developer",
                 'profile_publicly_visible' => "visible",
                 'address' => "lahore, pakistan",
                 'country' => "Pakistan",
@@ -100,7 +100,7 @@ class UserSeeder extends Seeder
                 'country_code' => "92",
                 'country_code_text' => "pk",
                 'location' => "lahore, pakistan",
-               // 'role' => "developer",
+                // 'role' => "developer",
                 'profile_publicly_visible' => "visible",
                 'address' => "lahore, pakistan",
                 'country' => "Pakistan",
@@ -131,7 +131,7 @@ class UserSeeder extends Seeder
                 'country_code' => "92",
                 'country_code_text' => "pk",
                 'location' => "lahore, pakistan",
-               // 'role' => "developer",
+                // 'role' => "developer",
                 'profile_publicly_visible' => "visible",
                 'address' => "lahore, pakistan",
                 'country' => "Pakistan",
@@ -162,7 +162,7 @@ class UserSeeder extends Seeder
                 'country_code' => "92",
                 'country_code_text' => "pk",
                 'location' => "lahore, pakistan",
-               // 'role' => "developer",
+                // 'role' => "developer",
                 'profile_publicly_visible' => "visible",
                 'address' => "lahore, pakistan",
                 'country' => "Pakistan",
@@ -193,7 +193,7 @@ class UserSeeder extends Seeder
                 'country_code' => "92",
                 'country_code_text' => "pk",
                 'location' => "lahore, pakistan",
-               // 'role' => "developer",
+                // 'role' => "developer",
                 'profile_publicly_visible' => "visible",
                 'address' => "lahore, pakistan",
                 'country' => "Pakistan",

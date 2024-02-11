@@ -177,7 +177,7 @@ class ZHelpers
     if ($request->file($fileKey)) {
       $filePath = Storage::putFile($fileStorePath, $request->file($fileKey), ['public']);
 
-      $appUrl = env('FILESYSTEM_ROOT_URL', 'http://localhost:8000/storage/public');
+      $appUrl = env('FILESYSTEM_ROOT_URL', 'http://localhost:8000/storage');
 
       return [
         'fileUrl' => $appUrl . '/' . $filePath,
@@ -210,7 +210,7 @@ class ZHelpers
       if (ZHelpers::checkIfFileExists($filePath)) {
         $fileUrl = Storage::url($filePath);
   
-        $appUrl = env('FILESYSTEM_ROOT_URL', 'http://localhost:8000/storage/public');
+        $appUrl = env('FILESYSTEM_ROOT_URL', 'http://localhost:8000/storage');
   
         return $appUrl . $fileUrl;
       } else {

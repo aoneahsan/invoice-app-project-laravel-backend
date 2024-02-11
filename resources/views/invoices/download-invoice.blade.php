@@ -9,18 +9,17 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Styles -->
-    {{-- <link rel="stylesheet" href="{{ asset('custom-assets/css/theme.min.css') }}"> --}}
-
     <style>
         .row {
             width: 100%;
             padding: 0 -15px;
         }
+
         .col-12 {
             width: 100%;
             padding: 0 15px;
         }
+
         .col-md-6 {
             width: 50%;
             padding: 0 15px;
@@ -29,7 +28,6 @@
 </head>
 
 <body class="font-sans">
-    {{-- <?php var_dump($data['itemResource']['id']); die() ?> --}}
     <div class="p-5 card card-body">
         <div class="row">
             <div class="col-12 col-md-6">
@@ -52,7 +50,8 @@
                         {{ $data['itemResource']['user']['country'] }}
                         <br />
                     @endisset
-                    @isset($data['itemResource']['user']['company_registration_number'])Company Number:
+                    @isset($data['itemResource']['user']['company_registration_number'])
+                        Company Number:
                         {{ $data['itemResource']['user']['company_registration_number'] }}<br />
                     @endisset
                     @isset($data['itemResource']['user']['vat_number'])
@@ -104,7 +103,8 @@
                 <div style="min-width: 200px; min-height: 200px">
                     <label for="upload-photo">
                         <img class="ml-8 image rounded-circle" src="{{ $data['itemResource']['invoice_logo_url'] }}"
-                            alt="User Company Logo" style="
+                            alt="User Company Logo"
+                            style="
                                   object-fit: cover;
                                   width: 200px;
                                   height: 200px;
@@ -113,13 +113,15 @@
                 </div>
 
                 <div class="mr-4">
-                    <h3 class="mb-3 invoice" style="font-style: normal;
+                    <h3 class="mb-3 invoice"
+                        style="font-style: normal;
                     font-weight: normal;
                     font-size: 48px;
                     line-height: 56px;
                     align-items: center;
                     text-align: right;
-                    color: #3c445f;">Invoice</h3>
+                    color: #3c445f;">
+                        Invoice</h3>
                     <div class="mb-3 d-flex justify-content-end" v-if="$itemResource.invoice_no">
                         <span class="mr-2 text-muted">Invoice no:</span>
                         <span>invoice_no</span>

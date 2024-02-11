@@ -73,7 +73,7 @@ class InvoiceController extends Controller
             $selectedClient = Client::where('user_id', $user->id)->where('unique_id', $request->client_unique_id)->first();
 
             if ($selectedClient) {
-                if($type === InvoiceType::inv->value || $type === InvoiceType::exp->value){
+                if ($type === InvoiceType::inv->value || $type === InvoiceType::exp->value) {
                     $result = Invoice::create([
                         "unique_id" => uniqid(),
                         "user_id" => $request->user()->id,
@@ -97,7 +97,7 @@ class InvoiceController extends Controller
                         'is_active' => $request->has("is_active") ? $request->is_active : null,
                         'extra_attributes' => $request->has("extra_attributes") ? ZHelpers::zJsonDecode($request->extra_attributes) : null,
                     ]);
-    
+
                     if ($result) {
                         return ZHelpers::sendBackRequestCompletedResponse([
                             'item' => new InvoiceResource($result)
@@ -105,7 +105,7 @@ class InvoiceController extends Controller
                     } else {
                         return ZHelpers::sendBackRequestFailedResponse(['message' => "Error occurred while adding invoice."]);
                     }
-                }else {
+                } else {
                     return ZHelpers::sendBackRequestFailedResponse([
                         'item' => ['Not a valid invoice type.']
                     ]);
@@ -192,7 +192,7 @@ class InvoiceController extends Controller
                     $client = Client::where('unique_id', $request->client_unique_id)->first();
 
                     if ($client) {
-                        if($client->id !== $invoice->client_id){    
+                        if ($client->id !== $invoice->client_id) {
                             $newClientId = $client->id;
                         }
                     } else {
@@ -274,36 +274,25 @@ class InvoiceController extends Controller
 
             Gate::allowIf($user->hasPermissionTo(PermissionsEnum::download_invoice->name));
 
-            $item = Invoice::where("user_id", $user->id)->where("unique_id", $invoice_id)->where("invoice_type", $type)->first();
+            $invoice = Invoice::where("user_id", $user->id)->where("unique_id", $invoice_id)->where("invoice_type", $type)->first();
 
-            if (empty($item)) {
+            if (empty($invoice)) {
                 return ZHelpers::sendBackNotFoundResponse([
                     'item' => ['Invoice is not found.']
                 ]);
             }
-            // Inertia::setRootView("layouts.frontend.index");
-            $itemResource = new InvoiceResource($item);
+            $itemResource = new InvoiceResource($invoice);
             $user = User::where("id", $request->user()->id)->first();
-            // return Inertia::render("Frontend/Invoice/DownloadCreate", [
-            //     "invoice" => $itemResource
-            // ]);
-            // $data = [
-            //     "itemResource" => $itemResource,
-            //     "user" => $user,
-            //     "item" => $item
-            // ];
             $pdfData = [
                 "data" => [
                     "itemResource" => $itemResource,
                     "user" => $user,
-                    "item" => $item
+                    "item" => $invoice
                 ]
             ];
-            // $pdf = App::make('dompdf.wrapper');
+
             $pdf = Pdf::loadView('invoices/download-invoice', $pdfData);
-            // return $pdf;
-            return $pdf->download('name.pdf');
-            // return view("invoices/download-invoice", compact("data"));
+            return $pdf->download('invoice-' . $invoice->invoice_no . '.pdf');
         } catch (\Throwable $th) {
             return ZHelpers::sendBackServerErrorResponse($th);
         }
