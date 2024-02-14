@@ -68,7 +68,7 @@ class AuthController extends Controller
                 'username' => $request->has('username') ? $request->username : null,
                 'email' => $request->has('email') ? $request->email : null,
                 'password' => $request->has('password') ? Hash::make($request->password) : null,
-                'address' => $request->has('address') ? $request->address : null, 
+                'address' => $request->has('address') ? $request->address : null,
                 "state" => $request->has('state') ? $request->state : null,
                 'company' => $request->has('company') ? $request->company : null,
                 "country" => $request->has('country') ? $request->country : null,
@@ -127,7 +127,7 @@ class AuthController extends Controller
                         'user' => new UserResource($user),
                         'token' => $token->plainTextToken
                     ]);
-                } else{
+                } else {
                     return ZHelpers::sendBackNotFoundResponse([
                         'item' => ['Incorrect email or password']
                     ]);
@@ -145,17 +145,18 @@ class AuthController extends Controller
     /** 
      * Logout
      */
-   public function Logout(Request $request) {
+    public function Logout(Request $request)
+    {
         try {
             $user = $request->user();
 
-            if($user){
+            if ($user) {
                 $user->tokens()->delete();
 
                 return ZHelpers::sendBackRequestCompletedResponse([
                     'isSuccess' => true
                 ]);
-            }else{
+            } else {
                 return ZHelpers::sendBackBadRequestResponse([
                     'user' => 'User not Found!'
                 ]);
