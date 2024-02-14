@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('zipcode')->nullable();
             $table->string('vat_number')->nullable();
-            $table->string('default_currency')->nullable();
+            $table->json('default_currency')->nullable();
             $table->string('bank_details')->nullable();
 
             // foreign

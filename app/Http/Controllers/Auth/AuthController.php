@@ -50,7 +50,7 @@ class AuthController extends Controller
                 "state" => ['nullable', 'string'],
                 "company_registration_number" => ['nullable', 'string'],
                 "vat_number" => ['nullable', 'string'],
-                "default_currency" => ['nullable', 'string'],
+                "default_currency" => ['nullable', 'json'],
                 "notes" => ['nullable', 'string'],
                 "bank_details" => ['nullable', 'string'],
                 "is_active" => ['nullable', 'string'],
@@ -77,12 +77,12 @@ class AuthController extends Controller
                 "logo" => $request->has('logo') ? $request->logo : null,
                 'company_registration_number' => $request->has('company_registration_number') ? $request->company_registration_number : null,
                 'vat_number' => $request->has('vat_number') ? $request->vat_number : null,
-                'default_currency' => $request->has('default_currency') ? $request->default_currency : null,
+                'default_currency' => $request->has('default_currency') ? ZHelpers::zJsonDecode($request->default_currency) : null,
                 'notes' => $request->has('notes') ? $request->notes : null,
                 'bank_details' => $request->has('bank_details') ? $request->bank_details : null,
                 'onboarding_details' => $onboarding_details ?? null,
                 'is_active' => $request->has('is_active') ? $request->is_active : null,
-                'extra_attributes' => $request->has('extra_attributes') ? $request->extra_attributes : null,
+                'extra_attributes' => $request->has('extra_attributes') ? ZHelpers::zJsonDecode($request->extra_attributes) : null,
             ]);
 
             // Getting user role

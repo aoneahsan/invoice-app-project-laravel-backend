@@ -27,7 +27,7 @@ MAIL_FROM_NAME="${APP_NAME}"
 
 
 # Added By Developer
-SUPER_ADMIN_EMAIL='ahsan@zaions.com'
+SUPER_ADMIN_EMAIL='tester@zaions.com'
 SESSION_DOMAIN='localhost' 
 SANCTUM_STATEFUL_DOMAINS='localhost'
 

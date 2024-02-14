@@ -102,7 +102,7 @@ class UserController extends Controller
 
             $request->validate([
                 "logo" => ['required', 'json'],
-                "default_currency" => ['required', 'string'],
+                "default_currency" => ['required', 'json'],
             ]);
 
             $onboarding_details = null;
@@ -116,7 +116,7 @@ class UserController extends Controller
             if ($user) {
                 $user->forceFill([
                     'logo' => $request->has('logo') ? ZHelpers::zJsonDecode($request->logo) : $user->logo,
-                    'default_currency' => $request->has('default_currency') ? $request->default_currency : $user->default_currency,
+                    'default_currency' => $request->has('default_currency') ? ZHelpers::zJsonDecode($request->default_currency) : $user->default_currency,
                     'onboarding_details' => $onboarding_details ?? $user->onboarding_details,
                 ])->save();
                 $updatedUserInfo = User::where('id', $request->user()->id)->first();

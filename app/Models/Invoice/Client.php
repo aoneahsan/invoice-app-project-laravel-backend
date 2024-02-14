@@ -20,6 +20,7 @@ class Client extends Model
     protected $casts = [
         "bank_details" => "array",
         "extra_attributes" => "array",
+        "default_currency" => "array"
     ];
 
     // Relations

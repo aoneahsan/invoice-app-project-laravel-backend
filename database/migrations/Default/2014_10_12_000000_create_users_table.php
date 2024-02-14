@@ -36,7 +36,7 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('zipcode')->nullable();
             $table->string('vat_number')->nullable();
-            $table->string('default_currency')->nullable();
+            $table->json('default_currency')->nullable();
             $table->json('logo')->nullable();
             $table->string('notes')->nullable();
             // $table->json('bank_details')->nullable();

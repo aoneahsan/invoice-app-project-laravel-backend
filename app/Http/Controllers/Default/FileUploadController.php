@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Default;
 use App\Http\Controllers\Controller;
 use App\Zaions\Helpers\ZHelpers;
 use Illuminate\Http\Request;
+use Mockery\Undefined;
+
+use function PHPUnit\Framework\isEmpty;
 
 class FileUploadController extends Controller
 {
@@ -12,8 +15,17 @@ class FileUploadController extends Controller
     {
         try {
             $request->validate([
-                'file' => 'required|file'
+                'file' => 'required|file',
+                // 'old_file_detail' => 'nullable|json'
             ]);
+
+            // return ZHelpers::sendBackRequestCompletedResponse([
+            //     'item' => $request->old_file_detail
+            // ]);
+
+            // if($request->has('old_file_detail') && !isEmpty($request->old_file_detail['should_delete_old_file']) && !isEmpty($request->old_file_detail['old_file_path']) && $request->old_file_detail['should_delete_old_file']){
+            //     ZHelpers::deleteFile($request->old_file_detail['old_file_path']);
+            // }
 
             $fileName = 'NO File Found';
             $filePath = '-';
