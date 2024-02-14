@@ -18,7 +18,7 @@ return new class extends Migration
             // User id
             $table->unsignedBigInteger('user_id');
 
-            $table->unsignedBigInteger('client_id')->nullable();
+            $table->unsignedBigInteger('client_id');
             $table->string('invoice_no')->nullable();
             $table->json('user')->nullable();
             // $table->json('client')->nullable();
@@ -38,14 +38,17 @@ return new class extends Migration
 
             // foreign
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
 
             // Others
             $table->integer('sort_order_no')->default(0)->nullable();
             $table->boolean('is_active')->default(true)->nullable();
-            $table->json('extra_attributes')->nullable();
+            $table->json('extra_attributes')->nullable(); 
             $table->softDeletes();
 
             $table->timestamps();
+
+            // c 2024_01_22_134623 // i 2024_01_22_133348
         });
     }
 

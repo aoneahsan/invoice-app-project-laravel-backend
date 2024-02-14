@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
                 'unique_id' => uniqid(),
                 'username' => 'aoneahsan',
                 'name' => 'Ahsan Mahmood',
-                'password' => Hash::make("ahsan123$%^"),
+                'password' => Hash::make("asd123!@#"),
                 'email_verified_at' => Carbon::now(),
                 'phone_number' => "03046619706",
                 'country_code' => "92",

@@ -81,7 +81,7 @@ class InvoiceController extends Controller
                         "invoice_no" => $request->has("invoice_no") ? $request->invoice_no : null,
                         'user' => $request->has("user") ? ZHelpers::zJsonDecode($request->user) : null,
                         // 'client' => $request->has("client") ? ZHelpers::zJsonDecode($request->client) : null,
-                        'invoice_logo' => $request->has("client") ? ZHelpers::zJsonDecode($request->invoice_logo) : null,
+                        'invoice_logo' => $request->has("invoice_logo") ? ZHelpers::zJsonDecode($request->invoice_logo) : null,
                         'date' => $request->has("date") ? $request->date : null,
                         'due_date' => $request->has("due_date") ? $request->due_date : null,
                         'vat_value' => $request->has("vat_value") ? $request->vat_value : null,
@@ -291,8 +291,18 @@ class InvoiceController extends Controller
                 ]
             ];
 
-            $pdf = Pdf::loadView('invoices/download-invoice', $pdfData);
-            return $pdf->download('invoice-' . $invoice->invoice_no . '.pdf');
+            // $pdf = Pdf::loadView('invoices/download-invoice', $pdfData);
+        
+            // // Generate PDF content as a string
+            // $pdfContent = $pdf->output();
+    
+            // // Send PDF content for download with specified filename
+            // return response()->streamDownload(function () use ($pdfContent) {
+            //     echo $pdfContent;
+            // }, 'invoice-' . $invoice->invoice_no . '.pdf');
+
+            return Pdf::loadView('invoices/download-invoice', $pdfData)->download('invoice-' . $invoice->invoice_no . '.pdf');
+            // return $pdf->download('invoice-' . $invoice->invoice_no . '.pdf');
         } catch (\Throwable $th) {
             return ZHelpers::sendBackServerErrorResponse($th);
         }

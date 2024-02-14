@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Invoice;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Invoice\ClientResource;
 use App\Models\Invoice\Client;
+use App\Models\Invoice\Invoice;
 use App\Zaions\Enums\PermissionsEnum;
 use App\Zaions\Helpers\ZHelpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+
+use function PHPUnit\Framework\isEmpty;
 
 class ClientController extends Controller
 {
@@ -212,6 +215,17 @@ class ClientController extends Controller
             $client = Client::where('user_id', $user->id)->where('unique_id', $client_id)->first();
 
             if ($client) {
+                if(!isEmpty($client->invoicesAndExpenses)){
+                    foreach ($client->invoicesAndExpenses as $item) {
+                        if(!isEmpty($item->id)){
+                            $invoice = Invoice::where('id', $item->id)->first();
+
+                            if(!isEmpty($invoice)){
+                                $invoice->delete();
+                            }
+                        }
+                    }
+                }
                 $client->delete();
                 return ZHelpers::sendBackRequestCompletedResponse(['item' => ['success' => true]]);
             } else {
