@@ -213,14 +213,13 @@ class ClientController extends Controller
             Gate::allowIf($user->hasPermissionTo(PermissionsEnum::delete_client->name));
 
             $client = Client::where('user_id', $user->id)->where('unique_id', $client_id)->first();
-
             if ($client) {
-                if(!isEmpty($client->invoicesAndExpenses)){
+                if($client->invoicesAndExpenses->isNotEmpty()){
                     foreach ($client->invoicesAndExpenses as $item) {
-                        if(!isEmpty($item->id)){
+                        if($item->id){
                             $invoice = Invoice::where('id', $item->id)->first();
 
-                            if(!isEmpty($invoice)){
+                            if($invoice->id){
                                 $invoice->delete();
                             }
                         }
