@@ -22,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // To find migration files in sub folders - Code Start
         Schema::defaultStringLength(191);
+
         $mainPath = database_path('migrations');
         $defaultPath = database_path('migrations/Default');
         $invoicePath = database_path('migrations/Invoice');
