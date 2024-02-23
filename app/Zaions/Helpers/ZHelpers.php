@@ -235,6 +235,17 @@ class ZHelpers
     }
   }
 
+  public static function getFile($filePath)
+  {
+    if ($filePath && ZHelpers::checkIfFileExists($filePath)) {
+      $deleted = Storage::get($filePath);
+
+      return $deleted;
+    } else {
+      return false;
+    }
+  }
+
   /**
  * Generate a unique numeric OTP (One-Time Password).
  *

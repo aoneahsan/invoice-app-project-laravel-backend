@@ -136,8 +136,19 @@ class InvoiceController extends Controller
             $invoice = Invoice::where('user_id', $user->id)->where('unique_id', $invoice_id)->where('invoice_type', $type)->with('client')->first();
 
             if ($invoice) {
+
+                // if ($invoice->invoice_logo && $invoice->invoice_logo['path']) {
+                //     $fileContents = ZHelpers::getFile($invoice->invoice_logo['path']);
+                //     // Convert file contents to base64
+                //     $base64 = base64_encode($fileContents);
+                    
+                //     $invoice->forceFill([
+                //         'invoice_logo' => [...$invoice->invoice_logo, 'fileBase64' => $base64],
+                //     ])->save();
+                // }
+
                 return ZHelpers::sendBackRequestCompletedResponse([
-                    'item' => new InvoiceResource($invoice)
+                    'item' => new InvoiceResource($invoice),
                 ]);
             } else {
                 return ZHelpers::sendBackNotFoundResponse([
@@ -292,10 +303,10 @@ class InvoiceController extends Controller
             ];
 
             // $pdf = Pdf::loadView('invoices/download-invoice', $pdfData);
-        
+
             // // Generate PDF content as a string
             // $pdfContent = $pdf->output();
-    
+
             // // Send PDF content for download with specified filename
             // return response()->streamDownload(function () use ($pdfContent) {
             //     echo $pdfContent;
