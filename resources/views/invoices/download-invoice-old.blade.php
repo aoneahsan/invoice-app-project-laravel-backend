@@ -28,22 +28,13 @@
         .page-break {
             page-break-after: always;
         }
-
-        .demo {
-            font-size: 90px;
-            background-color: green;
-        }
     </style>
 </head>
 
 <body class="font-sans">
-    <div class="demo">lsdfjklsdf</div>
-    <h1 class="text-3xl font-bold underline text-clifford text-red-900 mt-20">
+    <h1 class="text-3xl font-bold underline text-clifford text-red-900">
         Hello world!
     </h1>
-    <h1 class="text-red-800 text-[90px]">askjdhkjashda</h1>
-    <h1 style="font-size: 90px; background-color: red; color: white">askjdhkjashda</h1>
-    <h2>skjdhfksd</h2>
     <div class="p-5 card card-body">
         <div class="row">
             <div class="col-12 col-md-6">
