@@ -24,72 +24,79 @@
             width: 50%;
             padding: 0 15px;
         }
+
+        .page-break {
+            page-break-after: always;
+        }
     </style>
 </head>
 
 <body class="font-sans">
+    <h1 class="text-3xl font-bold underline text-clifford text-red-900">
+        Hello world!
+    </h1>
     <div class="p-5 card card-body">
         <div class="row">
             <div class="col-12 col-md-6">
                 <div class="mt-2 mb-4 overlay profile-pic" style="line-height: 25px; max-width: 500px">
-                    @isset($data['itemResource']['user']['company'])
-                        {{ $data['itemResource']['user']['company'] }}
+                    @isset($invoiceData['user']['company'])
+                        {{ $invoiceData['user']['company'] }}
                         <br />
                     @endisset
-                    @isset($data['itemResource']['user']['address'])
-                        {{ $data['itemResource']['user']['address'] }}
+                    @isset($invoiceData['user']['address'])
+                        {{ $invoiceData['user']['address'] }}
                         <br />
                     @endisset
-                    @isset($data['itemResource']['user']['zipcode'])
-                        {{ $data['itemResource']['user']['zipcode'] }},
+                    @isset($invoiceData['user']['zipcode'])
+                        {{ $invoiceData['user']['zipcode'] }},
                     @endisset
-                    @isset($data['itemResource']['user']['address'])
-                        {{ $data['itemResource']['user']['city'] }}<br />
+                    @isset($invoiceData['user']['address'])
+                        {{ $invoiceData['user']['city'] }}<br />
                     @endisset
-                    @isset($data['itemResource']['user']['country'])
-                        {{ $data['itemResource']['user']['country'] }}
+                    @isset($invoiceData['user']['country'])
+                        {{ $invoiceData['user']['country'] }}
                         <br />
                     @endisset
-                    @isset($data['itemResource']['user']['company_registration_number'])
+                    @isset($invoiceData['user']['company_registration_number'])
                         Company Number:
-                        {{ $data['itemResource']['user']['company_registration_number'] }}<br />
+                        {{ $invoiceData['user']['company_registration_number'] }}<br />
                     @endisset
-                    @isset($data['itemResource']['user']['vat_number'])
+                    @isset($invoiceData['user']['vat_number'])
                         VAT Number:
-                        {{ $data['itemResource']['user']['vat_number'] }}<br />
+                        {{ $invoiceData['user']['vat_number'] }}<br />
                     @endisset
                 </div>
                 <p class="mt-5 text-muted">Bill To:</p>
                 <div class="clickable" style="border: 1px dashed #000">
                     <div class="my-2 ml-3" data-toggle="modal" data-target="#exampleModal">
-                        @isset($data['itemResource']['client']['id'])
+                        @isset($invoiceData['client']['id'])
                             <a class="nav-link active">
-                                @isset($data['itemResource']['client']['company'])
-                                    {{ $data['itemResource']['client']['company'] }}<br />
+                                @isset($invoiceData['client']['company'])
+                                    {{ $invoiceData['client']['company'] }}<br />
                                 @endisset
-                                @isset($data['itemResource']['client']['address'])
-                                    {{ $data['itemResource']['client']['address'] }}
+                                @isset($invoiceData['client']['address'])
+                                    {{ $invoiceData['client']['address'] }}
                                     <br />
                                 @endisset
-                                @isset($data['itemResource']['client']['zipcode'])
-                                    {{ $data['itemResource']['client']['zipcode'] }},
+                                @isset($invoiceData['client']['zipcode'])
+                                    {{ $invoiceData['client']['zipcode'] }},
                                 @endisset
-                                @isset($data['itemResource']['client']['city'])
-                                    {{ $data['itemResource']['client']['city'] }}<br />
+                                @isset($invoiceData['client']['city'])
+                                    {{ $invoiceData['client']['city'] }}<br />
                                 @endisset
-                                @isset($data['itemResource']['client']['country'])
-                                    {{ $data['itemResource']['client']['country'] }}
+                                @isset($invoiceData['client']['country'])
+                                    {{ $invoiceData['client']['country'] }}
                                     <br />
                                 @endisset
-                                @isset($data['itemResource']['client']['company_registration_number'])
-                                    Company Number:{{ $data['itemResource']['client']['company_registration_number'] }}<br />
+                                @isset($invoiceData['client']['company_registration_number'])
+                                    Company Number:{{ $invoiceData['client']['company_registration_number'] }}<br />
                                 @endisset
-                                @isset($data['itemResource']['client']['vat_number'])
-                                    VAT Number:{{ $data['itemResource']['client']['vat_number'] }}
+                                @isset($invoiceData['client']['vat_number'])
+                                    VAT Number:{{ $invoiceData['client']['vat_number'] }}
                                 @endisset
                             </a>
                         @endisset
-                        @empty($data['itemResource']['client']['id'])
+                        @empty($invoiceData['client']['id'])
                             <a class="nav-link active">
                                 <i class="ml-2 fe fe-user"> </i>
                                 Client Details Will Show Here
@@ -102,13 +109,10 @@
             <div class="col-12 col-md-6 text-md-right">
                 <div style="min-width: 200px; min-height: 200px">
                     <label for="upload-photo">
-                        <img class="ml-8 image rounded-circle" src="{{ $data['itemResource']['invoice_logo_url'] }}"
-                            alt="User Company Logo"
-                            style="
-                                  object-fit: cover;
-                                  width: 200px;
-                                  height: 200px;
-                                " />
+                        <img class="ml-8 image rounded-circle"
+                            src="{{ 'data:image/png;base64,' . base64_encode(Storage::read($invoiceLogoPath)) }}"
+                            alt="User Company Logo v2" style="object-fit: cover; width: 200px; height: 200px; " />
+
                     </label>
                 </div>
 

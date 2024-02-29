@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Testing\TestingController;
 use App\Http\Resources\Invoice\InvoiceResource;
 use App\Models\Default\User;
 use App\Models\Invoice\Invoice;
@@ -9,6 +10,7 @@ use App\Zaions\Enums\RolesEnum;
 use App\Zaions\Helpers\ZHelpers;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
 
 /*
@@ -41,35 +43,42 @@ Route::get('/z-testing', function () {
     // dd($allPermissions);
 
 
-    testDownloadPDF();
-
     // dd('okay', testDownloadPDF());
+    return 'ok';
 });
 
+Route::post('/pdf-export', [TestingController::class, 'pdfExportTest'])->name('download-invoice');
 
-function testDownloadPDF()
-{
-    $user = User::where('email', env('SUPER_ADMIN_EMAIL', 'tester@zaions.com'))->first();
-
-    $invoice = Invoice::where("user_id", $user->id)->where("invoice_type", InvoiceType::inv->name)->first();
-
-    if (empty($invoice)) {
-        return ZHelpers::sendBackNotFoundResponse([
-            'item' => ['Invoice is not found.']
-        ]);
-    }
-    $itemResource = new InvoiceResource($invoice);
-    $pdfData = [
-        "data" => [
-            "itemResource" => $itemResource,
-            "user" => $user,
-            "item" => $invoice
-        ]
-    ];
+Route::view('/request-invoice-download', 'invoices.request-invoice-download');
 
 
-    $pdf = Pdf::loadView('invoices/download-invoice', $pdfData);
+// function testDownloadPDF()
+// {
+//     $user = User::where('email', env('SUPER_ADMIN_EMAIL', 'tester@zaions.com'))->first();
 
-    // return $pdf->download('invoice.pdf');
-    return $pdf->output();
-}
+//     $invoice = Invoice::where("user_id", $user->id)->where("invoice_type", InvoiceType::inv->name)->first();
+
+//     if (empty($invoice)) {
+//         return ZHelpers::sendBackNotFoundResponse([
+//             'item' => ['Invoice is not found.']
+//         ]);
+//     }
+//     $itemResource = new InvoiceResource($invoice);
+//     $pdfData = [
+//         "data" => [
+//             "itemResource" => $itemResource,
+//             "user" => $user,
+//             "item" => $invoice
+//         ]
+//     ];
+
+
+//     $pdf = Pdf::loadView('invoices/download-invoice', $pdfData);
+
+//     // return $pdf->download('invoice.pdf');
+//     return $pdf->output();
+// }
+
+Route::get('/testing-storage', function () {
+    return Storage::read('uploaded-files/MD4hlPZ3gYQke5y8HplE053sHQ4K4IUj8BsqB4Qu.jpg');
+});
