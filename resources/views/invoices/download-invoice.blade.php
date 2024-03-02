@@ -59,30 +59,40 @@
 
 <body class="font-sans">
     <div style="width:100%;padding-left:20px;padding-right:20px;padding-bottom:16px;background-color: rgb(255 255 255 / 1);">
-        <div class="w-full flex" style="width: 100%;display: flex;">
+        <div style="display: flex;flex-direction:row; width: 100%;background: red;">
             {{-- Info and bill to --}}
-            <div style="width: 50%;">
+            <div style="width: 50%;display: inline-block">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; width:100%;">
                     <div style="width:100%;">
-                        <span style="display: block; font-weight: 500; font-size: 15.2px;">{{$invoiceData->user->company}}</span>
-                        <span style="display: block; font-weight: 500; margin-top: 4px; font-size: 15.2px;">{{$invoiceData->user->address}}</span>
-                        <span style="display: block; font-weight: 500; margin-top: 4px; font-size: 15.2px;">{{$invoiceData->user->city}},{{$invoiceData->user->country}}</span>
-                        <span style="display: block; font-weight: 500; margin-top: 4px; font-size: 15.2px;">{{$invoiceData->user->country}}</span>
-                        <span style="display: block; font-weight: 500; margin-top: 4px; font-size: 15.2px;">{{__('Company Number:')}} {{$invoiceData->user->company_number}}</span>
-                        <span style="display: block; font-weight: 500; margin-top: 4px; font-size: 15.2px;">{{__('VAT Number:')}} {{$invoiceData->user->vat_number}}</span>
+                        <span style="display: block; font-weight: 500; font-size: 15.2px;">{{$invoiceData['user']['company']}}</span>
+                        <span style="display: block; font-weight: 500; margin-top: 4px; font-size: 15.2px;">{{$invoiceData['user']['address']}}</span>
+                        <span style="display: block; font-weight: 500; margin-top: 4px; font-size: 15.2px;">{{$invoiceData['user']['city']}},{{$invoiceData['user']['country']}}</span>
+                        <span style="display: block; font-weight: 500; margin-top: 4px; font-size: 15.2px;">{{$invoiceData['user']['country']}}</span>
+                        <span style="display: block; font-weight: 500; margin-top: 4px; font-size: 15.2px;">{{__('Company Number:')}} {{$invoiceData['user']['company_number']}}</span>
+                        <span style="display: block; font-weight: 500; margin-top: 4px; font-size: 15.2px;">{{__('VAT Number:')}} {{$invoiceData['user']['vat_number']}}</span>
                     </div>
                 </div>
                 <div style="margin-top:48px;">
                     <span style="display: block;color: rgb(185 198 219 / 1);font-weight: 500;margin-top:4px;font-size:15.2px;">Bill To:</span>
 
                     <div style="width: 100%;border:1px dashed #a4a8b7;border-radius:8px;min-height:52.48px;dispaly:flex;align-items: center;">
-                        
+                        <div style="width: 100%;display: block;margin-inline-start:32px;font-weight: 500;margin-top: 16px; margin-bottom: 16px; font-size: 15.2px;">
+                            <span style="display: block;font-weight: 500;font-size:15.2px;">{{$invoiceData['client']['company']}}</span>
+                            <span style="display: block;font-weight: 500;font-size:15.2px;">{{$invoiceData['client']['city']}}, {{$invoiceData['client']['country']}}</span>
+                            <span style="display: block;font-weight: 500;font-size:15.2px;">{{$invoiceData['client']['country']}}</span>
+                            <span style="display: block;font-weight: 500;font-size:15.2px;">{{__('Company Number: ')}} {{$invoiceData['client']['company_registration_number']}}</span>
+                            <span style="display: block;font-weight: 500;font-size:15.2px;">{{__('VAT Number: ')}} {{$invoiceData['client']['vat_number']}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {{--  --}}
-            <div style="width: 50%;"></div>
+            {{-- Invoice image --}}
+            <div style="width: 50%;display: inline-block;">
+                <div style="width:200px;height:200px;">
+                    <img style="width:100%;height:100%;" alt='invoice image' src="{{ 'data:image/png;base64,' . base64_encode(Storage::read($invoiceLogoPath)) }}" />
+                </div>
+            </div>
         </div>
     </div>
 

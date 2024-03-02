@@ -19,13 +19,6 @@
     <h1 class="text-3xl font-bold underline text-clifford text-red-900 mt-20">
         Hello world!
     </h1>
-    <img class="ml-8 image rounded-circle"
-        src="{{ 'data:image/png;base64,' . base64_encode(Storage::read('uploaded-files/MD4hlPZ3gYQke5y8HplE053sHQ4K4IUj8BsqB4Qu.jpg')) }}"
-        alt="User Company Logo v2" style="
-      object-fit: cover;
-      width: 200px;
-      height: 200px;
-    " />
     <form action="{{ route('download-invoice') }}" method="post">
         @csrf
         @method('POST')
