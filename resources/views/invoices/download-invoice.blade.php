@@ -10,6 +10,27 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <style>
+        .w-full {
+            width: 100%;
+        }
+        .w-50per{
+            width: 50%;
+        }
+        .flex {
+            display: flex;
+        }
+        .items-start {
+            align-items: flex-start;
+        }
+        .justify-between {
+            justify-content: space-between;
+        }
+        .container{
+            padding-left: 1.25rem/* 20px */;
+            padding-right: 1.25rem/* 20px */;
+            padding-bottom: 1rem/* 16px */;
+            background-color: rgb(255 255 255 / 1);
+        }
         .row {
             width: 100%;
             padding: 0 -15px;
@@ -37,6 +58,20 @@
 </head>
 
 <body class="font-sans">
+    <div class="w-full container">
+        <div class="w-full flex">
+            {{-- Info and bill to --}}
+            <div class="w-50per">
+                <div class="flex justify-between items-start"></div>
+            </div>
+
+            {{--  --}}
+            <div class="w-50per"></div>
+        </div>
+    </div>
+
+
+    {{--  --}}
     <div class="demo">lsdfjklsdf</div>
     <h1 class="text-3xl font-bold underline text-clifford text-red-900 mt-20">
         Hello world!
