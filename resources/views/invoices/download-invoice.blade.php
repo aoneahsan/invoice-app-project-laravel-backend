@@ -58,15 +58,24 @@
 </head>
 
 <body class="font-sans">
-    <div class="w-full container">
-        <div class="w-full flex">
+    <div style="width:100%;padding-left:20px;padding-right:20px;padding-bottom:16px;background-color: rgb(255 255 255 / 1);">
+        <div class="w-full flex" style="width: 100%;display: flex;">
             {{-- Info and bill to --}}
-            <div class="w-50per">
-                <div class="flex justify-between items-start"></div>
+            <div style="width: 50%;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; width:100%;">
+                <div style="width:100%;">
+                    <span style="display: block; font-weight: 500; font-size: 15.2px;">{{$invoiceData->user->company}}</span>
+                    <span style="display: block; font-weight: 500; margin-top: 4px; font-size: 15.2px;">{{$invoiceData->user->address}}</span>
+                    <span style="display: block; font-weight: 500; margin-top: 4px; font-size: 15.2px;">{{$invoiceData->user->city}},{{$invoiceData->user->country}}</span>
+                    <span style="display: block; font-weight: 500; margin-top: 4px; font-size: 15.2px;">{{$invoiceData->user->country}}</span>
+                    <span style="display: block; font-weight: 500; margin-top: 4px; font-size: 15.2px;">{{__('Company Number:')}} {{$invoiceData->user->company_number}}</span>
+                    <span style="display: block; font-weight: 500; margin-top: 4px; font-size: 15.2px;">{{__('VAT Number:')}} {{$invoiceData->user->vat_number}}</span>
+                </div>
+            </div>
             </div>
 
             {{--  --}}
-            <div class="w-50per"></div>
+            <div style="width: 50%;"></div>
         </div>
     </div>
 
