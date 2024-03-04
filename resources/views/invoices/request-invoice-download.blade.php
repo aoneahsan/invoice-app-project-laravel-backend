@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -16,14 +16,35 @@
 
 <body>
 
-    <h1 class="text-3xl font-bold underline text-clifford text-red-900 mt-20">
+    <h1 class="mt-20 text-3xl font-bold text-red-900 underline text-clifford">
         Hello world!
     </h1>
     <form action="{{ route('download-invoice') }}" method="post">
         @csrf
         @method('POST')
-        <button type="submit" class="bg-red-900 p-20">Download Invoice</button>
+        <button type="submit" class="p-20 bg-red-900">Download Invoice</button>
     </form>
 </body>
 
-</html>
+</html> --}}
+
+@section('scripts')
+    <script>
+        // When the page is fully loaded
+        window.addEventListener('load', function () {
+            // Create a hidden link element
+            var link = document.createElement('a');
+            link.href = "{{ route('download-invoice') }}"; // Set the download route
+
+            // This attribute makes the link trigger the download instead of navigating
+            link.setAttribute('download', '');
+
+            // Append the link to the body and trigger the click event
+            document.body.appendChild(link);
+            link.click();
+
+            // Remove the link from the DOM after triggering the download
+            document.body.removeChild(link);
+        });
+    </script>
+@endsection

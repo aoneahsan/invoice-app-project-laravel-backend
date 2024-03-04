@@ -29,7 +29,7 @@ class TestingController extends Controller
         $pdf = Pdf::loadView('invoices.download-invoice', [
             'invoiceData' => $invoiceData,
             'invoiceLogoPath' => $invoiceLogoPath
-        ]);
+        ])->setOption(['defaultFont' => public_path('fonts/roboto/roboto-regular.ttf')]);
         return $pdf->download('invoice.pdf');
     }
 }
