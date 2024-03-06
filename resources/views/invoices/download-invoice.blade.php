@@ -10,6 +10,74 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <style>
+        /* @font-face {
+            font-family: 'robotoRegular';
+            src: url({{ public_path('fonts/roboto/roboto-regular.ttf') }});
+        }
+        .font-roboto-regular {
+            font-family: 'robotoRegular', sans-serif;
+        } */
+        .z-w-full {
+            width: 100%;
+        }
+
+        .z-w-50per {
+            width: 50%;
+        }
+
+        .z-flex {
+            display: flex;
+        }
+
+        .z-margin-left-auto {
+            margin-left: auto;
+        }
+
+        .z-items-start {
+            align-items: flex-start;
+        }
+
+        .z-items-center {
+            align-items: center;
+        }
+
+        .z-justify-between {
+            justify-content: space-between;
+        }
+
+        .z-justify-end {
+            justify-content: flex-end;
+        }
+
+        .mt-4px {
+            margin-top: 4px;
+        }
+
+        .z-container {
+            padding-left: 1.25rem
+                /* 20px */
+            ;
+            padding-right: 1.25rem
+                /* 20px */
+            ;
+            padding-bottom: 1rem
+                /* 16px */
+            ;
+            background-color: rgb(255 255 255 / 1);
+        }
+
+        .z-user-text {
+            display: block;
+            font-weight: 500;
+            font-size: 15.2px;
+        }
+
+        .z-title {
+            font-size: 48px;
+            font-weight: 400;
+            color: rgb(60 68 95 / 1);
+        }
+
         .row {
             width: 100%;
             padding: 0 -15px;
@@ -24,225 +92,286 @@
             width: 50%;
             padding: 0 15px;
         }
+
+        .page-break {
+            page-break-after: always;
+        }
+
+        .demo {
+            font-size: 90px;
+            background-color: green;
+        }
+
+        .d-flex {
+            display: -webkit-box;
+            /* wkhtmltopdf uses this one */
+            display: flex;
+            -webkit-box-pack: center;
+            /* wkhtmltopdf uses this one */
+            justify-content: center;
+        }
+
+        .d-flex>div {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+        }
+
+        .d-flex>div:last-child {
+            margin-right: 0;
+        }
+
+        .div-parent {
+            display: table;
+            width: 100%;
+        }
+
+        .div-child {
+            display: table-cell;
+        }
+
+        th {
+            padding: 16px;
+            background: transparent;
+            font-size: 10px;
+            color: #3c445f;
+            letter-spacing: -.02em;
+            font-weight: 400;
+            text-align: left;
+        }
     </style>
 </head>
 
-<body class="font-sans">
-    <div class="p-5 card card-body">
-        <div class="row">
-            <div class="col-12 col-md-6">
-                <div class="mt-2 mb-4 overlay profile-pic" style="line-height: 25px; max-width: 500px">
-                    @isset($data['itemResource']['user']['company'])
-                        {{ $data['itemResource']['user']['company'] }}
-                        <br />
-                    @endisset
-                    @isset($data['itemResource']['user']['address'])
-                        {{ $data['itemResource']['user']['address'] }}
-                        <br />
-                    @endisset
-                    @isset($data['itemResource']['user']['zipcode'])
-                        {{ $data['itemResource']['user']['zipcode'] }},
-                    @endisset
-                    @isset($data['itemResource']['user']['address'])
-                        {{ $data['itemResource']['user']['city'] }}<br />
-                    @endisset
-                    @isset($data['itemResource']['user']['country'])
-                        {{ $data['itemResource']['user']['country'] }}
-                        <br />
-                    @endisset
-                    @isset($data['itemResource']['user']['company_registration_number'])
-                        Company Number:
-                        {{ $data['itemResource']['user']['company_registration_number'] }}<br />
-                    @endisset
-                    @isset($data['itemResource']['user']['vat_number'])
-                        VAT Number:
-                        {{ $data['itemResource']['user']['vat_number'] }}<br />
-                    @endisset
+<body class="font-roboto-regular">
+    <div class="z-w-full z-container">
+        <div class="div-parent">
+            {{-- Info and bill to --}}
+            <div class="div-child div-child1">
+                <div class="z-w-full z-flex z-items-start z-justify-center">
+                    <div class="z-w-full" style="width:100%;">
+                        <span class="z-user-text">{{ $invoiceData['user']['company'] }}</span>
+                        <span class="z-user-text mt-4px">{{ $invoiceData['user']['address'] }}</span>
+                        <span
+                            class="z-user-text mt-4px">{{ $invoiceData['user']['city'] }},{{ $invoiceData['user']['country'] }}</span>
+                        <span class="z-user-text mt-4px">{{ $invoiceData['user']['country'] }}</span>
+                        <span class="z-user-text mt-4px">{{ __('Company Number:') }}
+                            {{ $invoiceData['user']['company_number'] }}</span>
+                        <span class="z-user-text mt-4px">{{ __('VAT Number:') }}
+                            {{ $invoiceData['user']['vat_number'] }}</span>
+                    </div>
                 </div>
-                <p class="mt-5 text-muted">Bill To:</p>
-                <div class="clickable" style="border: 1px dashed #000">
-                    <div class="my-2 ml-3" data-toggle="modal" data-target="#exampleModal">
-                        @isset($data['itemResource']['client']['id'])
-                            <a class="nav-link active">
-                                @isset($data['itemResource']['client']['company'])
-                                    {{ $data['itemResource']['client']['company'] }}<br />
-                                @endisset
-                                @isset($data['itemResource']['client']['address'])
-                                    {{ $data['itemResource']['client']['address'] }}
-                                    <br />
-                                @endisset
-                                @isset($data['itemResource']['client']['zipcode'])
-                                    {{ $data['itemResource']['client']['zipcode'] }},
-                                @endisset
-                                @isset($data['itemResource']['client']['city'])
-                                    {{ $data['itemResource']['client']['city'] }}<br />
-                                @endisset
-                                @isset($data['itemResource']['client']['country'])
-                                    {{ $data['itemResource']['client']['country'] }}
-                                    <br />
-                                @endisset
-                                @isset($data['itemResource']['client']['company_registration_number'])
-                                    Company Number:{{ $data['itemResource']['client']['company_registration_number'] }}<br />
-                                @endisset
-                                @isset($data['itemResource']['client']['vat_number'])
-                                    VAT Number:{{ $data['itemResource']['client']['vat_number'] }}
-                                @endisset
-                            </a>
-                        @endisset
-                        @empty($data['itemResource']['client']['id'])
-                            <a class="nav-link active">
-                                <i class="ml-2 fe fe-user"> </i>
-                                Client Details Will Show Here
-                            </a>
-                        @endempty
+                <div style="margin-top:48px;">
+                    <span class="z-user-text mt-4px" style="color: rgb(185 198 219 / 1);">Bill To:</span>
+
+                    <div class="z-w-full"
+                        style="border:1px dashed #a4a8b7;border-radius:8px;min-height:52.48px;align-items: center;">
+                        <div class="z-w-full"
+                            style="display: block;padding-left:32px;font-weight: 500;margin-top: 16px; margin-bottom: 16px; font-size: 15.2px;">
+                            <span class="z-user-text">{{ $invoiceData['client']['company'] }}</span>
+                            <span class="z-user-text">{{ $invoiceData['client']['city'] }},
+                                {{ $invoiceData['client']['country'] }}</span>
+                            <span class="z-user-text">{{ $invoiceData['client']['country'] }}</span>
+                            <span class="z-user-text">{{ __('Company Number: ') }}
+                                {{ $invoiceData['client']['company_registration_number'] }}</span>
+                            <span class="z-user-text">{{ __('VAT Number: ') }}
+                                {{ $invoiceData['client']['vat_number'] }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- above this -->
-            <div class="col-12 col-md-6 text-md-right">
-                <div style="min-width: 200px; min-height: 200px">
-                    <label for="upload-photo">
-                        <img class="ml-8 image rounded-circle" src="{{ $data['itemResource']['invoice_logo_url'] }}"
-                            alt="User Company Logo"
-                            style="
-                                  object-fit: cover;
-                                  width: 200px;
-                                  height: 200px;
-                                " />
-                    </label>
+
+            {{-- Invoice image, invoice number, date, & due date --}}
+            <div class="div-child div-child2">
+                <div class="z-margin-left-auto" style="width:200px;height:200px;">
+                    @if (!empty($invoiceLogoPath))
+                        <img style="width:100%;height:100%;" alt='invoice image'
+                            src="{{ 'data:image/png;base64,' . base64_encode(Storage::read($invoiceLogoPath)) }}" />
+                    @else
+                        <div style="width:100%;height:100%;background: rgb(244, 244, 244);"></div>
+                    @endif
                 </div>
 
-                <div class="mr-4">
-                    <h3 class="mb-3 invoice"
-                        style="font-style: normal;
-                    font-weight: normal;
-                    font-size: 48px;
-                    line-height: 56px;
-                    align-items: center;
-                    text-align: right;
-                    color: #3c445f;">
-                        Invoice</h3>
-                    <div class="mb-3 d-flex justify-content-end" v-if="$itemResource.invoice_no">
-                        <span class="mr-2 text-muted">Invoice no:</span>
-                        <span>invoice_no</span>
-                    </div>
-                    <div class="mb-3 d-flex justify-content-end">
-                        <span class="mr-2 text-muted">Date:</span>
-                        <input type="date" class="w-auto form-control form-control-sm" readonly
-                            v-model="$itemResource.date" />
-                    </div>
-                    <div class="mb-3 d-flex justify-content-end">
-                        <span class="mr-2 text-muted">Due Date:</span>
-                        <input type="date" class="w-auto form-control form-control-sm" readonly
-                            v-model="$itemResource.due_date" />
-                    </div>
-                    <br />
+                <div class="z-margin-left-auto z-flex z-w-full z-items-center z-justify-end div-parent"
+                    style="width:146px;">
+                    <span class="z-title div-child">
+                        @if ($invoiceData->invoice_type ===  App\Zaions\Enums\InvoiceType::inv->value)
+                            {{__('Invoice')}}
+                        @elseif ($invoiceData->invoice_type ===  App\Zaions\Enums\InvoiceType::exp->value)
+                           {{ __('Expense')}}
+                        @endif 
+                    </span>
+                </div>
+                <div class="z-margin-left-auto z-flex z-w-full z-items-center z-justify-end div-parent"
+                    style="width:188px;">
+                    <span class="div-child"
+                        style="margin-inline-end: 8px;color: rgb(185 198 219 / 1);font-weight: 500;margin-top: 4px;">
+                        {{ __('Invoice no:')}}
+                    </span>
+                    <span class="div-child"
+                        style="width:max-content;height:32px;padding-left:7px;padding-right: 4px; border: 1px soild rgb(244 245 248 / 1);color: rgb(34 36 40 / 1);font-size: 14px;line-height:20px;border-radius:6px;display: block;">{{ $invoiceData->invoice_no }}</span>
+                </div>
+
+                <div class="z-margin-left-auto div-parent z-w-full z-items-center z-justify-end"
+                    style="width:188px;margin-bottom: 9px;">
+                    <span class="div-child"
+                        style="margin-inline-end: 8px;color:#b9c6db;font-weight: 500;padding-top: 8px;padding-right:7px;">{{__('Date:')}}</span>
+                    <span class="div-child"
+                        style="border:1px dashed #d2ddec;max-width: 384px;font-weight: 400;margin-top: 8px;border-radius: 4px;padding: 2px 8px; font-size: 13px; width: 131.2px;line-height:21px;">
+                        @if (!empty($invoiceData->date))
+                            {{ $invoiceData->date }}
+                        @else
+                            {{__('DD/MM/YYYY')}}
+                        @endif
+                    </span>
+                </div>
+
+                <div class="z-margin-left-auto div-parent z-flex z-w-full z-items-center z-justify-end"
+                    style="width:230px;">
+                    <span class="div-child"
+                        style="margin-inline-end: 8px;color:#b9c6db;font-weight: 500;padding-top: 8px;padding-right:7px;line-height:21px;">
+                        {{__('Due Date:')}}</span>
+                    <span class="div-child"
+                        style="border:1px dashed #d2ddec;max-width: 384px;font-weight: 400;margin-top: 8px;border-radius: 4px;padding: 2px 8px; font-size: 13px; width: 131.2px;line-height:21px;">
+                        @if (!empty($invoiceData->due_date))
+                            {{ $invoiceData->due_date }}
+                        @else
+                            {{__('DD/MM/YYYY')}}
+                        @endif
+                    </span>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <!-- Table -->
-                <div class="table-responsive">
-                    <table class="table my-4">
-                        <thead class="tablehead">
-                            <tr>
-                                <th class="bg-transparent border-top-0">
-                                    <span class="h6">Item & Description</span>
-                                </th>
-                                <th class="bg-transparent border-top-0">
-                                    <span class="h6">Quantity</span>
-                                </th>
-                                <th class="bg-transparent border-top-0">
-                                    <span class="h6">Rate</span>
-                                </th>
-                                <th class="bg-transparent border-top-0">
-                                    <span class="h6">Amount</span>
-                                </th>
-                                <th class="text-right bg-transparent border-top-0">
-                                    <span class="h6"></span>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(item, index) in $itemResource.items" :key="index">
-                                <td class="td w-50">
-                                    <input readonly class="form-control form-control-sm" type="text"
-                                        v-model="item.item_detail" />
-                                </td>
-                                <td class="td">
-                                    <input type="number" readonly class="form-control form-control-sm"
-                                        v-model.number="item.qty" />
-                                </td>
-                                <td class="td">
-                                    <currency-input :currency="$itemResource.selected_currency" :locale="userLocale"
-                                        :allow-negative="false" readonly class="form-control form-control-sm"
-                                        v-model.number="item.rate" />
-                                </td>
-                                <td class="text-right td">
-                                    12
-                                </td>
-                                <td class="td">
-                                    <!-- <button class="btn-rounded-circle badge-danger">
-                                      <v-icon name="times"></v-icon>
-                                    </button> -->
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="text-right">
-                                    <strong>Subtotal</strong>
-                                </td>
-                                <td colspan="3" class="text-right">
-                                    <span class="">
-                                        123
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr v-if="$itemResource.is_invoice_vat_applied">
-                                <td colspan="2" class="text-right">
-                                    <span></span>
-                                    <label for="is_vat_applied"><strong>VAT (%)</strong></label>
-                                </td>
-                                <td colspan="3" class="text-right border-bottom">
-                                    <span class="">
-                                        <input type="number" readonly class="form-control form-control-sm"
-                                            v-model.number="$itemResource.vat_value" />
-                                    </span>
-                                </td>
-                            </tr>
 
-                            <tr>
-                                <td colspan="2" class="text-right">
-                                    <strong data-toggle="modal" data-target="#exampleModalCurrency"
-                                        style="cursor: pointer">TOTAL
-                                        (123)</strong>
+        {{--  --}}
+        <div>
+            <table class="div-parent"
+                style="margin: 16px 0;border-spacing:0;border-bottom:1px solid #edf2f9;padding-bottom:20px;">
+                <thead class="z-w-full" style="background: rgb(244, 244, 244);">
+                    <tr class="z-w-full">
+                        <th>{{__('ITEM &amp; DESCRIPTION')}}</th>
+
+                        <th>{{__('QUANTITY')}}</th>
+
+                        <th>{{__('RATE')}}</th>
+
+                        <th>{{__('AMOUNT')}}</th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (!empty($invoiceData->items))
+                        @foreach ($invoiceData->items as $item)
+                            <tr class="z-w-full">
+                                <td style="padding: 16px 16px 16px 0px;width: 50%;border-top:1px solid #edf2f9;">
+                                    <div class="z-w-full"
+                                        style="border:1px dashed #d2ddec;border-radius: 4px;padding:2px 8px;font-size: 13px;">
+                                        {{ $item['description'] }}</div>
                                 </td>
-                                <td colspan="3" class="text-right border-bottom">
-                                    <span class="">
-                                        132
-                                    </span>
+                                <td style="padding: 16px;border-top:1px solid #edf2f9;">
+                                    <div class="z-w-full"
+                                        style="border:1px dashed #d2ddec;border-radius: 4px;padding:2px 8px;font-size: 13px;">
+                                        {{ $item['quantity'] }}</div>
+                                </td>
+
+                                <td style="padding: 16px;border-top:1px solid #edf2f9;">
+                                    <div class="z-w-full"
+                                        style="border:1px dashed #d2ddec;border-radius: 4px;padding:2px 8px;font-size: 13px;">
+                                        {{ $item['rate'] }}</div>
+                                </td>
+
+                                <td style="padding: 16px;border-top:1px solid #edf2f9;">
+                                    <div style="font-size: .825rem;">{{ $invoiceData['selected_currency']['symbol'] }}
+                                        {{ $item['rate'] }}</div>
+                                </td>
+
+                                <td style="padding: 16px;border-top:1px solid #edf2f9;">
                                 </td>
                             </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <template v-if="$itemResource.invoice_notes">
-                    <hr class="my-5" />
-                    <h6 class="text-uppercase">Notes</h6>
-                    <p class="mb-0 text-muted">
-                        invoice_notes
-                    </p>
-                </template>
-                <template v-if="$itemResource.client.bank_details">
-                    <!-- <hr class="my-5" /> -->
-                    <h6 class="mt-4 text-uppercase">Bank Details</h6>
-                    <p class="mb-0 text-muted">
-                        bank_details
-                    </p>
-                </template>
+                        @endforeach
+                    @endif
+
+
+                    {{-- Subtotal --}}
+                    <tr class="z-w-full">
+                        <td style="padding:16px;background-color: transparent;border-top:1px solid #edf2f9;"
+                            colspan="2">
+                            <div style="font-size:16.16px;color:rgb(17 24 39 / 1);margin-left:auto;width:50px;">Subtotal
+                            </div>
+                        </td>
+
+                        <td colspan="3"
+                            style="padding:16px;background-color: transparent;margin-left:auto;border-top:1px solid #edf2f9;">
+                            <div style='margin-right:4px;margin-left:auto;width:50px;'>
+                                {{ $invoiceData['selected_currency']['symbol'] }} {{ $invoiceData->sub_total }}
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="z-w-full">
+                        <td style="padding:16px;background-color: transparent;border-top:1px solid #edf2f9;"
+                            colspan="2">
+                            <div style="width:84px;margin-left:auto;">
+                                <input type='checkbox'
+                                    style="width:16px;height:16px;color: rgb(37 99 235 / 1);border-color: rgb(209 213 219 / 1);"
+                                    checked=" {{ $invoiceData->is_invoice_vat_applied }}" />
+                                <label>{{__('VAT (%)')}}</label>
+                            </div>
+                        </td>
+
+                        <td colspan="3"
+                            style="padding:16px;background-color: transparent;margin-left:auto;border-top:1px solid #edf2f9;">
+                            <div
+                                style='margin-right:4px;margin-left:auto;border:1px dashed #d2ddec;border-radius: 4px;padding:2px 8px;@if (!$invoiceData->is_invoice_vat_applied) background: #d3d3d3; @endif'>
+                                {{ $invoiceData['selected_currency']['symbol'] }} {{ $invoiceData->vat_value }}
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="z-w-full">
+                        <td style="padding:16px;background-color: transparent;border-top:1px solid #edf2f9;"
+                            colspan="2">
+                            <div
+                                style="width:90px;margin-left:auto;font-weight: 700;font-size:16.16px;color: rgb(17 24 39 / 1);">
+                                TOTAL ({{ $invoiceData['selected_currency']['symbol'] }})
+                            </div>
+                        </td>
+
+                        <td colspan="3"
+                            style="padding:16px;background-color: transparent;margin-left:auto;border-bottom:1px solid #edf2f9;border-top:1px solid #edf2f9;">
+                            <div style='margin-right:4px;margin-left:auto;width:50px;'>
+                                {{ $invoiceData['selected_currency']['symbol'] }} {{ $invoiceData->total }}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            {{-- Notes --}}
+            <div class="z-w-full" style="margin-top: 20px;">
+                <div
+                    style="font-size: 14px;line-height: 20px;font-weight: 500;text-transform: uppercase;margin-top: 4px;font-size:16.32px;">
+                    {{__('Notes')}}</div>
+
+                <div class="z-w-full"
+                    style="border: 1px dashed #d2ddec;border-radius:4px;padding:10px;font-size: 14px;line-height: 20px;color: rgb(17 24 39 / 1);font-weight: 400;white-space: pre-line;">
+                    {{ $invoiceData->invoice_notes }}</div>
+            </div>
+
+            {{-- Bank Details --}}
+            <div class="z-w-full" style="margin-top: 20px;">
+                <div
+                    style="font-size: 14px;line-height: 20px;font-weight: 500;text-transform: uppercase;margin-top: 4px;font-size:16.32px;">
+                    {{__('Bank Details')}}</div>
+
+                <div class="z-w-full"
+                    style="border: 1px dashed #d2ddec;border-radius:4px;padding:10px;font-size: 14px;line-height: 20px;color: rgb(17 24 39 / 1);font-weight: 400;white-space: pre-line;">
+                    {{ $invoiceData->invoice_bank_details }}</div>
             </div>
         </div>
     </div>
+
 </body>
 
 </html>
