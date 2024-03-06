@@ -17,6 +17,10 @@
         .font-roboto-regular {
             font-family: 'robotoRegular', sans-serif;
         } */
+        body {
+            font-family: sans-serif;
+        }
+
         .z-w-full {
             width: 100%;
         }
@@ -194,18 +198,18 @@
                 <div class="z-margin-left-auto z-flex z-w-full z-items-center z-justify-end div-parent"
                     style="width:146px;">
                     <span class="z-title div-child">
-                        @if ($invoiceData->invoice_type ===  App\Zaions\Enums\InvoiceType::inv->value)
-                            {{__('Invoice')}}
-                        @elseif ($invoiceData->invoice_type ===  App\Zaions\Enums\InvoiceType::exp->value)
-                           {{ __('Expense')}}
-                        @endif 
+                        @if ($invoiceData->invoice_type === App\Zaions\Enums\InvoiceType::inv->value)
+                            {{ __('Invoice') }}
+                        @elseif ($invoiceData->invoice_type === App\Zaions\Enums\InvoiceType::exp->value)
+                            {{ __('Expense') }}
+                        @endif
                     </span>
                 </div>
                 <div class="z-margin-left-auto z-flex z-w-full z-items-center z-justify-end div-parent"
                     style="width:188px;">
                     <span class="div-child"
                         style="margin-inline-end: 8px;color: rgb(185 198 219 / 1);font-weight: 500;margin-top: 4px;">
-                        {{ __('Invoice no:')}}
+                        {{ __('Invoice no:') }}
                     </span>
                     <span class="div-child"
                         style="width:max-content;height:32px;padding-left:7px;padding-right: 4px; border: 1px soild rgb(244 245 248 / 1);color: rgb(34 36 40 / 1);font-size: 14px;line-height:20px;border-radius:6px;display: block;">{{ $invoiceData->invoice_no }}</span>
@@ -214,13 +218,13 @@
                 <div class="z-margin-left-auto div-parent z-w-full z-items-center z-justify-end"
                     style="width:188px;margin-bottom: 9px;">
                     <span class="div-child"
-                        style="margin-inline-end: 8px;color:#b9c6db;font-weight: 500;padding-top: 8px;padding-right:7px;">{{__('Date:')}}</span>
+                        style="margin-inline-end: 8px;color:#b9c6db;font-weight: 500;padding-top: 8px;padding-right:7px;">{{ __('Date:') }}</span>
                     <span class="div-child"
                         style="border:1px dashed #d2ddec;max-width: 384px;font-weight: 400;margin-top: 8px;border-radius: 4px;padding: 2px 8px; font-size: 13px; width: 131.2px;line-height:21px;">
                         @if (!empty($invoiceData->date))
                             {{ $invoiceData->date }}
                         @else
-                            {{__('DD/MM/YYYY')}}
+                            {{ __('DD/MM/YYYY') }}
                         @endif
                     </span>
                 </div>
@@ -229,13 +233,13 @@
                     style="width:230px;">
                     <span class="div-child"
                         style="margin-inline-end: 8px;color:#b9c6db;font-weight: 500;padding-top: 8px;padding-right:7px;line-height:21px;">
-                        {{__('Due Date:')}}</span>
+                        {{ __('Due Date:') }}</span>
                     <span class="div-child"
                         style="border:1px dashed #d2ddec;max-width: 384px;font-weight: 400;margin-top: 8px;border-radius: 4px;padding: 2px 8px; font-size: 13px; width: 131.2px;line-height:21px;">
                         @if (!empty($invoiceData->due_date))
                             {{ $invoiceData->due_date }}
                         @else
-                            {{__('DD/MM/YYYY')}}
+                            {{ __('DD/MM/YYYY') }}
                         @endif
                     </span>
                 </div>
@@ -248,13 +252,13 @@
                 style="margin: 16px 0;border-spacing:0;border-bottom:1px solid #edf2f9;padding-bottom:20px;">
                 <thead class="z-w-full" style="background: rgb(244, 244, 244);">
                     <tr class="z-w-full">
-                        <th>{{__('ITEM &amp; DESCRIPTION')}}</th>
+                        <th>{{ __('ITEM &amp; DESCRIPTION') }}</th>
 
-                        <th>{{__('QUANTITY')}}</th>
+                        <th>{{ __('QUANTITY') }}</th>
 
-                        <th>{{__('RATE')}}</th>
+                        <th>{{ __('RATE') }}</th>
 
-                        <th>{{__('AMOUNT')}}</th>
+                        <th>{{ __('AMOUNT') }}</th>
 
                         <th></th>
                     </tr>
@@ -303,7 +307,7 @@
 
                         <td colspan="3"
                             style="padding:16px;background-color: transparent;margin-left:auto;border-top:1px solid #edf2f9;">
-                            <div style='margin-right:4px;margin-left:auto;width:50px;'>
+                            <div style='margin-right:4px;margin-left:auto;width:150px;text-align:right;'>
                                 {{ $invoiceData['selected_currency']['symbol'] }} {{ $invoiceData->sub_total }}
                             </div>
                         </td>
@@ -313,17 +317,17 @@
                         <td style="padding:16px;background-color: transparent;border-top:1px solid #edf2f9;"
                             colspan="2">
                             <div style="width:84px;margin-left:auto;">
-                                <input type='checkbox'
+                                {{-- <input type='checkbox'
                                     style="width:16px;height:16px;color: rgb(37 99 235 / 1);border-color: rgb(209 213 219 / 1);"
-                                    checked=" {{ $invoiceData->is_invoice_vat_applied }}" />
-                                <label>{{__('VAT (%)')}}</label>
+                                    checked=" {{ $invoiceData->is_invoice_vat_applied }}" /> --}}
+                                <label>{{ __('VAT (%)') }}</label>
                             </div>
                         </td>
 
                         <td colspan="3"
                             style="padding:16px;background-color: transparent;margin-left:auto;border-top:1px solid #edf2f9;">
                             <div
-                                style='margin-right:4px;margin-left:auto;border:1px dashed #d2ddec;border-radius: 4px;padding:2px 8px;@if (!$invoiceData->is_invoice_vat_applied) background: #d3d3d3; @endif'>
+                                style='margin-right:4px;margin-left:auto;border:1px dashed #d2ddec;border-radius: 4px;padding:2px 8px; text-align: right; @if (!$invoiceData->is_invoice_vat_applied) background: #d3d3d3; @endif'>
                                 {{ $invoiceData['selected_currency']['symbol'] }} {{ $invoiceData->vat_value }}
                             </div>
                         </td>
@@ -340,7 +344,7 @@
 
                         <td colspan="3"
                             style="padding:16px;background-color: transparent;margin-left:auto;border-bottom:1px solid #edf2f9;border-top:1px solid #edf2f9;">
-                            <div style='margin-right:4px;margin-left:auto;width:50px;'>
+                            <div style='margin-right:4px;margin-left:auto;width:150px;text-align:right;'>
                                 {{ $invoiceData['selected_currency']['symbol'] }} {{ $invoiceData->total }}
                             </div>
                         </td>
@@ -352,7 +356,7 @@
             <div class="z-w-full" style="margin-top: 20px;">
                 <div
                     style="font-size: 14px;line-height: 20px;font-weight: 500;text-transform: uppercase;margin-top: 4px;font-size:16.32px;">
-                    {{__('Notes')}}</div>
+                    {{ __('Notes') }}</div>
 
                 <div class="z-w-full"
                     style="border: 1px dashed #d2ddec;border-radius:4px;padding:10px;font-size: 14px;line-height: 20px;color: rgb(17 24 39 / 1);font-weight: 400;white-space: pre-line;">
@@ -363,7 +367,7 @@
             <div class="z-w-full" style="margin-top: 20px;">
                 <div
                     style="font-size: 14px;line-height: 20px;font-weight: 500;text-transform: uppercase;margin-top: 4px;font-size:16.32px;">
-                    {{__('Bank Details')}}</div>
+                    {{ __('Bank Details') }}</div>
 
                 <div class="z-w-full"
                     style="border: 1px dashed #d2ddec;border-radius:4px;padding:10px;font-size: 14px;line-height: 20px;color: rgb(17 24 39 / 1);font-weight: 400;white-space: pre-line;">
