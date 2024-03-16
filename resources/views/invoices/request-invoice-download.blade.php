@@ -1,4 +1,4 @@
-{{-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -26,25 +26,4 @@
     </form>
 </body>
 
-</html> --}}
-
-@section('scripts')
-    <script>
-        // When the page is fully loaded
-        window.addEventListener('load', function () {
-            // Create a hidden link element
-            var link = document.createElement('a');
-            link.href = "{{ route('download-invoice') }}"; // Set the download route
-
-            // This attribute makes the link trigger the download instead of navigating
-            link.setAttribute('download', '');
-
-            // Append the link to the body and trigger the click event
-            document.body.appendChild(link);
-            link.click();
-
-            // Remove the link from the DOM after triggering the download
-            document.body.removeChild(link);
-        });
-    </script>
-@endsection
+</html>

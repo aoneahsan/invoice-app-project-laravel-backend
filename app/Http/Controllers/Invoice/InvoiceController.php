@@ -141,7 +141,7 @@ class InvoiceController extends Controller
                 //     $fileContents = ZHelpers::getFile($invoice->invoice_logo['path']);
                 //     // Convert file contents to base64
                 //     $base64 = base64_encode($fileContents);
-                    
+
                 //     $invoice->forceFill([
                 //         'invoice_logo' => [...$invoice->invoice_logo, 'fileBase64' => $base64],
                 //     ])->save();
@@ -277,7 +277,8 @@ class InvoiceController extends Controller
         }
     }
 
-    public function loadDownloadView(Request $request, $type, $invoice_id) {
+    public function loadDownloadView(Request $request, $type, $invoice_id)
+    {
         try {
             $user = $request->user();
 
@@ -295,7 +296,6 @@ class InvoiceController extends Controller
                 'invoice_id' => $invoice_id,
                 'type' => $type,
             ]);
-
         } catch (\Throwable $th) {
             return ZHelpers::sendBackServerErrorResponse($th);
         }
@@ -344,13 +344,14 @@ class InvoiceController extends Controller
             }
 
             $invoiceLogoPath = null; // please make sure this is storage path
-            if(!empty($invoiceData->invoice_logo) && !empty($invoiceData->invoice_logo['path'])){
+            if (!empty($invoiceData->invoice_logo) && !empty($invoiceData->invoice_logo['path'])) {
                 $invoiceLogoPath = $invoiceData->invoice_logo['path'];
             }
-           return Pdf::loadView('invoices.download-invoice', [
+            return Pdf::loadView('invoices.download-invoice', [
                 'invoiceData' => $invoiceData,
                 'invoiceLogoPath' => $invoiceLogoPath
             ])->download($invoiceData->invoice_no . '.pdf');
+            // ->setOption(['defaultFont' => 'mont-regular'])
         } catch (\Throwable $th) {
             return ZHelpers::sendBackServerErrorResponse($th);
         }
