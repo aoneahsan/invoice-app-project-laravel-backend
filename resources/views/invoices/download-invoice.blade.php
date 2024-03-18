@@ -10,10 +10,10 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <style>
-        @font-face {
+        /* @font-face {
             font-family: 'mont-regular';
             src: url({{ public_path('fonts/mont/mont-regular.ttf') }});
-        }
+        } */
 
         .font-mont-regular,
         div,
