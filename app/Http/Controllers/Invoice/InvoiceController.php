@@ -141,7 +141,7 @@ class InvoiceController extends Controller
                 //     $fileContents = ZHelpers::getFile($invoice->invoice_logo['path']);
                 //     // Convert file contents to base64
                 //     $base64 = base64_encode($fileContents);
-                    
+
                 //     $invoice->forceFill([
                 //         'invoice_logo' => [...$invoice->invoice_logo, 'fileBase64' => $base64],
                 //     ])->save();
@@ -277,43 +277,81 @@ class InvoiceController extends Controller
         }
     }
 
-
-    public function downloadInvoicesPhpDownload(Request $request, $type, $invoice_id)
+    public function loadDownloadView(Request $request, $type, $invoice_id)
     {
         try {
             $user = $request->user();
 
             Gate::allowIf($user->hasPermissionTo(PermissionsEnum::download_invoice->name));
 
-            $invoice = Invoice::where("user_id", $user->id)->where("unique_id", $invoice_id)->where("invoice_type", $type)->first();
+            $invoiceData = Invoice::where("user_id", $user->id)->where("unique_id", $invoice_id)->where("invoice_type", $type)->first();
 
-            if (empty($invoice)) {
+            if (empty($invoiceData)) {
                 return ZHelpers::sendBackNotFoundResponse([
                     'item' => ['Invoice is not found.']
                 ]);
             }
-            $itemResource = new InvoiceResource($invoice);
-            $user = User::where("id", $request->user()->id)->first();
-            $pdfData = [
-                "data" => [
-                    "itemResource" => $itemResource,
-                    "user" => $user,
-                    "item" => $invoice
-                ]
-            ];
 
-            // $pdf = Pdf::loadView('invoices/download-invoice', $pdfData);
+            return view('invoices.request-invoice-download', [
+                'invoice_id' => $invoice_id,
+                'type' => $type,
+            ]);
+        } catch (\Throwable $th) {
+            return ZHelpers::sendBackServerErrorResponse($th);
+        }
+    }
 
-            // // Generate PDF content as a string
-            // $pdfContent = $pdf->output();
+    // public function downloadInvoicesPhpDownloadVV1(Request $request, $type, $invoice_id)
+    // {
+    //     try {
+    //         $user = $request->user();
 
-            // // Send PDF content for download with specified filename
-            // return response()->streamDownload(function () use ($pdfContent) {
-            //     echo $pdfContent;
-            // }, 'invoice-' . $invoice->invoice_no . '.pdf');
+    //         Gate::allowIf($user->hasPermissionTo(PermissionsEnum::download_invoice->name));
 
-            return Pdf::loadView('invoices/download-invoice', $pdfData)->download('invoice-' . $invoice->invoice_no . '.pdf');
-            // return $pdf->download('invoice-' . $invoice->invoice_no . '.pdf');
+    //         $invoiceData = Invoice::where("user_id", $user->id)->where("unique_id", $invoice_id)->where("invoice_type", $type)->first();
+    //         if (empty($invoiceData)) {
+    //             return ZHelpers::sendBackNotFoundResponse([
+    //                 'item' => ['Invoice is not found.']
+    //             ]);
+    //         }
+
+    //         $invoiceLogoPath = null; // please make sure this is storage path
+    //         if(!empty($invoiceData->invoice_logo) && !empty($invoiceData->invoice_logo['path'])){
+    //             $invoiceLogoPath = $invoiceData->invoice_logo['path'];
+    //         }
+    //        return Pdf::loadView('invoices.download-invoice', [
+    //             'invoiceData' => $invoiceData,
+    //             'invoiceLogoPath' => $invoiceLogoPath
+    //         ])->download($invoiceData->invoice_no . '.pdf');
+    //         // return ZHelpers::sendBackRequestCompletedResponse([
+    //         //     'item' => [
+    //         //         'success' => true
+    //         //     ],
+    //         // ]);
+    //     } catch (\Throwable $th) {
+    //         return ZHelpers::sendBackServerErrorResponse($th);
+    //     }
+    // }
+
+    public function downloadInvoicesPhpDownload(Request $request, $type, $invoice_id)
+    {
+        try {
+            $invoiceData = Invoice::where("unique_id", $invoice_id)->where("invoice_type", $type)->first();
+            if (empty($invoiceData)) {
+                return ZHelpers::sendBackNotFoundResponse([
+                    'item' => ['Invoice is not found.']
+                ]);
+            }
+
+            $invoiceLogoPath = null; // please make sure this is storage path
+            if (!empty($invoiceData->invoice_logo) && !empty($invoiceData->invoice_logo['path'])) {
+                $invoiceLogoPath = $invoiceData->invoice_logo['path'];
+            }
+            return Pdf::loadView('invoices.download-invoice', [
+                'invoiceData' => $invoiceData,
+                'invoiceLogoPath' => $invoiceLogoPath
+            ])->download($invoiceData->invoice_no . '.pdf');
+            // ->setOption(['defaultFont' => 'mont-regular'])
         } catch (\Throwable $th) {
             return ZHelpers::sendBackServerErrorResponse($th);
         }
