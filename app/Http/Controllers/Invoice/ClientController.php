@@ -59,7 +59,7 @@ class ClientController extends Controller
                 "name" => ['nullable', 'string'],
                 "email" => ['nullable', 'string'],
                 "phone_number" => ['nullable', 'string'],
-                "company_registration_number" => ['nullable', 'string'],
+                "registration_number" => ['nullable', 'string'],
                 "vat_number" => ['nullable', 'string'],
                 "default_currency" => ['nullable', 'json'],
                 "bank_details" => ['nullable', 'string'],
@@ -76,7 +76,7 @@ class ClientController extends Controller
                 'phone_number' => $request->has('phone_number') ? $request->phone_number : null,
                 'address' => $request->has('address') ?  $request->address : null,
                 'company' => $request->has('company') ?  $request->company : null,
-                'company_registration_number' => $request->has('company_registration_number') ?  $request->company_registration_number : null,
+                'company_registration_number' => $request->has('registration_number') ?  $request->registration_number : null,
                 'city' => $request->has('city') ?  $request->city : null,
                 'zipcode' => $request->has('zipcode') ?  $request->zipcode : null,
                 'vat_number' => $request->has('vat_number') ?  $request->vat_number : null,
@@ -157,7 +157,7 @@ class ClientController extends Controller
                     "name" => ['nullable', 'string'],
                     "email" => ['nullable', 'string'],
                     "phone_number" => ['nullable', 'string'],
-                    "company_registration_number" => ['nullable', 'string'],
+                    "registration_number" => ['nullable', 'string'],
                     "vat_number" => ['nullable', 'string'],
                     "default_currency" => ['nullable', 'json'],
                     "bank_details" => ['nullable', 'string'],
@@ -172,7 +172,7 @@ class ClientController extends Controller
                     'phone_number' => $request->has('phone_number') ? $request->phone_number : $client->phone_number,
                     'address' => $request->has('address') ?  $request->address : $client->address,
                     'company' => $request->has('company') ?  $request->company : $client->company,
-                    'company_registration_number' => $request->has('company_registration_number') ?  $request->company_registration_number : $client->company_registration_number,
+                    'company_registration_number' => $request->has('registration_number') ?  $request->registration_number : $client->company_registration_number,
                     'city' => $request->has('city') ?  $request->city : $client->city,
                     'zipcode' => $request->has('zipcode') ?  $request->zipcode : $client->zipcode,
                     'vat_number' => $request->has('vat_number') ?  $request->vat_number : $client->vat_number,
@@ -214,12 +214,12 @@ class ClientController extends Controller
 
             $client = Client::where('user_id', $user->id)->where('unique_id', $client_id)->first();
             if ($client) {
-                if($client->invoicesAndExpenses->isNotEmpty()){
+                if ($client->invoicesAndExpenses->isNotEmpty()) {
                     foreach ($client->invoicesAndExpenses as $item) {
-                        if($item->id){
+                        if ($item->id) {
                             $invoice = Invoice::where('id', $item->id)->first();
 
-                            if($invoice->id){
+                            if ($invoice->id) {
                                 $invoice->delete();
                             }
                         }

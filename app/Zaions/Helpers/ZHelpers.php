@@ -2,6 +2,7 @@
 
 namespace App\Zaions\Helpers;
 
+use App\Zaions\Enums\DisksEnum;
 use \Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -173,19 +174,43 @@ class ZHelpers
    * @param  string  $fileStorePath Path where the file should be stored.
    * @return array|null Array containing the file URL and file path, or null if file not found.
    */
-  public static function storeFile(Request $request, $fileKey, $fileStorePath = 'public/uploaded-files')
+  // public static function storeFile(Request $request, $fileKey, $fileStorePath = 'public/uploaded-files')
+  // {
+  //   if ($request->file($fileKey)) {
+  //     $filePath = Storage::putFile($fileStorePath, $request->file($fileKey), ['public']);
+
+  //     $appUrl = env('FILESYSTEM_ROOT_URL', 'http://localhost:8000/storage');
+
+  //     return [
+  //       'fileUrl' => $appUrl . '/' . $filePath,
+  //       'filePath' => $filePath,
+  //     ];
+  //   } else {
+  //     return null;
+  //   }
+  // }
+
+  public static function storeFile(Request $request, $fileKey = 'file', $disk = DisksEnum::s3, $fileStorePath = '/uploaded-files',)
   {
     if ($request->file($fileKey)) {
-      $filePath = Storage::putFile($fileStorePath, $request->file($fileKey), ['public']);
-
-      $appUrl = env('FILESYSTEM_ROOT_URL', 'http://localhost:8000/storage');
+      $file = $request->file($fileKey);
+      $fileName = $file->getClientOriginalName();
+      $filePath =  $file->storeAs($fileStorePath, $fileName, $disk->value);
+      // $filePath = Storage::putFileAs(
+      //   $fileStorePath,
+      //   $file,
+      //   $fileName,
+      //   $disk->value
+      // );
+      // $filePath = Storage::disk($disk->value)->put($fileName, $file);
 
       return [
-        'fileUrl' => $appUrl . '/' . $filePath,
+        'fileUrl' =>  $filePath,
         'filePath' => $filePath,
       ];
     } else {
       return null;
+      return back()->withInput()->with('error', 'Failed to upload the file.');
     }
   }
 
