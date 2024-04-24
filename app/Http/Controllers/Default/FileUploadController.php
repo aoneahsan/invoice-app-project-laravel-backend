@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Default;
 
 use App\Http\Controllers\Controller;
+use App\Zaions\Enums\DisksEnum;
 use App\Zaions\Helpers\ZHelpers;
 use Illuminate\Http\Request;
 use Mockery\Undefined;
@@ -31,7 +32,7 @@ class FileUploadController extends Controller
             $filePath = '-';
             $fileUrl = '-';
             if ($request->file('file')) {
-                $fileData = ZHelpers::storeFile($request, 'file', 'uploaded-files');
+                $fileData = ZHelpers::storeFile($request, 'file');
                 if ($fileData) {
                     $filePath = $fileData['filePath'];
                     $fileUrl = $fileData['fileUrl'];
