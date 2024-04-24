@@ -57,9 +57,9 @@
                         {{ $invoiceData['user']['country'] }}
                         <br />
                     @endisset
-                    @isset($invoiceData['user']['company_registration_number'])
+                    @isset($invoiceData['user']['registration_number'])
                         Company Number:
-                        {{ $invoiceData['user']['company_registration_number'] }}<br />
+                        {{ $invoiceData['user']['registration_number'] }}<br />
                     @endisset
                     @isset($invoiceData['user']['vat_number'])
                         VAT Number:
@@ -88,8 +88,8 @@
                                     {{ $invoiceData['client']['country'] }}
                                     <br />
                                 @endisset
-                                @isset($invoiceData['client']['company_registration_number'])
-                                    Company Number:{{ $invoiceData['client']['company_registration_number'] }}<br />
+                                @isset($invoiceData['client']['registration_number'])
+                                    Company Number:{{ $invoiceData['client']['registration_number'] }}<br />
                                 @endisset
                                 @isset($invoiceData['client']['vat_number'])
                                     VAT Number:{{ $invoiceData['client']['vat_number'] }}

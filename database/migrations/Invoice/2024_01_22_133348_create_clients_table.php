@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('company')->nullable();
             $table->string('country')->nullable();
             $table->text('notes')->nullable();
-            $table->string('company_registration_number')->nullable();
+            $table->string('registration_number')->nullable();
             $table->string('city')->nullable();
             $table->string('zipcode')->nullable();
             $table->string('vat_number')->nullable();

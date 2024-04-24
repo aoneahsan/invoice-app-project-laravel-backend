@@ -23,7 +23,7 @@ class ClientResource extends JsonResource
             "address" => $this->address ?? null,
             "company" => $this->company ?? null,
             "city" => $this->city ?? null,
-            "registration_number" => $this->company_registration_number ?? null,
+            "registration_number" => $this->registration_number ?? null,
             "zipcode" => $this->zipcode ?? null,
             "vat_number" => $this->vat_number ?? null,
             "default_currency" => $this->default_currency ?? null,

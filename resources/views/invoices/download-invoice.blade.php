@@ -191,7 +191,7 @@
                                 {{ $invoiceData['client']['country'] }}</span>
                             <span class="z-user-text">{{ $invoiceData['client']['country'] }}</span>
                             <span class="z-user-text">{{ __('Company Number: ') }}
-                                {{ $invoiceData['client']['company_registration_number'] }}</span>
+                                {{ $invoiceData['client']['registration_number'] }}</span>
                             <span class="z-user-text">{{ __('VAT Number: ') }}
                                 {{ $invoiceData['client']['vat_number'] }}</span>
                         </div>
@@ -417,7 +417,7 @@
                                                     <span
                                                         class="z-user-text">{{ $invoiceData['client']['country'] }}</span>
                                                     <span class="z-user-text">{{ __('Company Number: ') }}
-                                                        {{ $invoiceData['client']['company_registration_number'] }}</span>
+                                                        {{ $invoiceData['client']['registration_number'] }}</span>
                                                     <span class="z-user-text">{{ __('VAT Number: ') }}
                                                         {{ $invoiceData['client']['vat_number'] }}</span>
                                                 </div>

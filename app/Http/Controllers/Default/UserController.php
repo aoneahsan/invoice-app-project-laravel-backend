@@ -57,7 +57,7 @@ class UserController extends Controller
                 "zipcode" => ['required', 'string'],
                 "city" => ['required', 'string'],
                 "country" => ['required', 'string'],
-                "company_registration_number" => ['required', 'string'],
+                "registration_number" => ['required', 'string'],
                 "vat_number" => ['required', 'string'],
             ]);
 
@@ -76,7 +76,7 @@ class UserController extends Controller
                     'zipcode' => $request->has('zipcode') ? $request->zipcode : $user->zipcode,
                     'city' => $request->has('city') ? $request->city : $user->city,
                     'country' => $request->has('country') ? $request->country : $user->country,
-                    'company_registration_number' => $request->has('company_registration_number') ? $request->company_registration_number : $user->company_registration_number,
+                    'registration_number' => $request->has('registration_number') ? $request->registration_number : $user->registration_number,
                     'vat_number' => $request->has('vat_number') ? $request->vat_number : $user->vat_number,
                     'onboarding_details' => $onboarding_details ?? $user->onboarding_details,
                 ])->save();

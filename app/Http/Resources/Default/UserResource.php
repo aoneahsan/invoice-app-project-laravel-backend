@@ -17,15 +17,17 @@ class UserResource extends JsonResource
     {
         $onboarding = true;
 
-        if ($this->onboarding_details !== null &&
-        array_key_exists(OnboardingEnum::register->value, $this->onboarding_details) &&
-        $this->onboarding_details[OnboardingEnum::register->value] === true &&
-        array_key_exists(OnboardingEnum::profile->value, $this->onboarding_details) &&
-        $this->onboarding_details[OnboardingEnum::profile->value] === true &&
-        array_key_exists(OnboardingEnum::currency->value, $this->onboarding_details) &&
-        $this->onboarding_details[OnboardingEnum::currency->value] === true &&
-        array_key_exists(OnboardingEnum::bank_details->value, $this->onboarding_details) &&
-        $this->onboarding_details[OnboardingEnum::bank_details->value] === true) {
+        if (
+            $this->onboarding_details !== null &&
+            array_key_exists(OnboardingEnum::register->value, $this->onboarding_details) &&
+            $this->onboarding_details[OnboardingEnum::register->value] === true &&
+            array_key_exists(OnboardingEnum::profile->value, $this->onboarding_details) &&
+            $this->onboarding_details[OnboardingEnum::profile->value] === true &&
+            array_key_exists(OnboardingEnum::currency->value, $this->onboarding_details) &&
+            $this->onboarding_details[OnboardingEnum::currency->value] === true &&
+            array_key_exists(OnboardingEnum::bank_details->value, $this->onboarding_details) &&
+            $this->onboarding_details[OnboardingEnum::bank_details->value] === true
+        ) {
             $onboarding = false;
         }
 
@@ -43,7 +45,7 @@ class UserResource extends JsonResource
             "bank_details" => $this->bank_details ? $this->bank_details : null,
             "logo" => $this->logo ? $this->logo : null,
             "company" => $this->company ? $this->company : null,
-            "company_registration_number" => $this->company_registration_number ? $this->company_registration_number : null,
+            "registration_number" => $this->registration_number ? $this->registration_number : null,
             "city" => $this->city ? $this->city : null,
             "zipcode" => $this->zipcode ? $this->zipcode : null,
             "vat_number" => $this->vat_number ? $this->vat_number : null,
