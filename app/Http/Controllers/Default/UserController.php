@@ -61,8 +61,12 @@ class UserController extends Controller
                 "vat_number" => ['required', 'string'],
             ]);
 
-            $onboarding_details = null;
-            if ($user->onboarding_details === null || $user->onboarding_details[OnboardingEnum::profile->value] !== true) {
+            $onboarding_details = [];
+            if ($user->onboarding_details === null || !is_array($user->onboarding_details)) {
+                $onboarding_details = [
+                    OnboardingEnum::profile->value => true,
+                ];
+            } else if (!array_key_exists(OnboardingEnum::profile->value, $user->onboarding_details) || $user->onboarding_details[OnboardingEnum::profile->value] !== true) {
                 $onboarding_details = [
                     ...($user->onboarding_details ?? []),
                     OnboardingEnum::profile->value => true,
