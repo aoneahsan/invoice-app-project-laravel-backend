@@ -30,6 +30,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(TestingController::class)->group(function () {
     Route::get('/test-api', 'test');
 });
+Route::post('/testing-z/upload-file-test', [TestingController::class, 'uploadFileTest']);
+
+Route::get('/testing-z/get-uploaded-file-url', [TestingController::class, 'getUploadedFileUrl']);
 
 // Auth
 Route::controller(AuthController::class)->group(function () {

@@ -101,7 +101,7 @@ class UserController extends Controller
             $user = User::where('id', $request->user()->id)->first();
 
             $request->validate([
-                "logo" => ['required', 'json'],
+                "logo" => ['json'], // logo is optional
                 "default_currency" => ['required', 'json'],
             ]);
 

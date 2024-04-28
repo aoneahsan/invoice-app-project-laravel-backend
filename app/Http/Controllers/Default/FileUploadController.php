@@ -14,39 +14,35 @@ class FileUploadController extends Controller
 {
     public function uploadSingleFile(Request $request)
     {
-        try {
-            $request->validate([
-                'file' => 'required|file',
-                // 'old_file_detail' => 'nullable|json'
-            ]);
+        // try {
+        $request->validate([
+            'file' => 'required|file',
+        ]);
 
-            // return ZHelpers::sendBackRequestCompletedResponse([
-            //     'item' => $request->old_file_detail
-            // ]);
-
-            // if($request->has('old_file_detail') && !isEmpty($request->old_file_detail['should_delete_old_file']) && !isEmpty($request->old_file_detail['old_file_path']) && $request->old_file_detail['should_delete_old_file']){
-            //     ZHelpers::deleteFile($request->old_file_detail['old_file_path']);
-            // }
-
-            $fileName = 'NO File Found';
-            $filePath = '-';
-            $fileUrl = '-';
-            if ($request->file('file')) {
-                $fileData = ZHelpers::storeFile($request, 'file');
-                if ($fileData) {
-                    $filePath = $fileData['filePath'];
-                    $fileUrl = $fileData['fileUrl'];
-                }
-                $fileName = $request->file('file');
+        // ? why are you using spaces in the file name?
+        // Do not use spaces in file names
+        if ($request->hasFile('file')) {
+            // return ZHelpers::storeFileInS3($request, 'file');
+            $fileData = ZHelpers::storeFileInS3($request, 'file');
+            $filePath = $fileData['path'];
+            $fileUrl = $fileData['url'];
+            $fileName = $fileData['fileName'];
+            if ($fileUrl !== null && $filePath !== null) {
+                // ? Talha why were you sending the file in the response?
+                // 'item' => ['fileName' => $fileName, 'filePath' => $filePath, 'fileUrl' => $fileUrl, 'file' => $request->file]
+                return ZHelpers::sendBackRequestCompletedResponse([
+                    'item' => ['fileName' => $fileName, 'filePath' => $filePath, 'fileUrl' => $fileUrl]
+                ]);
+            } else {
+                return ZHelpers::sendBackRequestFailedResponse(['file' => 'File could not be uploaded.']);
             }
-
-            return ZHelpers::sendBackRequestCompletedResponse([
-                'item' => ['fileName' => $fileName, 'filePath' => $filePath, 'fileUrl' => $fileUrl, 'file' => $request->file]
-            ]);
-        } catch (\Throwable $th) {
-            //throw $th;
-            return ZHelpers::sendBackServerErrorResponse($th);
+        } else {
+            return ZHelpers::sendBackRequestFailedResponse(['file' => 'File not found.']);
         }
+        // } catch (\Throwable $th) {
+        //     //throw $th;
+        //     return ZHelpers::sendBackServerErrorResponse($th);
+        // }
     }
 
     public function uploadFiles(Request $request)
@@ -57,8 +53,6 @@ class FileUploadController extends Controller
             ]);
 
             $filesData = [];
-            // $filesData = ZHelpers::storeFiles($request->files, 'uploaded-files');
-            // $filesData = ZHelpers::storeFiles($request->files, 'uploaded-files');
             if ($request->files) {
                 foreach ($request->files as $files) {
                     foreach ($files as $file) {

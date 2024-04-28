@@ -30,7 +30,6 @@ class InvoiceResource extends JsonResource
             ] : null,
             "user" => $this->user ? $this->user : null,
             "invoice_logo" => $this->invoice_logo,
-            // "invoice_logo_url" => $this->invoice_logo ? Storage::url($this->invoice_logo) : null,
             "date" => $this->date ? Carbon::make($this->date)->toDateString() : $this->date,
             "due_date" => $this->due_date ? Carbon::make($this->due_date)->toDateString() : $this->due_date,
             "vat_value" => $this->vat_value,

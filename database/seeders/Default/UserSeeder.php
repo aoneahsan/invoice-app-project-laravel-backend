@@ -49,7 +49,6 @@ class UserSeeder extends Seeder
                 'zipcode' => "54000",
                 'vat_number' => "10",
                 'default_currency' => "USD",
-                'logo' => "username",
                 'notes' => "Thanks for your business.",
                 'bank_details' => "Account Title: Ahsan Mahmood, Account Email: " . env('SUPER_ADMIN_EMAIL', 'tester@zaions.com')
             ]
@@ -80,7 +79,6 @@ class UserSeeder extends Seeder
                 'zipcode' => "54000",
                 'vat_number' => "10",
                 'default_currency' => "USD",
-                'logo' => "username",
                 'notes' => "Thanks for your business.",
                 'bank_details' => "Account Title: admin, Account Email: admin@gmail.com"
             ]
@@ -111,7 +109,6 @@ class UserSeeder extends Seeder
                 'zipcode' => "54000",
                 'vat_number' => "10",
                 'default_currency' => "USD",
-                'logo' => "username",
                 'notes' => "Thanks for your business.",
                 'bank_details' => "Account Title: user, Account Email: user@gmail.com"
             ]
@@ -142,7 +139,6 @@ class UserSeeder extends Seeder
                 'zipcode' => "54000",
                 'vat_number' => "10",
                 'default_currency' => "USD",
-                'logo' => "username",
                 'notes' => "Thanks for your business.",
                 'bank_details' => "Account Title: buyer, Account Email: buyer@gmail.com"
             ]
@@ -173,7 +169,6 @@ class UserSeeder extends Seeder
                 'zipcode' => "54000",
                 'vat_number' => "10",
                 'default_currency' => "USD",
-                'logo' => "username",
                 'notes' => "Thanks for your business.",
                 'bank_details' => "Account Title: seller, Account Email: seller@gmail.com"
             ]
@@ -204,7 +199,6 @@ class UserSeeder extends Seeder
                 'zipcode' => "54000",
                 'vat_number' => "10",
                 'default_currency' => "USD",
-                'logo' => "username",
                 'notes' => "Thanks for your business.",
                 'bank_details' => "Account Title: buyerSeller, Account Email: buyerSeller@gmail.com"
             ]

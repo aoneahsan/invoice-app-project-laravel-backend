@@ -3,6 +3,7 @@
 namespace App\Zaions\Helpers;
 
 use App\Zaions\Enums\DisksEnum;
+use App\Zaions\Enums\FileVisibilityEnum;
 use \Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -190,27 +191,34 @@ class ZHelpers
   //   }
   // }
 
-  public static function storeFile(Request $request, $fileKey = 'file', $disk = DisksEnum::s3, $fileStorePath = '/uploaded-files',)
+  // Store file in AWS S3
+  public static function storeFileInS3(Request $request, $fileKey = 'file', $fileStorePath = 'uploaded-files')
   {
-    if ($request->file($fileKey)) {
-      $file = $request->file($fileKey);
-      $fileName = $file->getClientOriginalName();
-      $filePath =  $file->storeAs($fileStorePath, $fileName, $disk->value);
-      // $filePath = Storage::putFileAs(
-      //   $fileStorePath,
-      //   $file,
-      //   $fileName,
-      //   $disk->value
-      // );
-      // $filePath = Storage::disk($disk->value)->put($fileName, $file);
+    try {
+      if ($request->hasFile($fileKey)) {
+        $file = $request->file($fileKey);
+        // $fileName = time() . $file->getClientOriginalName(); // i'm not using this as user can have spaces, special symbols in file name
+        $fileName = time() . '_' . rand(1000, 9999) . '.' . $file->getClientOriginalExtension();
 
-      return [
-        'fileUrl' =>  $filePath,
-        'filePath' => $filePath,
-      ];
-    } else {
-      return null;
-      return back()->withInput()->with('error', 'Failed to upload the file.');
+        // Upload File to S3
+        $path = Storage::putFileAs($fileStorePath, $file, $fileName, DisksEnum::s3->value);
+        Storage::disk(DisksEnum::s3->value)->setVisibility($path, FileVisibilityEnum::public->value);
+        $url = Storage::disk(DisksEnum::s3->value)->url($path);
+
+        return [
+          'url' =>  $url,
+          'path' => $path,
+          'fileName' => $fileName
+        ];
+      } else {
+        return null;
+        return back()->withInput()->with('error', 'Failed to upload the file.');
+      }
+    } catch (\Throwable $th) {
+      return ZHelpers::sendBackRequestFailedResponse([
+        'error' => 'Failed to upload the file.',
+        'errorMessage' => $th->getMessage()
+      ]);
     }
   }
 
@@ -220,9 +228,9 @@ class ZHelpers
    * @param  string|null  $filePath Path of the file to check.
    * @return bool True if file exists, false otherwise.
    */
-  public static function checkIfFileExists($filePath)
+  public static function checkIfFileExists($filePath): bool
   {
-    return $filePath && Storage::exists($filePath);
+    return $filePath && Storage::disk(DisksEnum::s3->value)->exists($filePath);
   }
 
   /**
@@ -234,11 +242,11 @@ class ZHelpers
   public static function getFullFileUrl($filePath): string | null
   {
     if (ZHelpers::checkIfFileExists($filePath)) {
-      $fileUrl = Storage::url($filePath);
+      $fileUrl = Storage::disk(DisksEnum::s3->value)->url($filePath);
 
-      $appUrl = env('FILESYSTEM_ROOT_URL', 'http://localhost:8000/storage');
-
-      return $appUrl . $fileUrl;
+      // $appUrl = env('FILESYSTEM_ROOT_URL', 'http://localhost:8000/storage');
+      // because we are storing files in S3, so we don't need to append the app url
+      return $fileUrl;
     } else {
       return null;
     }
@@ -250,10 +258,10 @@ class ZHelpers
    * @param  string|null  $filePath Path of the file to delete.
    * @return bool True if file was deleted successfully, false otherwise.
    */
-  public static function deleteFile($filePath)
+  public static function deleteFile($filePath): bool
   {
     if ($filePath && ZHelpers::checkIfFileExists($filePath)) {
-      $deleted = Storage::delete($filePath);
+      $deleted = Storage::disk(DisksEnum::s3->value)->delete($filePath);
 
       return $deleted;
     } else {
@@ -261,14 +269,14 @@ class ZHelpers
     }
   }
 
-  public static function getFile($filePath)
+  public static function getFile($filePath): string|null
   {
     if ($filePath && ZHelpers::checkIfFileExists($filePath)) {
-      $deleted = Storage::get($filePath);
+      $filePath = Storage::disk(DisksEnum::s3->value)->get($filePath);
 
-      return $deleted;
+      return $filePath;
     } else {
-      return false;
+      return null;
     }
   }
 

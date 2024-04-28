@@ -9,5 +9,4 @@ enum DisksEnum: string
 
         // AWS S3
     case s3 = 's3';
-    case invoices = 'invoices';
 }

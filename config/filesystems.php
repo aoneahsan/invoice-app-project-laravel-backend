@@ -46,32 +46,17 @@ return [
         ],
 
         DisksEnum::s3->value => [
-            'driver' => 's3',
+            'driver' => DisksEnum::s3->value,
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
-            'url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'throw' => false,
-        ],
-
-        // You can create a specific directory in S3.
-        DisksEnum::invoices->value => [
-            'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_BUCKET'),
-            'url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'throw' => false,
+            'url' => env('AWS_URL'), // no value set for these in env
+            'endpoint' => env('AWS_ENDPOINT'), // no value set for these in env
+            'use_path_style_endpoint' => false,
+            'throw' => true,
             'visibility' => 'public',
-            'root' => 'invoices', // this define a directory where to store.
         ],
-
     ],
 
     /*
