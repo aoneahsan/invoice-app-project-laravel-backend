@@ -23,6 +23,7 @@
         @csrf
         @method('POST')
         <button type="submit" class="p-20 bg-red-900">Download Invoice</button>
+        {{ null !== '' && null ?? '---' }}
     </form>
 </body>
 

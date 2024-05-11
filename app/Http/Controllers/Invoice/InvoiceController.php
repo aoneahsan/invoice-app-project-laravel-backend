@@ -351,7 +351,6 @@ class InvoiceController extends Controller
                 'invoiceData' => $invoiceData,
                 'invoiceLogoPath' => $invoiceLogoPath
             ])->download($invoiceData->invoice_no . '.pdf');
-            // ->setOption(['defaultFont' => 'mont-regular'])
         } catch (\Throwable $th) {
             return ZHelpers::sendBackServerErrorResponse($th);
         }
