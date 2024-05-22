@@ -343,7 +343,7 @@
 
                         <td colspan="3"
                             style="padding:16px;background-color: transparent;margin-left:auto;border-top:1px solid #edf2f9;">
-                            <div class="text-color" style='margin-right:4px;margin-left:auto;padding:2px 8px;'>
+                            <div class="text-color" style='margin-right:4px;margin-left:auto;padding:2px.env;width:50px;'>
                                 {{ $invoiceData['selected_currency']['symbol'] }} {{ $invoiceData->vat_value }}
                             </div>
                         </td>
