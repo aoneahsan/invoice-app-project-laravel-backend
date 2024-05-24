@@ -5,6 +5,7 @@ use App\Http\Controllers\Testing\TestingController;
 use App\Models\Default\User;
 use App\Models\Invoice\Invoice;
 use Illuminate\Support\Facades\Route;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,12 +17,19 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+// OASIS form pdf download route
+Route::get('/view-oasis-pdf-download-page', function () {
+    return view('oasis.download-oasis');
+});
+Route::get('/oasis-pdf-download', function () {
+    return Pdf::loadView('oasis.download-oasis')->download('oasis' . '.pdf');
+});
+
+
 // pdf download route
 Route::controller(InvoiceController::class)->group(function () {
     Route::get('/user/{type}/dom/{invoice_id}/z_kasdas', 'downloadInvoicesPhpDownload');
 });
-
-
 
 Route::get('/', function () {
     return view('welcome');
