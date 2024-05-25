@@ -1,7 +1,8 @@
 <div class="z-w-full z-clearfix">
     <div style="width:15rem;" class="z-float-left">
         <img class="z-w-full" alt='hafiz-estate-logo'
-            src="{{ 'data:image/png;base64,' . base64_encode(Storage::read('hafiz-estate-logo.png')) }}" />
+            {{-- src="{{ 'data:image/png;base64,' . base64_encode(Storage::read('hafiz-estate-logo.png')) }}" /> --}}
+            src="{{ 'data:image/png;base64,' . base64_encode(asset('assets/images/hafiz-estate-logo.png')) }}" />
     </div>
     <div class="z-text-center z-w-60per z-mx-p5rem z-float-left">
         <h1>THE OASIS</h1>
@@ -11,6 +12,7 @@
     </div>
     <div style="width:12rem;" class="z-float-right z-ms-auto">
         <img class="z-w-full" alt='hafiz-estate-logo'
-            src="{{ 'data:image/png;base64,' . base64_encode(Storage::read('oasis-logo.png')) }}" />
+            {{-- src="{{ 'data:image/png;base64,' . base64_encode(Storage::read('oasis-logo.png')) }}" /> --}}
+            src="{{ 'data:image/png;base64,' . base64_encode(asset('assets/images/oasis-logo.png')) }}" />
     </div>
 </div>

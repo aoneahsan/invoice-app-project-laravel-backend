@@ -24,6 +24,10 @@ Route::get('/view-oasis-pdf-download-page', function () {
 Route::get('/oasis-pdf-download', function () {
     return Pdf::loadView('oasis.download-oasis')->download('oasis' . '.pdf');
 });
+Route::get('/oasis-pdf-download2', function () {
+    $customPaper = array(0, 0, 720, 1440);
+    return Pdf::loadView('oasis.download-oasis')->setPaper($customPaper)->download('oasis' . '.pdf');
+});
 
 
 // pdf download route

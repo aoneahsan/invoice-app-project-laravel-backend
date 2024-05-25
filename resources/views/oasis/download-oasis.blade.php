@@ -269,6 +269,8 @@
 <body>
     @include('oasis.parts.top-bar')
 
+    @include('oasis.parts.test-section-v1')
+
     {{-- PROPERTY SELECTION --}}
     @include('oasis.parts.property-selection')
 

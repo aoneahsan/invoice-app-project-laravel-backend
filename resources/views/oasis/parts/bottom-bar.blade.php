@@ -14,7 +14,8 @@
     <div class="z-text-center z-w-60per z-mx-p5rem z-float-left">
         <div style="width:15rem;" class="z-mx-auto">
             <img class="z-w-full" alt='hafiz-estate-logo'
-                src="{{ 'data:image/png;base64,' . base64_encode(Storage::read('hafiz-estate-logo.png')) }}" />
+                {{-- src="{{ 'data:image/png;base64,' . base64_encode(Storage::read('hafiz-estate-logo.png')) }}" /> --}}
+                src="{{ 'data:image/png;base64,' . base64_encode(asset('images/hafiz-estate-logo.png')) }}" />
         </div>
     </div>
     <div class="z-float-right z-ms-auto">
